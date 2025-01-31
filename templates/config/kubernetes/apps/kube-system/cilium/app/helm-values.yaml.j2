@@ -1,0 +1,88 @@
+---
+autoDirectNodeRoutes: true
+bpf:
+  masquerade: true
+  # Ref: https://github.com/siderolabs/talos/issues/10002
+  hostLegacyRouting: true
+#% if bgp.enabled %#
+bgpControlPlane:
+  enabled: true
+#% endif %#
+cni:
+  # Required for pairing with Multus CNI
+  exclusive: false
+cgroup:
+  automount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+# NOTE: devices might need to be set if you have more than one active NIC on your hosts
+# devices: eno+ eth+
+endpointRoutes:
+  enabled: true
+envoy:
+  enabled: false
+dashboards:
+  enabled: true
+hubble:
+  enabled: false
+ipam:
+  mode: kubernetes
+ipv4NativeRoutingCIDR: "#{ pod_network.split(',')[0] }#"
+#% if dual_stack_ipv4_first %#
+ipv6NativeRoutingCIDR: "#{ pod_network.split(',')[1] }#"
+ipv6:
+  enabled: true
+#% endif %#
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  #% if not dual_stack_ipv4_first %#
+  enabled: true
+  #% else %#
+  # Ref: https://github.com/cilium/cilium/issues/28985
+  enabled: false
+  #% endif %#
+loadBalancer:
+  algorithm: maglev
+  mode: "#{ loadbalancer_mode | default('dsr', true) }#"
+localRedirectPolicy: true
+operator:
+  replicas: 1
+  rollOutPods: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+rollOutCiliumPods: true
+routingMode: native
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - PERFMON
+      - BPF
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+socketLB:
+  hostNamespaceOnly: true
