@@ -28,8 +28,7 @@ cniConfig:
 nodes:
   - hostname: "thinkpad-x230"
     ipAddress: "192.168.1.136"
-    installDiskSelector:
-      serial: "sda"
+    installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
@@ -48,8 +47,7 @@ nodes:
           ip: "192.168.1.30"
   - hostname: "latitude-5470"
     ipAddress: "192.168.1.173"
-    installDiskSelector:
-      serial: "sdb"
+    installDisk: "/dev/sdb"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
@@ -68,8 +66,7 @@ nodes:
           ip: "192.168.1.30"
   - hostname: "latitude-5490-azerty"
     ipAddress: "192.168.1.181"
-    installDiskSelector:
-      serial: "sda"
+    installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
