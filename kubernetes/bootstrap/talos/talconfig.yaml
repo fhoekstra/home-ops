@@ -31,7 +31,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
+    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -50,7 +50,7 @@ nodes:
     installDisk: "/dev/sdb"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
+    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -69,7 +69,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/9ffda6da42b0e45bb9f486a3579c3c672c6971c1acaba0cc8ed8e9a0a5bb9e09
+    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -97,4 +97,3 @@ controlPlane:
   patches:
     - "@./patches/controller/admission-controller-patch.yaml"
     - "@./patches/controller/cluster.yaml"
-
