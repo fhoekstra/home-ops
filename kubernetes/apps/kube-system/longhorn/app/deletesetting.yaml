@@ -1,6 +1,0 @@
-apiVersion: longhorn.io/v1beta2
-kind: Setting
-metadata:
-  name: deleting-confirmation-flag
-  namespace: kube-system
-value: "true"
