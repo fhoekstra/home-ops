@@ -8,6 +8,7 @@ resources:
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
+  - ./longhorn/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
