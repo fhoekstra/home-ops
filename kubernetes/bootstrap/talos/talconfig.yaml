@@ -27,7 +27,7 @@ cniConfig:
 
 nodes:
   - hostname: "thinkpad-x230"
-    ipAddress: "192.168.1.136"
+    ipAddress: "192.168.1.13"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
@@ -38,7 +38,6 @@ nodes:
           hardwareAddr: "3c:97:0e:75:8a:d6"
         dhcp: false
         addresses:
-          - "192.168.1.136/24"
           - "192.168.1.13/24"
         routes:
           - network: "0.0.0.0/0"
@@ -47,7 +46,7 @@ nodes:
         vip:
           ip: "192.168.1.30"
   - hostname: "latitude-5470"
-    ipAddress: "192.168.1.173"
+    ipAddress: "192.168.1.12"
     installDisk: "/dev/sdb"
     machineSpec:
       secureboot: false
@@ -58,7 +57,6 @@ nodes:
           hardwareAddr: "18:db:f2:3e:63:ef"
         dhcp: false
         addresses:
-          - "192.168.1.173/24"
           - "192.168.1.12/24"
         routes:
           - network: "0.0.0.0/0"
@@ -67,7 +65,7 @@ nodes:
         vip:
           ip: "192.168.1.30"
   - hostname: "latitude-5490-azerty"
-    ipAddress: "192.168.1.181"
+    ipAddress: "192.168.1.11"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
@@ -78,7 +76,6 @@ nodes:
           hardwareAddr: "8c:04:ba:0a:70:c2"
         dhcp: false
         addresses:
-          - "192.168.1.181/24"
           - "192.168.1.11/24"
         routes:
           - network: "0.0.0.0/0"
