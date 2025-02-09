@@ -17,6 +17,7 @@
   ],
   schedule: [
     'every weekend',
+    '* * * * 3'
   ],
   ignorePaths: [
     '**/*.sops.*',
