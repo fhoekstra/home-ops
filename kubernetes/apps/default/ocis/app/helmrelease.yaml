@@ -125,7 +125,7 @@ spec:
       storage-users:
         type: nfs
         server: &nfsServer ${NFS_SERVER_IP_ADDRESS}
-        path: &nfsPath /backup/data/k8s/ocis
+        path: &nfsPath /mnt/nfs/backups/data/k8s/ocis
         globalMounts:
           - path: /data
             subPath: storage-users
