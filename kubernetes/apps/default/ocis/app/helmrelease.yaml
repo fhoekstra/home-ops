@@ -132,6 +132,7 @@ spec:
       data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
+        size: 20Gi
         storageClass: openebs-hostpath
         globalMounts:
           - path: /etc/ocis
