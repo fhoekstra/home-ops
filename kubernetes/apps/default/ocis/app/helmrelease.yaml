@@ -77,9 +77,6 @@ spec:
               # WEB_OIDC_CLIENT_ID: ocis
               # WEB_OIDC_METADATA_URL: https://auth.${CLUSTER_DOMAIN}/.well-known/openid-configuration
               # WEB_OIDC_SCOPE: "openid profile email groups"
-            envFrom:
-              - secretRef:
-                  name: ocis-secret
             probes:
               liveness:
                 enabled: true
