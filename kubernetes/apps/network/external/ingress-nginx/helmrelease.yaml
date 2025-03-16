@@ -29,7 +29,7 @@ spec:
     controller:
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: "external.${CLUSTER_DOMAIN}"
           lbipam.cilium.io/ips: "192.168.1.32"
         externalTrafficPolicy: Cluster
       ingressClassResource:
@@ -76,7 +76,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "cert-manager/${SECRET_DOMAIN/./-}-production-tls"
+        default-ssl-certificate: "cert-manager/${CLUSTER_DOMAIN/./-}-production-tls"
       resources:
         requests:
           cpu: 100m
