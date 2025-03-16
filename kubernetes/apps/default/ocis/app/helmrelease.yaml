@@ -139,13 +139,6 @@ spec:
             subPath: config
           - path: /var/lib/ocis
             subPath: data
-      config-proxy:
-        type: configMap
-        name: ocis-configmap
-        globalMounts:
-          - path: /etc/ocis/proxy.yaml
-            subPath: proxy.yaml
-            readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:
