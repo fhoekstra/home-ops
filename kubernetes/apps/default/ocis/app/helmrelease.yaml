@@ -120,9 +120,10 @@ spec:
                   port: http
     persistence:
       storage-users:
-        type: nfs
-        server: &nfsServer ${NFS_SERVER_IP_ADDRESS}
-        path: &nfsPath /mnt/nfs/backups/data/k8s/ocis
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        storageClass: openebs-hostpath
         globalMounts:
           - path: /data
             subPath: storage-users
