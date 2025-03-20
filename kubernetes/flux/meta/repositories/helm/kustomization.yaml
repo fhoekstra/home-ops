@@ -8,6 +8,7 @@ resources:
   - ./cloudnative-pg.yaml
   - ./controlplaneio.yaml
   - ./coredns.yaml
+  - ./csi-driver-nfs.yaml
   - ./external-dns.yaml
   - ./ingress-nginx.yaml
   - ./jetstack.yaml
