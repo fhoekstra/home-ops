@@ -25,6 +25,7 @@ spec:
     - name: cloudflared
       namespace: network
   values:
+    replicaCount: 2
     crds:
       create: true
     resources:
