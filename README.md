@@ -20,13 +20,15 @@ Currently 3 laptops that I got from the used market:
 ## TODO:
 
 * Set up backups for single rep volumes
-  - Set up NFS outside the cluster (ideally with [NixOS for easy setup of the NFS](https://search.nixos.org/options?channel=24.11&from=0&size=50&sort=relevance&type=packages&query=services.nfs), comin for CD and sops-nix for secrets: GitOps in the same style as the Kubernetes cluster)
+  - [x] Set up NFS outside the cluster
   - Set up [volsync](https://volsync.readthedocs.io/en/stable/) to keep backups there
-  - Add a cloud object storage to volsync (planning to try [Intercolo](https://www.intercolo.net/en/object-storage), :eu:)
+  - Add an external cloud object storage to volsync (planning to try [Intercolo](https://www.intercolo.net/en/object-storage), :eu:)
 * Set up external-dns to be able to expose services internally
-  - get AdGuard Home working problem-free on the old Raspberry Pi
+  - [x] get AdGuard Home working problem-free on the old Raspberry Pi
   - install [external-dns adguard webhook](https://github.com/muhlba91/external-dns-provider-adguard) to the k8s cluster
   - test if a service that is only exposed internally resolves
+* Set up a database (let's start with just cnpg)
+* Set up auth (either Authentik or Authelia + lldap)
 * Start hosting some services
   - [FoundryVTT](https://foundryvtt.com/)
   - [Matrix](https://element.io/)
