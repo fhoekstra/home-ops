@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+metadata:
+  name: cluster-17
+kind: Cluster
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2-standard-bookworm
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  postgresql:
+    parameters:
+      dynamic_shared_memory_type: sysv
+      shared_buffers: 128Mi
