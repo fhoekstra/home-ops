@@ -19,4 +19,4 @@ spec:
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv
-      shared_buffers: 128Mi
+      shared_buffers: 128MB
