@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: 1.15.2
+      version: 1.16.0
       sourceRef:
         kind: HelmRepository
         name: external-dns
@@ -18,7 +18,10 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+    # TODO: Enable schema validation when new chart version is released
+    disableSchemaValidation: true
   upgrade:
+    disableSchemaValidation: true
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
@@ -26,7 +29,8 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    provider: cloudflare
+    provider:
+      name: cloudflare
     env:
       - name: CF_API_TOKEN
         valueFrom:
