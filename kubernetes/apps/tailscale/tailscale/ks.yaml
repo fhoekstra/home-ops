@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/tailscale/app
+  path: ./kubernetes/apps/tailscale/tailscale/app
   prune: true
   sourceRef:
     kind: GitRepository
