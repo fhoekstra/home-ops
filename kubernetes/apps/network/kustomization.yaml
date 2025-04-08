@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./external/ks.yaml
   - ./internal/ks.yaml
+  - ./tailscale/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
