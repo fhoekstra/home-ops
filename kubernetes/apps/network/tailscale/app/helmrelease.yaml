@@ -89,3 +89,6 @@ spec:
         serviceName: *app
         endpoints:
           - port: http
+    serviceAccount:
+      create: true
+      name: *app
