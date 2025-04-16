@@ -50,20 +50,17 @@ spec:
               tag: 7.1.2
             env:
               DEMO_USERS: true
-              # NOTIFICATIONS_SMTP_HOST: smtp.${CLUSTER_DOMAIN}
-              # NOTIFICATIONS_SMTP_INSECURE: true
-              # NOTIFICATIONS_SMTP_PORT: "25"
-              # NOTIFICATIONS_SMTP_SENDER: "ocis@${CLUSTER_DOMAIN:=fnord}"
+              IDM_CREATE_DEMO_USERS: true
               OCIS_INSECURE: true
               OCIS_LOG_COLOR: true
               OCIS_LOG_LEVEL: info
               OCIS_LOG_PRETTY: true
               OCIS_URL: https://files.${CLUSTER_DOMAIN}
-              PROXY_DEBUG_ADDR: 0.0.0.0:9205
-              PROXY_HTTP_ADDR: 0.0.0.0:9200
+              # PROXY_DEBUG_ADDR: 0.0.0.0:9205
+              # PROXY_HTTP_ADDR: 0.0.0.0:9200
               PROXY_TLS: false
-              STORAGE_USERS_OCIS_ROOT: /data
-              TZ: ${TIMEZONE}
+              # STORAGE_USERS_OCIS_ROOT: /data
+              # TZ: ${TIMEZONE}
               # Authelia OIDC
               # Auto role assignment:
               # docs: https://doc.owncloud.com/ocis/next/deployment/services/s-list/proxy.html#automatic-role-assignments
@@ -99,7 +96,7 @@ spec:
         controller: ocis
         ports:
           http:
-            port: 9200
+            port: &port 9200
             primary: true
           metrics:
             port: 9205
@@ -117,16 +114,15 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: *port
     persistence:
-      storage-users:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 20Gi
-        storageClass: openebs-hostpath
+      config:
+        type: configMap
+        name: ocis
         globalMounts:
-          - path: /data
-            subPath: storage-users
+          - path: /etc/ocis/web.yaml
+            subPath: web.yaml
+            readOnly: true
       data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
