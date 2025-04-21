@@ -15,7 +15,6 @@ resources:
   - ./k8s-gateway.yaml
   - ./longhorn.yaml
   - ./metrics-server.yaml
-  - ./openebs.yaml
   - ./prometheus-community.yaml
   - ./spegel.yaml
   - ./stakater.yaml
