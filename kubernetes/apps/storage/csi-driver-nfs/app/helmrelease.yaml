@@ -30,7 +30,7 @@ spec:
       name: nfs-local
       parameters:
         server: ${NFS_SERVER_IP_ADDRESS}
-        share: /mnt/data/nfs/k8s/live
+        share: /mnt/data/nfs/k8s
       mountOptions:
         - noatime
         - hard
