@@ -8,7 +8,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:17.2-standard-bookworm
   storage:
     size: 5Gi
-    storageClass: openebs-hostpath
+    storageClass: local-hostpath
   resources:
     requests:
       cpu: 200m
