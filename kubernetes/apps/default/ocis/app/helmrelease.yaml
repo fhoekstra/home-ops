@@ -49,8 +49,8 @@ spec:
               repository: docker.io/owncloud/ocis
               tag: 7.1.2
             env:
-              DEMO_USERS: true
-              IDM_CREATE_DEMO_USERS: true
+              # DEMO_USERS: true
+              # IDM_CREATE_DEMO_USERS: true
               OCIS_INSECURE: true
               OCIS_LOG_COLOR: true
               OCIS_LOG_LEVEL: info
@@ -118,13 +118,13 @@ spec:
                   identifier: app
                   port: *port
     persistence:
-      config:
-        type: configMap
-        name: ocis
-        globalMounts:
-          - path: /etc/ocis/web.yaml
-            subPath: web.yaml
-            readOnly: true
+      # config:
+      #   type: configMap
+      #   name: ocis
+      #   globalMounts:
+      #     - path: /etc/ocis/web.yaml
+      #       subPath: web.yaml
+      #       readOnly: true
       data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
