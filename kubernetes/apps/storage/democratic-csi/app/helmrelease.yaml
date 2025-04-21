@@ -30,8 +30,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: volsync
+  # dependsOn:
+  #   - name: volsync
   values:
     controller:
       fullnameOverride: *name
