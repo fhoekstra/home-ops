@@ -6,6 +6,7 @@ resources:
   - ./csi-driver-nfs/ks.yaml
   - ./democratic-csi/ks.yaml
   - ./snapshot-controller/ks.yaml
+  - ./volsync/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
