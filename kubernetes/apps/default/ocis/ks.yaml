@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/volsync
+    - ../../../../flux/components/volsync
   postBuild:
     substitute:
       APP: *app
