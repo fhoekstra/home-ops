@@ -7,6 +7,13 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      CLAIM: ocis-data
+      VOLSYNC_CAPACITY: 20Gi
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

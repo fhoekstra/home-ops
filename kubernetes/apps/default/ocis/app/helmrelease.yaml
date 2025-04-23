@@ -126,10 +126,11 @@ spec:
       #       subPath: web.yaml
       #       readOnly: true
       data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 20Gi
-        storageClass: local-hostpath
+        existingClaim: ocis-data
+        # type: persistentVolumeClaim
+        # accessMode: ReadWriteOnce
+        # size: 20Gi
+        # storageClass: local-hostpath
         globalMounts:
           - path: /etc/ocis
             subPath: config
