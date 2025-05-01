@@ -14,6 +14,8 @@ spec:
       APP: *app
       CLAIM: ocis-data
       VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_COPYMETHOD: Direct
+      VOLSYNC_STORAGECLASS: local-hostpath
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
