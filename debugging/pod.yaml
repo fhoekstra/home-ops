@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.0/pod-v1.json
+# # https://kubernetes.io/docs/concepts/workloads/pods/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: myapp
+      command:
+        - sleep
+        - "600"
+      image: "ubuntu:latest"
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /mnt/local
+          name: local
+  volumes:
+    - name: local
+      persistentVolumeClaim:
+        claimName: test-local
