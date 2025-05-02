@@ -32,6 +32,8 @@ spec:
         server: ${NFS_SERVER_IP_ADDRESS}
         share: /mnt/data/nfs/k8s
       mountOptions:
+        - nfsvers=4.2
+        - nconnect=16
         - noatime
         - hard
       reclaimPolicy: Delete
