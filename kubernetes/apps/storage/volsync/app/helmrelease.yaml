@@ -34,7 +34,7 @@ spec:
     - name: snapshot-controller
   values:
     manageCRDs: true
-    replicaCount: ${REPLICAS:=1}
+    replicaCount: 2
     metrics:
       disableAuth: true
     podSecurityContext:

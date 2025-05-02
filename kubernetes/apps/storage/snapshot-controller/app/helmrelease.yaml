@@ -35,6 +35,6 @@ spec:
       retries: 3
   values:
     controller:
-      replicaCount: ${REPLICAS:=1}
+      replicaCount: 2
       serviceMonitor:
         create: true
