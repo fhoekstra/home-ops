@@ -6,6 +6,9 @@ metadata:
   name: longhorn
 spec:
   interval: 30m
+  dependsOn:
+    - name: volsync
+      namespace: storage
   chart:
     spec:
       chart: longhorn

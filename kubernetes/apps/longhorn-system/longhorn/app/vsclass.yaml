@@ -1,0 +1,8 @@
+---
+# Use v1 as an example
+kind: VolumeSnapshotClass
+apiVersion: snapshot.storage.k8s.io/v1
+metadata:
+  name: longhorn
+driver: driver.longhorn.io
+deletionPolicy: Delete

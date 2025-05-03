@@ -14,5 +14,5 @@ spec:
     name: "${APP}-bootstrap"
   resources:
     requests:
-      storage: "${VOLSYNC_CAPACITY:=2Gi}"
-  storageClassName: "${PVC_VOLSYNC_STORAGECLASS:=local-hostpath}"
+      storage: "${VOLSYNC_CAPACITY:=1Gi}"
+  storageClassName: "${PVC_VOLSYNC_STORAGECLASS:=longhorn-double}"
