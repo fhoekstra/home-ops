@@ -36,9 +36,12 @@ spec:
       replicaAutoBalance: true
       # When using root disk, keep at least 25 % available
       storageMinimalAvailablePercentage: 25
+      allowCollectingLonghornUsageMetrics: false
     ingress:
-      enabled: false
+      enabled: true
       ingressClassName: internal
+      tls: true
+      host: longhorn.${CLUSTER_DOMAIN}
       annotations:
         external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
     metrics:
