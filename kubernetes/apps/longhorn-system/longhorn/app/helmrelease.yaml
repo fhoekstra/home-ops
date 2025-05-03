@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: longhorn
+      version: 1.8.1
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      defaultDataLocality: best-effort
+    defaultSettings:
+      v1DataEngine: true
+      createDefaultDiskLabeledNodes: true
+      defaultDataPath: /var/lib/longhorn
+      defaultDataLocality: best-effort
+      defaultLonghornStaticStorageClass: longhorn-double
+      defaultReplicaCount: 2
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      orphanAutoDeletion: true
+      replicaAutoBalance: true
+      # When using root disk, keep at least 25 % available
+      storageMinimalAvailablePercentage: 25
+    ingress:
+      enabled: false
+      ingressClassName: internal
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+    metrics:
+      serviceMonitor:
+        enabled: true
