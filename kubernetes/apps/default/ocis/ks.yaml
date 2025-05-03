@@ -12,6 +12,7 @@ spec:
   postBuild:
     substitute:
       APP: ocis-files
+      CLAIM: ocis
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_COPYMETHOD: Snapshot
       VOLSYNC_STORAGECLASS: longhorn-double
