@@ -128,7 +128,7 @@ spec:
       #       subPath: web.yaml
       #       readOnly: true
       data:
-        existingClaim: ocis-data
+        existingClaim: ocis
         # type: persistentVolumeClaim
         # accessMode: ReadWriteOnce
         # size: 1Gi
