@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./echo-server/ks.yaml
   - ./echo-server-internal/ks.yaml
-  - ./ocis/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
