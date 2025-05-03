@@ -11,7 +11,7 @@ spec:
     - ../../../../components/volsync
   postBuild:
     substitute:
-      APP: *app
+      APP: ocis-files
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_COPYMETHOD: Snapshot
       VOLSYNC_STORAGECLASS: longhorn-double
