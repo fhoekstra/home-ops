@@ -6,3 +6,6 @@ metadata:
   name: longhorn
 driver: driver.longhorn.io
 deletionPolicy: Delete
+parameters:
+  # Longhorn requires parameters.type=snap, see https://longhorn.io/docs/1.8.1/snapshots-and-backups/csi-snapshot-support/csi-volume-snapshot-associated-with-longhorn-snapshot/#create-a-csi-volumesnapshot-associated-with-longhorn-snapshot
+  type: snap
