@@ -23,14 +23,12 @@ spec:
       retries: 3
   values:
     persistence:
-      defaultDataLocality: best-effort
+      defaultClass: false
     defaultSettings:
       v1DataEngine: true
       createDefaultDiskLabeledNodes: true
       defaultDataPath: /var/lib/longhorn
       defaultDataLocality: best-effort
-      defaultLonghornStaticStorageClass: longhorn-double
-      defaultReplicaCount: 2
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: true
       replicaAutoBalance: true
