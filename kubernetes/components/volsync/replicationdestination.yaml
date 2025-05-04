@@ -11,7 +11,7 @@ spec:
     manual: restore-once
   restic:
     repository: "${APP}-volsync"
-    copyMethod: Snapshot
+    copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"

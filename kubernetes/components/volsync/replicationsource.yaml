@@ -25,5 +25,5 @@ spec:
     retain:
       hourly: 24
       daily: 10
-      weekly: 5
+      weekly: 3
       monthly: 3
