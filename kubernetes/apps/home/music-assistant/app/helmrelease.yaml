@@ -17,16 +17,16 @@ spec:
         namespace: flux-system
 
   values:
-    defaultPodOptions:
-      dnsPolicy: ClusterFirstWithHostNet
-      hostNetwork: true
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+    # defaultPodOptions:
+    #   dnsPolicy: ClusterFirstWithHostNet
+    #   hostNetwork: true
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 568
+    #     runAsGroup: 568
+    #     fsGroup: 568
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     seccompProfile: { type: RuntimeDefault }
     controllers:
       music-assistant:
         annotations:
@@ -52,7 +52,8 @@ spec:
                 cpu: 47m
                 memory: 512Mi
               limits:
-                memory: 1024Mi
+                cpu: 500m
+                memory: 512Mi
 
     service:
       app:
@@ -62,19 +63,24 @@ spec:
           io.cilium/lb-ipam-ips: ${MUSIC_ASSISTANT_SERVER_IP_ADDRESS}
         ports:
           http:
-            port: 8095
-
+            port: &httpPort 8095
+          http2:
+            port: 1780
+          snapserver:
+            port: 1704
     ingress:
       app:
         enabled: true
         className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
         hosts:
           - host: "music-assistant.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: *httpPort
 
     persistence:
       data:
