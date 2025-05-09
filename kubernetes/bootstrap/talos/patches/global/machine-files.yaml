@@ -1,4 +1,7 @@
 machine:
+  install:
+    extraKernelArgs:
+      - -selinux
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
