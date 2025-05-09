@@ -84,7 +84,12 @@ spec:
 
     persistence:
       data:
-        existingClaim: *app
+        # existingClaim: *app
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        storageClass: longhorn-double
+
         globalMounts:
           - path: /mnt/storage/music
             subPath: music
