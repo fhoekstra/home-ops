@@ -66,8 +66,10 @@ spec:
             port: &httpPort 8095
           http2:
             port: 1780
-          snapserver:
+          snapserver-player:
             port: 1704
+          snapserver-control:
+            port: 1705
     ingress:
       app:
         enabled: true
