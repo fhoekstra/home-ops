@@ -64,6 +64,8 @@ spec:
         ports:
           http:
             port: &httpPort 8095
+          stream:
+            port: 8097
           http2:
             port: 1780
           snapserver-player:
