@@ -70,6 +70,12 @@ spec:
             port: 1704
           snapserver-control:
             port: 1705
+          squeeze-cli:
+            port: 9090
+          squeeze-rpc:
+            port: 9000
+          squeeze-slimproto:
+            port: 3483
     ingress:
       app:
         enabled: true
