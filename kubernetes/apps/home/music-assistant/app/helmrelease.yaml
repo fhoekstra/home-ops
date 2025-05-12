@@ -76,32 +76,6 @@ spec:
             port: 9000
           squeeze-slimproto:
             port: 3483
-          airplay-1:
-            port: 3689
-          airplay-2:
-            port: 5353
-          airplay-3:
-            port: 5000
-          airplay-6-0:
-            port: 6000
-          airplay-6-1:
-            port: 6001
-          airplay-6-2:
-            port: 6002
-          airplay-6-3:
-            port: 6003
-          airplay-6-4:
-            port: 6004
-          airplay-6-5:
-            port: 6005
-          airplay-6-6:
-            port: 6006
-          airplay-6-7:
-            port: 6007
-          airplay-6-8:
-            port: 6008
-          airplay-6-9:
-            port: 6009
     ingress:
       app:
         enabled: true
