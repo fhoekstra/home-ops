@@ -2,7 +2,8 @@
 fullnameOverride: coredns
 k8sAppLabelOverride: kube-dns
 serviceAccount:
-  create: true
+  coredns:
+    enabled: true
 service:
   name: kube-dns
   clusterIP: "10.96.0.10"
