@@ -90,5 +90,5 @@ spec:
         endpoints:
           - port: http
     serviceAccount:
-      create: true
-      name: *app
+      tailscale:
+        enabled: true
