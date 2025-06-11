@@ -28,6 +28,8 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: tailscale
         containers:
           app:
             image:
@@ -91,4 +93,5 @@ spec:
           - port: http
     serviceAccount:
       tailscale:
+        forceRename: tailscale
         enabled: true
