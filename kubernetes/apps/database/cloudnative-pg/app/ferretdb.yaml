@@ -4,7 +4,7 @@ metadata:
   name: ferretdb-pg-cluster
 spec:
   instances: 3
-  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.104.0-ferretdb-2.3.1"
+  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.102.0-ferretdb-2.1.0"
   postgresUID: 999
   postgresGID: 999
 
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb:2.3.1
+          image: ghcr.io/ferretdb/ferretdb:2.1.0
           ports:
             - containerPort: 27017
           env:
