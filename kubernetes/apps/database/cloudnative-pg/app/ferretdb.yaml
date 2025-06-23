@@ -2,12 +2,12 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: ferretdb-pg-cluster
-  namespace: cnpg
 spec:
   instances: 3
   imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.104.0-ferretdb-2.3.1"
   postgresUID: 999
   postgresGID: 999
+
   enableSuperuserAccess: true
   superuserSecret:
     name: ferretdb-postgres-pw
@@ -29,4 +29,41 @@ spec:
       postInitSQL:
         - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
 ---
-# apiVersion: apps/v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ferretdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ferretdb
+  template:
+    metadata:
+      labels:
+        app: ferretdb
+    spec:
+      containers:
+        - name: ferretdb
+          image: ghcr.io/ferretdb/ferretdb:2.3.1
+          ports:
+            - containerPort: 27017
+          env:
+            - name: FERRETDB_POSTGRESQL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ferretdb-postgres-pw
+                  key: uri
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ferretdb-service
+spec:
+  selector:
+    app: ferretdb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: NodePort
