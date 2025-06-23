@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ferretdb-pg-cluster
+  namespace: cnpg
+spec:
+  instances: 3
+  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.104.0-ferretdb-2.3.1"
+  postgresUID: 999
+  postgresGID: 999
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: ferretdb-postgres-pw
+
+  storage:
+    size: 1Gi
+    storageClass: local-hostpath
+
+  postgresql:
+    shared_preload_libraries:
+      - pg_cron
+      - pg_documentdb_core
+      - pg_documentdb
+    parameters:
+      cron.database_name: "postgres"
+
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
+---
+# apiVersion: apps/v1

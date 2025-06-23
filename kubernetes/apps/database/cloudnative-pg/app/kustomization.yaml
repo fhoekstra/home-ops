@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./cluster17.yaml
+  - ./ferretdb.yaml
+  - ./ferretdb-secrets.sops.yaml
