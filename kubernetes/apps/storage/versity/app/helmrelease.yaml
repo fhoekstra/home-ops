@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app versity
+spec:
+  interval: 1h
+  maxHistory: 1
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      retries: 1
+  upgrade:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      retries: 1
+  values:
+    controllers:
+      *app :
+        replicas: 1
+        strategy: RollingUpdate
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: Always
+            seccompProfile: { type: RuntimeDefault }
+        containers:
+          main:
+            image:
+              repository: ghcr.io/versity/versitygw
+              tag: v1.0.14@sha256:5192635d035301e7b7c46857a3bad8453d7b4253a8aac36e0be0f1cf30129984
+            args:
+              - posix
+              - /data
+            env:
+              VGW_HEALTH: /healthz
+              # VGW_DEBUG: true
+            envFrom:
+              - secretRef:
+                  name: versity-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 7070
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 20Mi
+              limits:
+                cpu: 500m
+                memory: 100Mi
+    service:
+      main:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        enabled: true
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+        hosts:
+          - host: "versity.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: main
+                  port: *port
+    persistence:
+      data:
+        type: nfs
+        server: ${NFS_SERVER_IP_ADDRESS}
+        path: /mnt/data/nfs/k8s/live/versity
+        globalMounts:
+          - path: /data
