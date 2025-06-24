@@ -95,6 +95,6 @@ spec:
       data:
         type: nfs
         server: 192.168.1.49
-        path: /mnt/data/nfs/k8s/live/versity
+        path: /mnt/data/nfs/k8s/versity
         globalMounts:
           - path: /data
