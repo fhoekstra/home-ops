@@ -23,6 +23,8 @@ spec:
       - pg_documentdb
     parameters:
       cron.database_name: "postgres"
+    pg_hba:
+      - host postgres postgres 127.0.0.1/32 trust
 
   bootstrap:
     initdb:
