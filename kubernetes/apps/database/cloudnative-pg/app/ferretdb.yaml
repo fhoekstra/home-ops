@@ -30,6 +30,9 @@ spec:
     initdb:
       postInitSQL:
         - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
+        - "GRANT USAGE ON SCHEMA documentdb_core TO streaming_replica;"
+        - "GRANT SELECT ON ALL TABLES IN SCHEMA documentdb_core TO streaming_replica;"
+        - "ALTER DEFAULT PRIVILEGES IN SCHEMA documentdb_core GRANT SELECT ON TABLES TO streaming_replica;"
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when recovering from an existing cnpg cluster
     # upgrade or recover from another running instance
