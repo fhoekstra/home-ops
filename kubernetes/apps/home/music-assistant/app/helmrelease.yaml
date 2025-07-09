@@ -98,7 +98,7 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 2Gi
-        storageClass: longhorn-double
+        storageClass: local-hostpath
 
         globalMounts:
           - path: /mnt/storage/music
