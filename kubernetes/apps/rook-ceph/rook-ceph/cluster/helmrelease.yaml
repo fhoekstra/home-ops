@@ -73,7 +73,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: "/dev/disk/by-id/(ata-SAMSUNG_MZ7KM*|ata-SAMSUNG_SSD_PM871b_*)" # (ata-SAMSUNG_MZ7KM1T9HAJM-00005_S2HNNX0HA00353|ata-SAMSUNG_SSD_PM871b_2.5_7mm_256GB_S3U4NX0K852590|ata-SAMSUNG_MZ7KM480HMHQ-00005_S3F4NX0JA06408)" # List these with: talosctl list /dev/disk/by-id
+        devicePathFilter: "/dev/disk/by-id/(ata-SAMSUNG_MZ7KM|ata-SAMSUNG_SSD_PM871b)*" # (ata-SAMSUNG_MZ7KM1T9HAJM-00005_S2HNNX0HA00353|ata-SAMSUNG_SSD_PM871b_2.5_7mm_256GB_S3U4NX0K852590|ata-SAMSUNG_MZ7KM480HMHQ-00005_S3F4NX0JA06408)" # List these with: talosctl list /dev/disk/by-id
         config:
           osdsPerDevice: "1"
       resources:
