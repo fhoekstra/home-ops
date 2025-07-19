@@ -3,4 +3,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./app-template.yaml
+  - ./block-local-eg-netpol.yaml

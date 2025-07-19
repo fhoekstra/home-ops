@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app foundryvtt
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  maxHistory: 3
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/felddy/foundryvtt
+              tag: 13.346.0
+
+            env:
+              TIMEZONE: "${TIMEZONE}"
+              CONTAINER_CACHE: /data/container_cache
+              CONTAINER_PATCHES: /data/container_patches
+              CONTAINER_VERBOSE: "true"
+              FOUNDRY_TELEMETRY: false
+              FOUNDRY_HOSTNAME: &host "foundry.${CLUSTER_DOMAIN}"
+              FOUNDRY_LOCAL_HOSTNAME: *host
+              FOUNDRY_MINIFY_STATIC_FILES: "true"
+              FOUNDRY_PROTOCOL: "4"
+              FOUNDRY_PROXY_PORT: "443"
+              FOUNDRY_PROXY_SSL: "true"
+
+              CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
+
+            envFrom:
+              - secretRef:
+                  name: foundryvtt-secret
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 30000
+
+    ingress:
+      app:
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /data
