@@ -7,23 +7,23 @@ metadata:
 spec:
   sourcePVC: "${CLAIM:=${APP}}"
   trigger:
-    schedule: "0/30 * * * *"
+    schedule: "0 * * * *"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
     repository: "${APP}-volsync"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=local-hostpath}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
-    storageClassName: "${VOLSYNC_STORAGECLASS:=longhorn-double}"
+    storageClassName: "${VOLSYNC_STORAGECLASS:=ceph-block}"
     accessModes: ["${VOLSYNC_ACCESSMODES:=ReadWriteOnce}"]
     moverSecurityContext:
       runAsUser: ${VOLSYNC_PUID:=1000}
-      runAsGroup: ${VOLSYNC_PGID:=100}
-      fsGroup: ${VOLSYNC_PGID:=100}
+      runAsGroup: ${VOLSYNC_PGID:=1000}
+      fsGroup: ${VOLSYNC_PGID:=1000}
     pruneIntervalDays: 7
     retain:
       hourly: 24
-      daily: 10
+      daily: 7
       weekly: 3
       monthly: 3
