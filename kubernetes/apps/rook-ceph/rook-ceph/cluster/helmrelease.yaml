@@ -56,6 +56,11 @@ spec:
         ingressClassName: internal
 
     cephClusterSpec:
+      dashboard:
+        enabled: true
+        urlPrefix: /
+        ssl: false
+        # prometheusEndpoint: http://prometheus-operated.monitoring.svc.cluster.local:9090
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
@@ -69,11 +74,6 @@ spec:
       csi:
         readAffinity:
           enabled: true
-      dashboard:
-        enabled: true
-        urlPrefix: /
-        ssl: false
-        # prometheusEndpoint: http://prometheus-operated.monitoring.svc.cluster.local:9090
       mgr:
         modules:
           - name: diskprediction_local
