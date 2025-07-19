@@ -6,6 +6,9 @@ metadata:
   name: &app ocis
 spec:
   interval: 30m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   chart:
     spec:
       chart: app-template
@@ -123,11 +126,11 @@ spec:
       #       subPath: web.yaml
       #       readOnly: true
       data:
-        # existingClaim: ocis
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: local-hostpath
+        existingClaim: ocis
+        # type: persistentVolumeClaim
+        # accessMode: ReadWriteOnce
+        # size: 1Gi
+        # storageClass: local-hostpath
         globalMounts:
           - path: /etc/ocis
             subPath: config
