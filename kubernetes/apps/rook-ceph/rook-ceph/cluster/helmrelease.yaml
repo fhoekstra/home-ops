@@ -31,6 +31,9 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  dependsOn:
+    - name: volsync
+      namespace: storage
   values:
     monitoring:
       enabled: true
