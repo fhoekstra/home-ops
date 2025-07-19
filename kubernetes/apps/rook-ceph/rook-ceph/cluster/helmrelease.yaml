@@ -37,6 +37,24 @@ spec:
       createPrometheusRules: true
     toolbox:
       enabled: true
+    ingress:
+      # -- Enable an ingress for the ceph-dashboard
+      dashboard:
+        # labels:
+        #   external-dns/private: "true"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+        host:
+          name: &host "rook.${CLUSTER_DOMAIN}"
+          path: "/"
+        #   pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+        ## Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
+        ## to set the ingress class
+        ingressClassName: internal
+
     cephClusterSpec:
       cephConfig:
         global:
@@ -55,7 +73,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        prometheusEndpoint: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        # prometheusEndpoint: http://prometheus-operated.monitoring.svc.cluster.local:9090
       mgr:
         modules:
           - name: diskprediction_local
