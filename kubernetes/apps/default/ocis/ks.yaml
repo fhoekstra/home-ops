@@ -7,14 +7,12 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: default
-  # components:
-  #   - ../../../../components/volsync
+  components:
+    - ../../../../components/volsync
   postBuild:
     substitute:
       APP: ocis
-      # VOLSYNC_CAPACITY: 2Gi
-      # VOLSYNC_COPYMETHOD: Snapshot
-      # VOLSYNC_STORAGECLASS: longhorn-double
+      VOLSYNC_CAPACITY: 2Gi
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
