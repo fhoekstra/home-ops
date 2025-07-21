@@ -97,6 +97,13 @@ spec:
           - name: local-hostpath
             mountPath: *storagePath
             mountPropagation: Bidirectional
+        resources:
+          limits:
+            cpu: 200m
+            memory: 324Mi
+          requests:
+            cpu: 50m
+            memory: 324Mi
       extraVolumes:
         - name: local-hostpath
           hostPath:
