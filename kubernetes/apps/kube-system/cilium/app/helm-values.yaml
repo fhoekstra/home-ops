@@ -72,3 +72,10 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   hostNamespaceOnly: true
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 400m
+    memory: 512Mi
