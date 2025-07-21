@@ -79,6 +79,13 @@ spec:
                   port: http
 
     persistence:
+      old-backups:
+        enabled: true
+        type: nfs
+        server: "${NFS_SERVER_IP_ADDRESS}"
+        path: /mnt/data/nfs/backups/foundry/
+        globalMounts:
+          - path: /backups
       config:
         enabled: true
         existingClaim: *app
