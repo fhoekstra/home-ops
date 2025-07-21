@@ -99,26 +99,20 @@ spec:
           osdsPerDevice: "1"
       resources:
         mgr:
-          limits:
+          limits: &mgr-hw
             cpu: 500m
             memory: 700Mi
-          requests:
-            cpu: 50m
-            memory: 320Mi
+          requests: *mgr-hw
         mon:
-          limits:
+          limits: &mon-hw
             cpu: 500m
             memory: 640Mi
-          requests:
-            cpu: 100m
-            memory: 320Mi
+          requests: *mon-hw
         osd:
-          limits:
+          limits: &osd-hw
             cpu: 500m
             memory: 1600Mi
-          requests:
-            cpu: 150m
-            memory: 800Mi
+          requests: *osd-hw
         prepareosd:
           limits:
             cpu: 1000m
@@ -128,7 +122,7 @@ spec:
             memory: 200Mi
         mgr-sidecar:
           limits:
-            cpu: 256m
+            cpu: 128m
             memory: 100Mi
           requests:
             cpu: 50m
