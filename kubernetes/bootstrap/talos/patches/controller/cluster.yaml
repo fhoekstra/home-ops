@@ -16,6 +16,13 @@ cluster:
     extraArgs:
       bind-address: 0.0.0.0
   apiServer:
+    resources:
+      requests:
+        cpu: "400m"
+        memory: "896Mi"
+      limits:
+        cpu: "1"
+        memory: "1.5Gi"
     extraArgs:
       feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1alpha1=true
