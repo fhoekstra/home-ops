@@ -28,7 +28,8 @@ cniConfig:
 nodes:
   - hostname: "thinkpad-x230"
     ipAddress: "192.168.1.13"
-    installDisk: "/dev/sda"
+    installDiskSelector:
+      model: Samsung SSD 850
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
@@ -47,7 +48,8 @@ nodes:
           ip: "192.168.1.30"
   - hostname: "latitude-5470"
     ipAddress: "192.168.1.12"
-    installDisk: "/dev/sdb"
+    installDiskSelector:
+      model: SAMSUNG SSD CM87
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
@@ -66,7 +68,8 @@ nodes:
           ip: "192.168.1.30"
   - hostname: "latitude-5490-azerty"
     ipAddress: "192.168.1.11"
-    installDisk: "/dev/sda"
+    installDiskSelector:
+      model: SK hynix SC401 S
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
