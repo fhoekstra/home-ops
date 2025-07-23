@@ -91,9 +91,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
         hosts:
           - host: *host
             paths:
