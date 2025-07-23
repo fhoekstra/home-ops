@@ -26,7 +26,11 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
-        seccompProfile: { type: RuntimeDefault }
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
 
     controllers:
       *app :
@@ -52,18 +56,38 @@ spec:
               FOUNDRY_PROXY_PORT: "443"
               FOUNDRY_PROXY_SSL: "true"
 
+              # Does not work in v13 container yet: https://github.com/felddy/foundryvtt-docker/issues/1242 and https://github.com/felddy/foundryvtt-docker/pull/1241
               # CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
 
             envFrom:
               - secretRef:
                   name: foundryvtt-secret
-
+          anubis:
+            image:
+              repository: ghcr.io/techarohq/anubis
+              tag: v1.21.1
+            env:
+              ED25519_PRIVATE_KEY_HEX:
+                valueFrom:
+                  secretKeyRef:
+                    name: anubis-key-foundry
+                    key: ED25519_PRIVATE_KEY_HEX
+              TZ: "${TIMEZONE}"
+              BIND: ":8923"
+              DIFFICULTY: "4"
+              SERVE_ROBOTS_TXT: "true"
+              TARGET: "http://localhost:30000"
+            ports:
+              - name: anubis
+                containerPort: &anubisPort 8923
     service:
       app:
         controller: *app
         ports:
           http:
             port: 30000
+          anubis:
+            port: *anubisPort
 
     ingress:
       app:
@@ -76,7 +100,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: anubis
 
     persistence:
       old-backups:
