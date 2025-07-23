@@ -56,6 +56,9 @@ spec:
               FOUNDRY_PROXY_PORT: "443"
               FOUNDRY_PROXY_SSL: "true"
 
+              # Can be set to foundry, fantasy or scifi
+              FOUNDRY_CSS_THEME: scifi
+
               # Does not work in v13 container yet: https://github.com/felddy/foundryvtt-docker/issues/1242 and https://github.com/felddy/foundryvtt-docker/pull/1241
               # CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
 
