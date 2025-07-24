@@ -29,37 +29,33 @@ spec:
 
   bootstrap:
     initdb:
-      postInitSQL:
-        - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
-        - "GRANT USAGE ON SCHEMA documentdb_core TO postgres;"
-        - "GRANT SELECT ON ALL TABLES IN SCHEMA documentdb_core TO postgres;"
-        - "ALTER DEFAULT PRIVILEGES IN SCHEMA documentdb_core GRANT SELECT ON TABLES TO postgres;"
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when recovering from an existing cnpg cluster
     # upgrade or recover from another running instance
     # recovery:
     #   source: &previousCluster kochhaus-v1
 
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore: &barmanObjectStore
-      data:
-        compression: bzip2
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cnpg/ferretdb/
-      endpointURL: http://ferret-db.database.svc.cluster.local:27017
-      # Note: serverName version needs to be incremented
-      # when recovering from an existing cnpg cluster
-      serverName: &currentCluster ferretdb-v1
-      s3Credentials:
-        accessKeyId:
-          name: s3-creds
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: s3-creds
-          key: SECRET_KEY
+  # # Disable backup for now due to bugs with schema permissions for CNPG's replication user
+  # backup:
+  #   retentionPolicy: 30d
+  #   barmanObjectStore: &barmanObjectStore
+  #     data:
+  #       compression: bzip2
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
+  #     destinationPath: s3://cnpg/ferretdb/
+  #     endpointURL: http://ferret-db.database.svc.cluster.local:27017
+  #     # Note: serverName version needs to be incremented
+  #     # when recovering from an existing cnpg cluster
+  #     serverName: &currentCluster ferretdb-v1
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: s3-creds
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: s3-creds
+  #         key: SECRET_KEY
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
