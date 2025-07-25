@@ -11,11 +11,11 @@ spec:
     storageClass: local-hostpath
   resources:
     requests:
-      cpu: 200m
-      memory: 500Mi
+      cpu: 125m
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 1Gi
+      memory: 256Mi
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv

@@ -65,6 +65,13 @@ spec:
             envFrom:
               - secretRef:
                   name: foundryvtt-secret
+            resources:
+              limits:
+                cpu: 1
+                memory: 512Mi
+              requests:
+                cpu: 250m
+                memory: 512Mi
           anubis:
             image:
               repository: ghcr.io/techarohq/anubis
@@ -83,6 +90,13 @@ spec:
             ports:
               - name: anubis
                 containerPort: &anubisPort 8923
+            resources:
+              limits:
+                cpu: 500m
+                memory: 256Mi
+              requests:
+                cpu: 125m
+                memory: 256Mi
     service:
       app:
         controller: *app
