@@ -12,6 +12,14 @@ spec:
   superuserSecret:
     name: ferretdb-postgres-pw
 
+  resources:
+    requests:
+      cpu: 125m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
   storage:
     size: 1Gi
     storageClass: local-hostpath
@@ -89,6 +97,14 @@ spec:
                 secretKeyRef:
                   name: ferretdb-postgres-pw
                   key: uri
+          resources:
+            requests:
+              cpu: 75m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+
 ---
 apiVersion: v1
 kind: Service
