@@ -25,10 +25,6 @@ spec:
     - name: cloudflared
       namespace: network
   values:
-    image:
-      repository: ghcr.io/cloudnative-pg/cloudnative-pg
-      pullPolicy: IfNotPresent
-      tag: "1.25.2"
     replicaCount: 2
     crds:
       create: true
