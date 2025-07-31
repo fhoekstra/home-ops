@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: cloudflared
+    - name: internal-ingress-nginx
       namespace: network
   values:
     controllers:
