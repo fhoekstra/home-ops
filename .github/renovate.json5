@@ -91,11 +91,13 @@
       groupName: 'Talos',
       matchDatasources: [
         'docker',
+        'aqua'
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',
       },
       matchPackageNames: [
+        '/siderolabs/talos',
         '/siderolabs/talosctl/',
         '/siderolabs/installer/',
       ],
