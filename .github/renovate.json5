@@ -101,6 +101,15 @@
       ],
     },
     {
+      description: "Rook-Ceph Group",
+      groupName: "Rook-Ceph",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       matchDatasources: [
         'docker',
       ],
