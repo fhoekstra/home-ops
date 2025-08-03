@@ -85,20 +85,12 @@
       ],
     },
     {
-      description: [
-        'Talos Group',
-      ],
-      groupName: 'Talos',
-      matchDatasources: [
-        'docker',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchPackageNames: [
-        '/siderolabs/talosctl/',
-        '/siderolabs/installer/',
-      ],
+      "description": "Talos",
+      "groupName": "Talos",
+      "matchPackageNames": ["**siderolabs/installer", "**siderolabs/talos"],
+      "overrideDepName": "{{{ replace 'installer' 'talos' depName }}}",
+      "versioning": "semver",
+      "automerge": false
     },
     {
       description: "Rook-Ceph Group",
