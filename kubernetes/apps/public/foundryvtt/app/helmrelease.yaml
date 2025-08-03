@@ -70,7 +70,7 @@ spec:
                 cpu: 1
                 memory: 512Mi
               requests:
-                cpu: 250m
+                cpu: 50m
                 memory: 512Mi
           anubis:
             image:
@@ -84,7 +84,7 @@ spec:
                     key: ED25519_PRIVATE_KEY_HEX
               TZ: "${TIMEZONE}"
               BIND: ":8923"
-              DIFFICULTY: "4"
+              DIFFICULTY: "3"
               SERVE_ROBOTS_TXT: "true"
               TARGET: "http://localhost:30000"
             ports:
@@ -95,7 +95,7 @@ spec:
                 cpu: 500m
                 memory: 256Mi
               requests:
-                cpu: 125m
+                cpu: 50m
                 memory: 256Mi
     service:
       app:
