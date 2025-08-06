@@ -6,6 +6,9 @@ kind: Cluster
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.2-standard-bookworm
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: pg-secret
   storage:
     size: 5Gi
     storageClass: local-hostpath

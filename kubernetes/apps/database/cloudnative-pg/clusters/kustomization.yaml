@@ -6,3 +6,4 @@ resources:
   - ./cluster17.yaml
   - ./ferretdb.yaml
   - ./ferretdb-secrets.sops.yaml
+  - ./pg-secret.sops.yaml
