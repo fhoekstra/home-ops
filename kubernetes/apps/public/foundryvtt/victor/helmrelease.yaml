@@ -49,7 +49,7 @@ spec:
               CONTAINER_PATCHES: /data/container_patches
               CONTAINER_VERBOSE: "true"
               FOUNDRY_TELEMETRY: false
-              FOUNDRY_HOSTNAME: &host "foundry.${CLUSTER_DOMAIN}"
+              FOUNDRY_HOSTNAME: &host "foundry-victor.${CLUSTER_DOMAIN}"
               FOUNDRY_LOCAL_HOSTNAME: *host
               FOUNDRY_MINIFY_STATIC_FILES: "true"
               FOUNDRY_PROTOCOL: "4"
@@ -57,7 +57,7 @@ spec:
               FOUNDRY_PROXY_SSL: "true"
 
               # Can be set to foundry, fantasy or scifi
-              FOUNDRY_CSS_THEME: scifi
+              FOUNDRY_CSS_THEME: foundry
 
               # Does not work in v13 container yet: https://github.com/felddy/foundryvtt-docker/issues/1242 and https://github.com/felddy/foundryvtt-docker/pull/1241
               # CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh

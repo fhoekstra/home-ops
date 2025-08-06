@@ -16,7 +16,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/public/foundryvtt/app
+  path: ./kubernetes/apps/public/foundryvtt/victor
   prune: true
   sourceRef:
     kind: GitRepository
