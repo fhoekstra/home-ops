@@ -32,6 +32,8 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: lldap-secret
+            securityContext:
+              runAsUser: 1000
         containers:
           app:
             image:
