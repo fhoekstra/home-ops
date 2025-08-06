@@ -111,6 +111,10 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
+          nginx.ingress.kubernetes.io/auth-method: "GET"
+          nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
+          nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
         hosts:
           - host: *host
             paths:
