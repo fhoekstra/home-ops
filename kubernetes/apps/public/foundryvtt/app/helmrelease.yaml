@@ -72,39 +72,12 @@ spec:
               requests:
                 cpu: 50m
                 memory: 512Mi
-          anubis:
-            image:
-              repository: ghcr.io/techarohq/anubis
-              tag: v1.21.3
-            env:
-              ED25519_PRIVATE_KEY_HEX:
-                valueFrom:
-                  secretKeyRef:
-                    name: anubis-key-foundry
-                    key: ED25519_PRIVATE_KEY_HEX
-              TZ: "${TIMEZONE}"
-              BIND: ":8923"
-              DIFFICULTY: "3"
-              SERVE_ROBOTS_TXT: "true"
-              TARGET: "http://localhost:30000"
-            ports:
-              - name: anubis
-                containerPort: &anubisPort 8923
-            resources:
-              limits:
-                cpu: 500m
-                memory: 256Mi
-              requests:
-                cpu: 50m
-                memory: 256Mi
     service:
       app:
         controller: *app
         ports:
           http:
             port: 30000
-          anubis:
-            port: *anubisPort
 
     ingress:
       app:
@@ -121,7 +94,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: anubis
+                  port: http
 
     persistence:
       old-backups:

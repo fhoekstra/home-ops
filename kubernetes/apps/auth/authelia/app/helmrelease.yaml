@@ -80,6 +80,31 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
+          anubis:
+            image:
+              repository: ghcr.io/techarohq/anubis
+              tag: v1.21.3
+            env:
+              ED25519_PRIVATE_KEY_HEX:
+                valueFrom:
+                  secretKeyRef:
+                    name: anubis-key-authelia
+                    key: ED25519_PRIVATE_KEY_HEX
+              TZ: "${TIMEZONE}"
+              BIND: ":8923"
+              DIFFICULTY: "3"
+              SERVE_ROBOTS_TXT: "true"
+              TARGET: "http://localhost:80"
+            ports:
+              - name: anubis
+                containerPort: &anubisPort 8923
+            resources:
+              limits:
+                cpu: 500m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 256Mi
     # defaultPodOptions:
     # topologySpreadConstraints:
     #   - maxSkew: 1
@@ -94,6 +119,8 @@ spec:
         ports:
           http:
             port: *port
+          anubis:
+            port: *anubisPort
     serviceMonitor:
       app:
         serviceName: *app
@@ -115,7 +142,7 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: http
+                  port: anubis
     persistence:
       config:
         enabled: true
