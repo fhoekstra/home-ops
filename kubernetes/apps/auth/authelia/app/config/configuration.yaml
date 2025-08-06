@@ -1,0 +1,61 @@
+authentication_backend:
+  password_reset:
+    disable: false
+  refresh_interval: 1m
+  ldap:
+    implementation: "lldap"
+    start_tls: false
+    address: "ldap://lldap.auth.svc.cluster.local:389"
+    base_dn: "DC=fhoekstra,DC=nl"
+    user: "UID=authelia,OU=people,DC=fhoekstra,DC=nl"
+
+session:
+  same_site: lax
+  inactivity: 5m
+  expiration: 1h
+  remember_me: 1M
+  cookies:
+    - name: fhoekstra_session
+      domain: ${CLUSTER_DOMAIN}
+      authelia_url: https://auth.${CLUSTER_DOMAIN}
+      default_redirection_url: https://${CLUSTER_DOMAIN}
+
+notifier:
+  disable_startup_check: true
+  smtp:
+    address: smtp://smtp-relay.brevo.com:587
+    sender: Authelia <auth@${DOMAIN_NAME_COUNTRY}>
+    disable_require_tls: false
+    username: ${BREVO_SMTP_USERNAME}@smtp-brevo.com
+  LLDAP_SMTP_OPTIONS__FROM: auth@${DOMAIN_NAME_COUNTRY}
+
+totp:
+  disable: false
+  issuer: authelia.com
+
+webauthn:
+  disable: true
+
+duo_api:
+  disable: true
+
+access_control:
+  default_policy: two_factor
+  networks:
+    - name: internal
+      policy: one_factor
+      networks:
+        [
+          "10.0.0.0/8",
+          "172.16.0.0/12",
+          "192.168.0.0/16",
+          "${SECRET_HOMELAN_IPV4}",
+        ]
+  rules:
+    # This just reduces logging noise in authelia
+    - domain:
+        - whoami.${CLUSTER_DOMAIN}
+      resources:
+        - ^/health$
+        - ^/health/
+      policy: bypass
