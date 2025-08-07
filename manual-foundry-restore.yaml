@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foundryvtt-restore-from-tar
+  namespace: public
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - env:
+        - name: CONTAINER_CACHE
+          value: /data/container_cache
+        - name: CONTAINER_PATCHES
+          value: /data/container_patches
+        - name: CONTAINER_VERBOSE
+          value: "true"
+        - name: FOUNDRY_HOSTNAME
+          value: foundry.k8s-freak.dev
+        - name: FOUNDRY_LOCAL_HOSTNAME
+          value: foundry.k8s-freak.dev
+        - name: FOUNDRY_MINIFY_STATIC_FILES
+          value: "true"
+        - name: FOUNDRY_PROTOCOL
+          value: "4"
+        - name: FOUNDRY_PROXY_PORT
+          value: "443"
+        - name: FOUNDRY_PROXY_SSL
+          value: "true"
+        - name: FOUNDRY_TELEMETRY
+          value: "false"
+        - name: TIMEZONE
+          value: Europe/Amsterdam
+      envFrom:
+        - secretRef:
+            name: foundryvtt-secret
+      command: ["/bin/sh", "-c", "sleep 3600"]
+      image: ubuntu
+      imagePullPolicy: IfNotPresent
+      name: app
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /data
+          name: config
+        - mountPath: /backups
+          name: old-backups
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: false
+  nodeName: latitude-5470
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: config
+      persistentVolumeClaim:
+        claimName: foundryvtt
+    - name: old-backups
+      nfs:
+        path: /mnt/data/nfs/backups/foundry/
+        server: 192.168.1.49
