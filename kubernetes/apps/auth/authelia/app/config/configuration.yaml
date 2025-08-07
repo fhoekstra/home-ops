@@ -7,7 +7,7 @@ authentication_backend:
     start_tls: false
     address: "ldap://lldap.auth.svc.cluster.local:389"
     base_dn: "DC=fhoekstra,DC=nl"
-    user: "UID=admin,OU=people,DC=fhoekstra,DC=nl"
+    user: "UID=authelia,OU=people,DC=fhoekstra,DC=nl"
     additional_users_dn: ou=people
     users_filter: (&({username_attribute}={input})(objectClass=person))
     additional_groups_dn: ou=groups
