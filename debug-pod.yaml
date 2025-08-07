@@ -1,0 +1,41 @@
+# https://kubernetes.io/docs/concepts/workloads/pods/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "debug"
+  namespace: kube-system
+  annotations:
+    kubectl.kubernetes.io/default-container: debug
+  labels:
+    app: "debug"
+spec:
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+  containers:
+    - name: debug
+      image: "ubuntu"
+      command: ["/usr/bin/sleep", "3600"]
+      resources:
+        limits:
+          cpu: 100m
+          memory: 200Mi
+        requests:
+          cpu: 10m
+          memory: 200Mi
+      ports:
+        - containerPort: 80
+          name: http
+      volumeMounts:
+        - name: ceph
+          mountPath: /ceph
+        - name: rook
+          mountPath: /rook
+  volumes:
+    - name: ceph
+      hostPath:
+        path: /var/lib/ceph
+    - name: rook
+      hostPath:
+        path: /var/lib/rook
+  restartPolicy: Always
