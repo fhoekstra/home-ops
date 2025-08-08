@@ -106,9 +106,9 @@ spec:
         server: "${NFS_SERVER_IP_ADDRESS}"
         path: /mnt/data/nfs/k8s/live/foundryvtt/victor
         globalMounts:
-          - path: /new-data
+          - path: /data
       config:
         enabled: true
         existingClaim: *app
         globalMounts:
-          - path: /data
+          - path: /ceph-data
