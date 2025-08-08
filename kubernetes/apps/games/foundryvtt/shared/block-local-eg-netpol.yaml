@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: block-local-egress-foundryvtt
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - foundryvtt
+          - foundryvtt-victor
+          - foundryvtt-stijn
+  policyTypes:
+    - Egress
+  egress:
+    # Allow all egress traffic except to 192.168.0.0/16
+    - to:
+        - namespaceSelector: {}
+    - to:
+        - podSelector: {}
+    - to: []
+      except:
+        - ipBlock:
+            cidr: 192.168.0.0/16
