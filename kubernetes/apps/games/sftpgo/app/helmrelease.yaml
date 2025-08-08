@@ -109,3 +109,10 @@ spec:
             subPath: data
           - path: "/var/lib/sftpgo"
             subPath: lib
+      foundryvtt:
+        enabled: true
+        type: nfs
+        server: "${NFS_SERVER_IP_ADDRESS}"
+        path: /mnt/data/nfs/k8s/live/foundryvtt
+        globalMounts:
+          - path: /foundryvtt
