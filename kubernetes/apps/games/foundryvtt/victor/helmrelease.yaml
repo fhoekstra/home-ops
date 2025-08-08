@@ -3,13 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app foundryvtt
+  name: &app foundryvtt-victor
 spec:
   interval: 15m
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   driftDetection:
     mode: enabled
   maxHistory: 3
@@ -97,15 +100,15 @@ spec:
                   port: http
 
     persistence:
-      old-backups:
+      foundryvtt-victor-nfs:
         enabled: true
         type: nfs
         server: "${NFS_SERVER_IP_ADDRESS}"
-        path: /mnt/data/nfs/backups/foundry/
+        path: /mnt/data/nfs/k8s/live/foundryvtt/victor
         globalMounts:
-          - path: /backups
+          - path: /data
       config:
         enabled: true
         existingClaim: *app
         globalMounts:
-          - path: /data
+          - path: /ceph-data

@@ -6,7 +6,7 @@ metadata:
   name: &app sftpgo
   namespace: flux-system
 spec:
-  targetNamespace: public
+  targetNamespace: games
   components:
     - ../../../../components/volsync
   postBuild:

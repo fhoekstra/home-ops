@@ -174,6 +174,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/fstype: ext4
+
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
@@ -182,5 +183,6 @@ spec:
       allowVolumeExpansion: true
       volumeBindingMode: Immediate
       mountOptions: ["discard"]
+
     cephFileSystems: []
     cephObjectStores: []
