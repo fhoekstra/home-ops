@@ -13,9 +13,9 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_ACCESSMODES: ReadWriteOnce
+      # VOLSYNC_STORAGECLASS: ceph-filesystem
+      # VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
