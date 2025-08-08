@@ -13,8 +13,8 @@ spec:
     substitute:
       APP: foundryvtt
       VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-tri-block
+      VOLSYNC_ACCESSMODES: ReadWriteOnce
+      VOLSYNC_STORAGECLASS: ceph-block
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
