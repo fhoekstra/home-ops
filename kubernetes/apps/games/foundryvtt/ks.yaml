@@ -11,10 +11,11 @@ spec:
     - ../../../../components/volsync
   postBuild:
     substitute:
-      APP: foundryvtt
+      APP: *app
       VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_ACCESSMODES: ReadWriteOnce
-      VOLSYNC_STORAGECLASS: ceph-block
+      VOLSYNC_ACCESSMODES: ReadWriteMany
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

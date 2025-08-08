@@ -174,31 +174,7 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/fstype: ext4
-      - name: ceph-triple-blockpool
-        spec:
-          failureDomain: host
-          replicated:
-            size: 3
-        storageClass:
-          enabled: true
-          name: ceph-tri-block
-          isDefault: false
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          volumeBindingMode: Immediate
-          mountOptions: ["discard"]
-          parameters:
-            compression_mode: aggressive
-            compression_algorithm: zstd
-            imageFormat: "2"
-            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
-            csi.storage.k8s.io/fstype: ext4
+
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-blockpool
@@ -207,5 +183,47 @@ spec:
       allowVolumeExpansion: true
       volumeBindingMode: Immediate
       mountOptions: ["discard"]
-    cephFileSystems: []
+
+    cephFileSystems:
+      - name: ceph-filesystem
+        spec:
+          metadataPool:
+            replicated:
+              size: 3
+          dataPools:
+            - failureDomain: host
+              replicated:
+                size: 3
+              name: data0
+          metadataServer:
+            activeCount: 1
+            activeStandby: true
+            resources:
+              requests:
+                cpu: "35m"
+                memory: "64M"
+              limits:
+                memory: "144M"
+        storageClass:
+          enabled: true
+          isDefault: false
+          name: ceph-filesystem
+          reclaimPolicy: Delete
+          allowVolumeExpansion: true
+          volumeBindingMode: Immediate
+          mountOptions: []
+          parameters:
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: storage
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: storage
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+            csi.storage.k8s.io/node-stage-secret-namespace: storage
+            csi.storage.k8s.io/fstype: ext4
+
+    cephFileSystemVolumeSnapshotClass:
+      enabled: true
+      name: csi-ceph-filesystem
+      isDefault: false
+      deletionPolicy: Delete
     cephObjectStores: []
