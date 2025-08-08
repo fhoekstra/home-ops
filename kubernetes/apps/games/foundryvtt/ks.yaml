@@ -14,8 +14,6 @@ spec:
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_ACCESSMODES: ReadWriteOnce
-      # VOLSYNC_STORAGECLASS: ceph-filesystem
-      # VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -32,14 +30,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app foundryvtt-netpol
+  name: &app foundryvtt-shared
   namespace: flux-system
 spec:
   targetNamespace: games
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/games/foundryvtt/netpol
+  path: ./kubernetes/apps/games/foundryvtt/shared
   prune: true
   sourceRef:
     kind: GitRepository

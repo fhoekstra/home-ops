@@ -1,0 +1,95 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: foundryvtt-victor-restic-nfs-backup
+spec:
+  schedule: "0 2 * * *" # Every Day at 2 AM
+  timeZone: "UTC"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 7200 # 2 hours timeout
+      template:
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: restic-backup
+              image: docker.io/restic/restic:0.18.0
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 1000
+                capabilities:
+                  drop:
+                    - ALL
+              envFrom:
+                - secretRef:
+                    name: restic-backup-secrets
+              env:
+                - name: RESTIC_CACHE_DIR
+                  value: "/tmp/restic-cache"
+              volumeMounts:
+                - name: nfs-data
+                  mountPath: /data
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+                - name: restic-cache
+                  mountPath: /tmp/restic-cache
+              resources:
+                requests:
+                  memory: "256Mi"
+                  cpu: "100m"
+                limits:
+                  memory: "1Gi"
+                  cpu: "500m"
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  echo "Starting backup at $(date)"
+
+                  export RESTIC_REPOSITORY="$${RESTIC_REPOSITORY_BASE}/victor"
+
+                  # Initialize repo if it doesn't exist
+                  restic snapshots || restic init
+
+                  # Create backup
+                  restic backup /data \
+                    --tag "nfs-backup" \
+                    --host "" \
+                    --exclude-caches \
+                    --one-file-system
+
+                  # Cleanup old snapshots (keep last 7 daily, 4 weekly, 6 monthly)
+                  restic forget \
+                    --keep-daily 7 \
+                    --keep-weekly 4 \
+                    --keep-monthly 6 \
+                    --prune
+
+                  echo "Backup completed at $(date)"
+          volumes:
+            - name: nfs-data
+              nfs:
+                server: "${NFS_SERVER_IP_ADDRESS}"
+                path: /mnt/data/nfs/k8s/live/foundryvtt/victor
+            - name: tmp
+              emptyDir: {}
+            - name: restic-cache
+              emptyDir:
+                sizeLimit: "5Gi"

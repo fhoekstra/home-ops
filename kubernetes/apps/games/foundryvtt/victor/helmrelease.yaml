@@ -100,13 +100,13 @@ spec:
                   port: http
 
     persistence:
-      old-backups:
+      foundryvtt-victor-nfs:
         enabled: true
         type: nfs
         server: "${NFS_SERVER_IP_ADDRESS}"
-        path: /mnt/data/nfs/backups/foundry/
+        path: /mnt/data/nfs/k8s/live/foundryvtt/victor
         globalMounts:
-          - path: /backups
+          - path: /new-data
       config:
         enabled: true
         existingClaim: *app
