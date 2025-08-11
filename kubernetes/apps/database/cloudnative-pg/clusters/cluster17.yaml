@@ -23,3 +23,39 @@ spec:
     parameters:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
+  inheritedMetadata:
+    annotations:
+      cnpg.io/skipEmptyWalArchiveCheck: enabled # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
+  bootstrap:
+    initdb: {}
+
+    # Note: previousCluster needs to be set to the name of the previous
+    # cluster when upgrading or recovering from another running instance
+    # recovery:
+    #   source: &currentCluster cluster-17
+
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cnpg/cluster-17/
+      endpointURL: http://versity.storage.svc.cluster.local:7070
+      serverName: &currentCluster cluster-17
+      s3Credentials:
+        accessKeyId:
+          name: s3-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-creds
+          key: SECRET_KEY
+
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *currentCluster
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *currentCluster
