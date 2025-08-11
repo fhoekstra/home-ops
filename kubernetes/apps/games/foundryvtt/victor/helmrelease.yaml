@@ -185,34 +185,18 @@ spec:
                   port: http
 
     persistence:
-      foundryvtt-victor-nfs:
-        enabled: true
-        type: nfs
-        server: "${NFS_SERVER_IP_ADDRESS}"
-        path: /mnt/data/nfs/k8s/live/foundryvtt/victor
-        advancedMounts:
-          *app : # controller
-            *app : # container
-              - path: /data
-                # subPath: foundryvtt
-            sftpgo: # container
-              - path: /foundryvtt
-                # subPath: foundryvtt
-              # - path: /data
-              #   subPath: sftpgo-data
-              # - path: "/var/lib/sftpgo"
-              #   subPath: sftpgo-lib
-      sftpgo:
-        existingClaim: sftpgo
-        advancedMounts:
-          *app : # controller
-            sftpgo: # container
-              - path: "/data"
-                subPath: data
-              - path: "/var/lib/sftpgo"
-                subPath: lib
       *app :
         enabled: true
         existingClaim: *app
-        globalMounts:
-          - path: /ceph-data
+        advancedMounts:
+          *app : # controller
+            *app : # container
+              - path: /data # where in container
+                subPath: foundryvtt # where in PVC
+            sftpgo: # container
+              - path: /foundryvtt
+                subPath: foundryvtt
+              - path: /data
+                subPath: sftpgo-data
+              - path: "/var/lib/sftpgo"
+                subPath: sftpgo-lib
