@@ -73,7 +73,7 @@ spec:
                 cpu: 1
                 memory: 768Mi
               requests:
-                cpu: 50m
+                cpu: 250m
           sftpgo:
             image:
               repository: ghcr.io/drakkan/sftpgo
