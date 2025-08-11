@@ -4,8 +4,8 @@ metadata:
   name: cluster-17
 kind: Cluster
 spec:
-  instances: 2
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-standard-bookworm
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
   enableSuperuserAccess: true
   superuserSecret:
     name: pg-secret
@@ -13,13 +13,56 @@ spec:
     size: 5Gi
     storageClass: local-hostpath
   resources:
-    requests:
-      cpu: 125m
-      memory: 256Mi
     limits:
       cpu: 500m
       memory: 256Mi
+    requests:
+      cpu: 100m
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
+  inheritedMetadata:
+    annotations:
+      cnpg.io/skipEmptyWalArchiveCheck: enabled # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
+  bootstrap:
+    initdb: {}
+
+    # Note: previousCluster needs to be set to the name of the previous
+    # cluster when upgrading or recovering from another running instance
+    # recovery:
+    #   source: &currentServer cluster-17-v1
+
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      destinationPath: s3://cnpg/cluster-17/
+      endpointURL: http://versity.storage.svc.cluster.local:7070
+      serverName: &currentServer cluster-17-v1
+      s3Credentials:
+        accessKeyId:
+          name: s3-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-creds
+          key: SECRET_KEY
+
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *currentServer
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *currentServer
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: cluster-17
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: cluster-17
+  method: barmanObjectStore
+  schedule: "0 37 2 ? * 2"
+  immediate: true
