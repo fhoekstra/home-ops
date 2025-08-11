@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -36,7 +37,7 @@ spec:
       - host postgres postgres ::1/128 trust
 
   bootstrap:
-    initdb:
+    initdb: {}
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when recovering from an existing cnpg cluster
     # upgrade or recover from another running instance
@@ -53,7 +54,7 @@ spec:
   #       compression: bzip2
   #       maxParallel: 8
   #     destinationPath: s3://cnpg/ferretdb/
-  #     endpointURL: http://ferret-db.database.svc.cluster.local:27017
+  #     endpointURL: http://versity.storage.svc.cluster.local:7070
   #     # Note: serverName version needs to be incremented
   #     # when recovering from an existing cnpg cluster
   #     serverName: &currentCluster ferretdb-v1
