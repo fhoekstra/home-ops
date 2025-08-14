@@ -14,12 +14,11 @@ spec:
     name: ferretdb-postgres-pw
 
   resources:
-    requests:
-      cpu: 125m
-      memory: 256Mi
     limits:
       cpu: 500m
       memory: 256Mi
+    requests:
+      cpu: 75m
 
   storage:
     size: 1Gi
