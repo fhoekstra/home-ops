@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ferretdb-pg-cluster
+  name: ferretdb-new-pg-cluster
 spec:
   instances: 2
   imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0"
@@ -18,7 +18,7 @@ spec:
       cpu: 500m
       memory: 256Mi
     requests:
-      cpu: 45m
+      cpu: 50m
 
   storage:
     size: 1Gi
@@ -75,16 +75,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ferretdb
+  name: ferretdb-new
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ferretdb
+      app: ferretdb-new
   template:
     metadata:
       labels:
-        app: ferretdb
+        app: ferretdb-new
     spec:
       containers:
         - name: ferretdb
@@ -109,12 +109,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ferretdb-service
+  name: ferretdb-new-service
 spec:
   selector:
-    app: ferretdb
+    app: ferretdb-new
   ports:
     - protocol: TCP
-      port: 27017
+      port: 27018
       targetPort: 27017
   type: NodePort
