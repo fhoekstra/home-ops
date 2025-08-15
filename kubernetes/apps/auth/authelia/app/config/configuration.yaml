@@ -56,11 +56,15 @@ definitions:
       - "172.16.0.0/12"
       - "192.168.0.0/16"
       - "${SECRET_HOMELAN_IPV4}"
+    trusted:
+      - "${SECRET_VICTOR_HOME_IP}"
+      - "${SECRET_J_HOME_IP}"
 access_control:
   default_policy: two_factor
   rules:
     - networks:
         - internal
+        - trusted
       policy: one_factor
       domain: "*.${CLUSTER_DOMAIN}"
     # This just reduces logging noise in authelia
