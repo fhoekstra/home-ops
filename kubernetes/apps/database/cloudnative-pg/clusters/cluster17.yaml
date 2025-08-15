@@ -26,12 +26,12 @@ spec:
     annotations:
       cnpg.io/skipEmptyWalArchiveCheck: enabled # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
   bootstrap:
-    initdb: {}
+    # initdb: {}
 
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when upgrading or recovering from another running instance
-    # recovery:
-    #   source: &currentServer cluster-17-v1
+    recovery:
+      source: &currentServer cluster-17-v1
 
   backup:
     retentionPolicy: 30d
@@ -48,11 +48,11 @@ spec:
           key: SECRET_KEY
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *currentServer
-  #     barmanObjectStore:
-  #       <<: *barmanObjectStore
-  #       serverName: *currentServer
+  externalClusters:
+    - name: *currentServer
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *currentServer
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
 apiVersion: postgresql.cnpg.io/v1
