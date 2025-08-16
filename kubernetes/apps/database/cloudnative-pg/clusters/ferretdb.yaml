@@ -59,6 +59,19 @@ spec:
         <<: *barmanObjectStore
         serverName: *currentServer
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: ferretdb
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: ferretdb-pg-cluster
+  method: barmanObjectStore
+  schedule: "0 0 * * * *"
+  immediate: true
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
