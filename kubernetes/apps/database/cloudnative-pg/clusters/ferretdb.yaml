@@ -36,16 +36,16 @@ spec:
       - host postgres postgres ::1/128 trust
 
   bootstrap:
-    # initdb: {}
-    recovery:
-      source: &currentServer ferretdb-0
+    initdb: {}
+    # recovery:
+    #   source: &currentServer ferretdb-1
 
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
       destinationPath: s3://cnpg/ferretdb/
       endpointURL: http://versity.storage.svc.cluster.local:7070
-      serverName: &currentServer ferretdb-0
+      serverName: &currentServer ferretdb-1
       s3Credentials:
         accessKeyId:
           name: s3-creds
