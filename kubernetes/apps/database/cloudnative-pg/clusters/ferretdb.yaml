@@ -4,8 +4,8 @@ kind: Cluster
 metadata:
   name: ferretdb-pg-cluster
 spec:
-  instances: 2
-  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0"
+  instances: 3
+  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.104.0-ferretdb-2.3.1"
   postgresUID: 999
   postgresGID: 999
 
