@@ -36,7 +36,9 @@ spec:
       - host postgres postgres ::1/128 trust
 
   bootstrap:
-    initdb: {}
+    # initdb: {}
+    recovery:
+      source: &currentServer ferretdb-0
 
   backup:
     retentionPolicy: 30d
