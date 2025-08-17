@@ -58,19 +58,19 @@ spec:
               - name: CONTINUWUITY_PORT
                 value: "8080"
               - name: RUST_LOG
-                value: "info"
+                value: "debug"
               - name: CONTINUWUITY_ALLOW_FEDERATION
                 value: "true"
               - name: CONTINUWUITY_ALLOW_REGISTRATION
                 value: "true"
               - name: CONTINUWUITY_ALLOW_LEGACY_MEDIA
                 value: "false"
-              # - name: CONTINUWUITY_TRUSTED_SERVERS
-              #   value: '["kapsi.fi","pikaviestin.fi"]'
-              # - name: CONTINUWUITY_WELL_KNOWN__CLIENT
-              #   value: "https://continuwuity.${CLUSTER_DOMAIN}"
-              # - name: CONTINUWUITY_WELL_KNOWN__SERVER
-              #   value: "continuwuity.${CLUSTER_DOMAIN}:443"
+              - name: CONTINUWUITY_TRUSTED_SERVERS
+                value: '["matrix.org", "tchncs.de"]'
+              - name: CONTINUWUITY_WELL_KNOWN__CLIENT
+                value: "https://continuwuity.${CLUSTER_DOMAIN}"
+              - name: CONTINUWUITY_WELL_KNOWN__SERVER
+                value: "continuwuity.${CLUSTER_DOMAIN}:443"
               - name: CONTINUWUITY_MAX_REQUEST_SIZE
                 value: "104857600"
               #              - name: CONTINUWUITY_QUERY_OVER_TCP_ONLY
@@ -173,6 +173,13 @@ spec:
         hosts:
           - host: *host
             paths:
+              - path: /.well-known/matrix
+                pathtype: prefix
+                service:
+                  identifier: *app
+                  port: *port
+          - host: *host
+            paths:
               - path: /_matrix
                 pathType: Prefix
                 service:
@@ -193,14 +200,14 @@ spec:
           external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
-          # - host: "${CLUSTER_DOMAIN}"
-          #   paths:
-          #     - path: /.well-known/matrix
-          #       pathType: Prefix
-          #       service:
-          #         identifier: *app
-          #         port: 8080
-          #
+          - host: *host
+            paths:
+              - path: /.well-known/matrix
+                pathtype: prefix
+                service:
+                  identifier: *app
+                  port: *port
+
           - host: *host
             paths:
               # - path: /
