@@ -58,6 +58,7 @@ definitions:
       - "${SECRET_HOMELAN_IPV4}"
     trusted:
       - "${SECRET_VICTOR_HOME_IP}"
+      - "${SECRET_STIJN_HOME_IP}"
       - "${SECRET_J_HOME_IP}"
 access_control:
   default_policy: two_factor
