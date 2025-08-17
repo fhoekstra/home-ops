@@ -187,13 +187,13 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
-          # - host: "skylab.fi"
-          #   paths:
-          #     - path: /.well-known/matrix
-          #       pathType: Prefix
-          #       service:
-          #         identifier: main
-          #         port: 8080
+          - host: *host
+            paths:
+              - path: /.well-known/matrix
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: 8080
 
           - host: *host
             paths:
