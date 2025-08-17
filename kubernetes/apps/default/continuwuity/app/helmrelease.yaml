@@ -174,19 +174,16 @@ spec:
           - host: *host
             paths:
               - path: /.well-known/matrix
-                pathtype: prefix
                 service:
                   identifier: *app
                   port: *port
           - host: *host
             paths:
               - path: /_matrix
-                pathType: Prefix
                 service:
                   identifier: *app
                   port: *port
               - path: /_continuwuity/
-                pathType: Prefix
                 service:
                   identifier: *app
                   port: *port
@@ -203,7 +200,6 @@ spec:
           - host: *host
             paths:
               - path: /.well-known/matrix
-                pathtype: prefix
                 service:
                   identifier: *app
                   port: *port
@@ -215,12 +211,10 @@ spec:
               #     identifier: *app
               #     port: http
               - path: /_matrix
-                pathType: Prefix
                 service:
                   identifier: *app
                   port: *port
               - path: /_continuwuity/
-                pathType: Prefix
                 service:
                   identifier: *app
                   port: *port
