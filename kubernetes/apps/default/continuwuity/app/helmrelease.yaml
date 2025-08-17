@@ -1,0 +1,220 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app continuwuity
+spec:
+  interval: 30m
+  releaseName: continuwuity
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 5m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      # priorityClassName: home-cluster-critical
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      *app :
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: forgejo.ellis.link/continuwuation/continuwuity
+              tag: v0.5.0-rc.7
+            env:
+              - name: CONTINUWUITY_SERVER_NAME
+                value: &host "continuwuity.${CLUSTER_DOMAIN}"
+              - name: TOKIO_WORKER_THREADS
+                value: "5"
+              - name: CONTINUWUITY_ROCKSDB_PARALLELISM_THREADS
+                value: "4"
+              - name: CONTINUWUITY_DATABASE_PATH
+                value: "/data/db"
+              - name: CONTINUWUITY_ADDRESS
+                value: "::"
+              - name: CONTINUWUITY_PORT
+                value: "8080"
+              - name: RUST_LOG
+                value: "info"
+              - name: CONTINUWUITY_ALLOW_FEDERATION
+                value: "false"
+              - name: CONTINUWUITY_ALLOW_REGISTRATION
+                value: "true"
+              - name: CONTINUWUITY_ALLOW_LEGACY_MEDIA
+                value: "false"
+              # - name: CONTINUWUITY_TRUSTED_SERVERS
+              #   value: '["kapsi.fi","pikaviestin.fi"]'
+              # - name: CONTINUWUITY_WELL_KNOWN__CLIENT
+              #   value: "https://continuwuity.${CLUSTER_DOMAIN}"
+              # - name: CONTINUWUITY_WELL_KNOWN__SERVER
+              #   value: "continuwuity.${CLUSTER_DOMAIN}:443"
+              - name: CONTINUWUITY_MAX_REQUEST_SIZE
+                value: "104857600"
+              #              - name: CONTINUWUITY_QUERY_OVER_TCP_ONLY
+              #                value: "true"
+              - name: CONTINUWUITY_IP_LOOKUP_STRATEGY
+                value: "5"
+            envFrom:
+              - secretRef:
+                  name: continuwuity
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                cpu: 500m
+                memory: 1Gi
+            # probes:
+            #   liveness: &probes
+            #     enabled: false
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /_matrix/federation/v1/version
+            #         port: http
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
+
+    service:
+      *app :
+        controller: *app
+        # ipFamilyPolicy: RequireDualStack
+        ports:
+          http:
+            port: &port 8080
+            protocol: TCP
+            targetPort: 8080
+    # route:
+    #   int:
+    #     hostnames:
+    #       - "matrix.${CLUSTER_DOMAIN}"
+    #     parentRefs:
+    #       - name: envoy-internal
+    #         namespace: networking
+    #         sectionName: https
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /_matrix
+    #           - path:
+    #               type: PathPrefix
+    #               value: /
+    #         backendRefs:
+    #           - name: *app
+    #             port: *port
+    #   matrix:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    #       external-dns.alpha.kubernetes.io/target: "ingress-cf.skylab.fi"
+    #     hostnames:
+    #       - "matrix.skylab.fi"
+    #     parentRefs:
+    #       - name: envoy-external
+    #         namespace: networking
+    #         sectionName: https
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /_matrix
+    #         backendRefs:
+    #           - name: *app
+    #             port: *port
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    #       external-dns.alpha.kubernetes.io/target: "ingress-cf.skylab.fi"
+    #     hostnames:
+    #       - "skylab.fi"
+    #     parentRefs:
+    #       - name: envoy-external
+    #         namespace: networking
+    #         sectionName: https-root
+    #     rules:
+    #       - matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /.well-known/matrix
+    #         backendRefs:
+    #           - name: *app
+    #             port: *port
+    ingress:
+      # main:
+      #   className: external
+      #   annotations:
+      #     external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
+      #   hosts:
+      #     - host: *host
+      #       paths:
+      #         - path: /_matrix
+      #           pathType: Prefix
+      #           service:
+      #             identifier: *app
+      #             port: 8080
+      #   tls:
+      #     - hosts:
+      #         - *host
+
+      int:
+        className: "internal-nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+        hosts:
+          # - host: "skylab.fi"
+          #   paths:
+          #     - path: /.well-known/matrix
+          #       pathType: Prefix
+          #       service:
+          #         identifier: main
+          #         port: 8080
+
+          - host: *host
+            paths:
+              - path: /_matrix
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: 8080
+              - path: /_conduwuit/
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: 8080
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          *app :
+            app:
+              - path: /data

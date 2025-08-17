@@ -6,6 +6,7 @@ resources:
   - ./echo-server/ks.yaml
   - ./echo-server-internal/ks.yaml
   - ./ocis/ks.yaml
+  - ./continuwuity/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
