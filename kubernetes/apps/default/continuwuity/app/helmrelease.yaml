@@ -185,6 +185,7 @@ spec:
       int:
         className: "internal-nginx"
         annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
           # - host: "${CLUSTER_DOMAIN}"
