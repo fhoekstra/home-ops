@@ -201,16 +201,16 @@ spec:
                 service:
                   identifier: *app
                   port: 8080
-              - path: /_matrix
-                pathType: Prefix
-                service:
-                  identifier: *app
-                  port: 8080
-              - path: /_continuwuity/
-                pathType: Prefix
-                service:
-                  identifier: *app
-                  port: 8080
+              # - path: /_matrix
+              #   pathType: Prefix
+              #   service:
+              #     identifier: *app
+              #     port: 8080
+              # - path: /_continuwuity/
+              #   pathType: Prefix
+              #   service:
+              #     identifier: *app
+              #     port: 8080
         tls:
           - hosts:
               - *host
