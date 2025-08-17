@@ -60,7 +60,7 @@ spec:
               - name: RUST_LOG
                 value: "info"
               - name: CONTINUWUITY_ALLOW_FEDERATION
-                value: "false"
+                value: "true"
               - name: CONTINUWUITY_ALLOW_REGISTRATION
                 value: "true"
               - name: CONTINUWUITY_ALLOW_LEGACY_MEDIA
