@@ -101,15 +101,6 @@ spec:
             #       failureThreshold: 3
             #   readiness: *probes
 
-    service:
-      *app :
-        controller: *app
-        # ipFamilyPolicy: RequireDualStack
-        ports:
-          http:
-            port: &port 8080
-            protocol: TCP
-            targetPort: 8080
     # route:
     #   int:
     #     hostnames:
@@ -165,6 +156,15 @@ spec:
     #         backendRefs:
     #           - name: *app
     #             port: *port
+
+    service:
+      *app :
+        controller: *app
+        # ipFamilyPolicy: RequireDualStack
+        ports:
+          http:
+            port: &port 8080
+
     ingress:
       # main:
       #   className: external
@@ -198,23 +198,23 @@ spec:
           #
           - host: *host
             paths:
-              - path: /
+              # - path: /
+              #   service:
+              #     identifier: *app
+              #     port: http
+              - path: /_matrix
+                pathType: Prefix
                 service:
                   identifier: *app
                   port: 8080
-              # - path: /_matrix
-              #   pathType: Prefix
-              #   service:
-              #     identifier: *app
-              #     port: 8080
-              # - path: /_continuwuity/
-              #   pathType: Prefix
-              #   service:
-              #     identifier: *app
-              #     port: 8080
-        tls:
-          - hosts:
-              - *host
+              - path: /_continuwuity/
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: 8080
+        # tls:
+        #   - hosts:
+        #       - *host
 
     persistence:
       data:
