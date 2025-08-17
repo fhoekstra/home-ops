@@ -187,7 +187,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
-          - host: *host
+          - host: "${CLUSTER_DOMAIN}"
             paths:
               - path: /.well-known/matrix
                 pathType: Prefix
@@ -202,7 +202,7 @@ spec:
                 service:
                   identifier: *app
                   port: 8080
-              - path: /_conduwuit/
+              - path: /_continuwuity/
                 pathType: Prefix
                 service:
                   identifier: *app
