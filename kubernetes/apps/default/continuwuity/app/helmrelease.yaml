@@ -166,21 +166,26 @@ spec:
             port: &port 8080
 
     ingress:
-      # main:
-      #   className: external
-      #   annotations:
-      #     external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-      #   hosts:
-      #     - host: *host
-      #       paths:
-      #         - path: /_matrix
-      #           pathType: Prefix
-      #           service:
-      #             identifier: *app
-      #             port: 8080
-      #   tls:
-      #     - hosts:
-      #         - *host
+      main:
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
+        hosts:
+          - host: *host
+            paths:
+              - path: /_matrix
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *port
+              - path: /_continuwuity/
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *port
+        tls:
+          - hosts:
+              - *host
 
       int:
         className: "internal"
@@ -206,15 +211,15 @@ spec:
                 pathType: Prefix
                 service:
                   identifier: *app
-                  port: 8080
+                  port: *port
               - path: /_continuwuity/
                 pathType: Prefix
                 service:
                   identifier: *app
-                  port: 8080
-        # tls:
-        #   - hosts:
-        #       - *host
+                  port: *port
+        tls:
+          - hosts:
+              - *host
 
     persistence:
       data:
