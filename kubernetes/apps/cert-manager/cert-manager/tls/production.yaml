@@ -13,3 +13,18 @@ spec:
   dnsNames:
     - "${CLUSTER_DOMAIN}"
     - "*.${CLUSTER_DOMAIN}"
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${DOMAIN_MATRIX/./-}-production"
+spec:
+  secretName: "${DOMAIN_MATRIX/./-}-production-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "${DOMAIN_MATRIX}"
+  dnsNames:
+    - "${DOMAIN_MATRIX}"
+    - "*.${DOMAIN_MATRIX}"

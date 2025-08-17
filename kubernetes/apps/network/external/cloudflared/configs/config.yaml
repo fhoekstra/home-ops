@@ -11,4 +11,8 @@ ingress:
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
       noTLSVerify: true
+  - hostname: "*.${DOMAIN_MATRIX}"
+    service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      noTLSVerify: true
   - service: http_status:404
