@@ -40,9 +40,7 @@ spec:
       postInitSQL:
         - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
         - "CREATE ROLE streaming_replica;"
-        - "GRANT USAGE ON SCHEMA documentdb_core TO streaming_replica;"
-        - "GRANT SELECT ON ALL TABLES IN SCHEMA documentdb_core TO streaming_replica;"
-        - "ALTER DEFAULT PRIVILEGES IN SCHEMA documentdb_core GRANT SELECT ON TABLES TO streaming_replica;"
+        - "GRANT documentdb_admin_role TO streaming_replica;"
     # recovery:
     #   source: &currentServer ferretdb-0
 
