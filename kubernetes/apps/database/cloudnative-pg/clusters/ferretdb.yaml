@@ -5,7 +5,7 @@ metadata:
   name: ferretdb-pg-cluster
 spec:
   instances: 3
-  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.104.0-ferretdb-2.3.1"
+  imageName: "ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0"
   postgresUID: 999
   postgresGID: 999
 
@@ -36,16 +36,18 @@ spec:
       - host postgres postgres ::1/128 trust
 
   bootstrap:
-    initdb: {}
+    initdb:
+      postInitSQL:
+        - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
     # recovery:
-    #   source: &currentServer ferretdb-1
+    #   source: &currentServer ferretdb-0
 
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
       destinationPath: s3://cnpg/ferretdb/
       endpointURL: http://versity.storage.svc.cluster.local:7070
-      serverName: &currentServer ferretdb-1
+      serverName: &currentServer ferretdb-0
       s3Credentials:
         accessKeyId:
           name: s3-creds
@@ -90,7 +92,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb:2.3.1
+          image: ghcr.io/ferretdb/ferretdb:2.5.0
           ports:
             - containerPort: 27017
           env:
@@ -100,12 +102,11 @@ spec:
                   name: ferretdb-postgres-pw
                   key: uri
           resources:
-            requests:
-              cpu: 75m
-              memory: 128Mi
             limits:
               cpu: 500m
               memory: 128Mi
+            requests:
+              cpu: 15m
 
 ---
 apiVersion: v1
@@ -119,4 +120,4 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-  type: NodePort
+  type: ClusterIP
