@@ -39,11 +39,10 @@ spec:
     initdb:
       postInitSQL:
         - "CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;"
-        - "GRANT USAGE ON SCHEMA documentdb_core TO postgres;"
-        - "GRANT SELECT ON ALL TABLES IN SCHEMA documentdb_core TO postgres;"
-        - "ALTER DEFAULT PRIVILEGES IN SCHEMA documentdb_core GRANT SELECT ON TABLES TO postgres;"
         - "CREATE ROLE streaming_replica;"
-        - "GRANT postgres TO streaming_replica;"
+        - "GRANT USAGE ON SCHEMA documentdb_core TO streaming_replica;"
+        - "GRANT SELECT ON ALL TABLES IN SCHEMA documentdb_core TO streaming_replica;"
+        - "ALTER DEFAULT PRIVILEGES IN SCHEMA documentdb_core GRANT SELECT ON TABLES TO streaming_replica;"
     # recovery:
     #   source: &currentServer ferretdb-0
 
