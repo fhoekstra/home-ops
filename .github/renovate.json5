@@ -85,20 +85,28 @@
       ],
     },
     {
-      "description": "Talos",
-      "groupName": "Talos",
-      "matchPackageNames": ["**siderolabs/installer", "**siderolabs/talos"],
-      "overrideDepName": "{{{ replace 'installer' 'talos' depName }}}",
-      "versioning": "semver",
-      "automerge": false
+      description: 'Talos',
+      groupName: 'Talos',
+      matchPackageNames: [
+        '**siderolabs/installer',
+        '**siderolabs/talos',
+      ],
+      overrideDepName: "{{{ replace 'installer' 'talos' depName }}}",
+      versioning: 'semver',
+      automerge: false,
     },
     {
-      description: "Rook-Ceph Group",
-      groupName: "Rook-Ceph",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      description: 'Rook-Ceph Group',
+      groupName: 'Rook-Ceph',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/rook-ceph/',
+        '/rook-ceph-cluster/',
+      ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
     },
     {
@@ -329,12 +337,16 @@
       datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
     },
     {
-      customType: "regex",
-      description: "Process CloudnativePG Postgresql version",
-      fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
-      matchStrings: ["image(Name)?: (?<depName>\\S+):(?<currentValue>.*\\-.*)"],
-      datasourceTemplate: "docker",
-      versioningTemplate: "redhat"
+      customType: 'regex',
+      description: 'Process CloudnativePG Postgresql version',
+      managerFilePatterns: [
+        '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
+      ],
+      matchStrings: [
+        'image(Name)?: (?<depName>\\S+):(?<currentValue>.*\\-.*)',
+      ],
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'redhat',
     },
   ],
 }
