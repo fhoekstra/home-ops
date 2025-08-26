@@ -85,15 +85,15 @@
       ],
     },
     {
-      description: 'Talos',
-      groupName: 'Talos',
+      description: "Talos Group",
+      groupName: "talos",
       matchPackageNames: [
-        '**siderolabs/installer',
-        '**siderolabs/talos',
+        "siderolabs/installer/",
+        "siderolabs/talos/"
       ],
-      overrideDepName: "{{{ replace 'installer' 'talos' depName }}}",
-      versioning: 'semver',
-      automerge: false,
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      },
     },
     {
       description: 'Rook-Ceph Group',
