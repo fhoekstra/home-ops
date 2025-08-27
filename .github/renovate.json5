@@ -94,6 +94,10 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group"
       },
+      matchManagers: [
+        'regex',
+        'mise',
+      ],
     },
     {
       description: 'Rook-Ceph Group',
