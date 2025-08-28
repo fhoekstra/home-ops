@@ -15,6 +15,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   install:
     crds: CreateReplace
     timeout: 2m
@@ -93,8 +96,6 @@ spec:
                   port: *port
     persistence:
       data:
-        type: nfs
-        server: ${NFS_SERVER_IP_ADDRESS}
-        path: /mnt/data/nfs/k8s/live/versity
+        existingClaim: *app
         globalMounts:
           - path: /data
