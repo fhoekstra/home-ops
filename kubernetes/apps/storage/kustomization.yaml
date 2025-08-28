@@ -7,6 +7,7 @@ resources:
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
   - ./versity/ks.yaml
+  - ./garage/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
