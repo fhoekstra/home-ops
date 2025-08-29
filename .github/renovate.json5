@@ -85,17 +85,17 @@
       ],
     },
     {
-      description: "Talos Group",
-      groupName: "talos",
+      description: 'Talos Group',
+      groupName: 'talos',
       matchPackageNames: [
-        "/siderolabs/installer/",
-        "/siderolabs/talos/"
+        '/siderolabs/installer/',
+        '/siderolabs/talos/',
       ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group"
+        commitMessageTopic: '{{{groupName}}} group',
       },
       matchManagers: [
-        'regex',
+        'custom.regex',
         'mise',
       ],
     },
