@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
-  - ./cloudnative-pg.yaml
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
