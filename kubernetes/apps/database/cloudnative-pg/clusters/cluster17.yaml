@@ -33,38 +33,26 @@ spec:
     recovery:
       source: &currentServer cluster-17-v1
 
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: cluster-17-backup-local
-        serverName: *currentServer
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      destinationPath: s3://cnpg/cluster-17/
+      endpointURL: http://versity.storage.svc.cluster.local:7070
+      serverName: &currentServer cluster-17-v1
+      s3Credentials:
+        accessKeyId:
+          name: s3-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-creds
+          key: SECRET_KEY
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *currentServer
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: cluster-17-backup-local
-          serverName: *currentServer
----
-apiVersion: barmancloud.cnpg.io/v1
-kind: ObjectStore
-metadata:
-  name: cluster-17-backup-local
-spec:
-  retentionPolicy: 30d
-  configuration:
-    destinationPath: s3://cnpg/cluster-17/
-    endpointURL: http://versity.storage.svc.cluster.local:7070
-    s3Credentials:
-      accessKeyId:
-        name: s3-creds
-        key: ACCESS_KEY_ID
-      secretAccessKey:
-        name: s3-creds
-        key: SECRET_KEY
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *currentServer
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
 apiVersion: postgresql.cnpg.io/v1
@@ -75,8 +63,6 @@ spec:
   backupOwnerReference: self
   cluster:
     name: cluster-17
+  method: barmanObjectStore
   schedule: "0 37 2 ? * 2"
   immediate: true
-  method: plugin
-  pluginConfiguration:
-    name: barman-cloud.cloudnative-pg.io

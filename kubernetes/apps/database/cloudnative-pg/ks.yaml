@@ -1,69 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/gitrepository-source-v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: cnpg-barman-cloud-crds
-  namespace: flux-system
-spec:
-  interval: 30m
-  url: https://github.com/cloudnative-pg/plugin-barman-cloud.git
-  ref:
-    tag: v0.6.0
-  ignore: |
-    # exclude
-    /*
-    # include
-    !config/crd/bases/barmancloud.cnpg.io_objectstores.yaml
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &name cnpg-barman-cloud-crds
-  namespace: flux-system
-spec:
-  targetNamespace: database
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: *name
-    namespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  healthChecks:
-    - &crds
-      apiVersion: apiextensions.k8s.io/v1
-      kind: CustomResourceDefinition
-      name: objectstores.barmancloud.cnpg.io
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &name cnpg-crds
-  namespace: flux-system
-spec:
-  targetNamespace: database
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  path: ./kubernetes/apps/database/cloudnative-pg/crds
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  healthChecks:
-    - &crds
-      apiVersion: apiextensions.k8s.io/v1
-      kind: CustomResourceDefinition
-      name: clusters.postgresql.cnpg.io
-    - <<: *crds
-      apiVersion: apiextensions.k8s.io/v1
-      name: objectstores.barmancloud.cnpg.io
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -82,29 +17,7 @@ spec:
     name: flux-system
   wait: false
   interval: 30m
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app cnpg-barman-cloud
-  namespace: flux-system
-spec:
-  targetNamespace: database
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  interval: 1h
-  retryInterval: 2m
-  path: ./kubernetes/apps/database/cloudnative-pg/barman-cloud
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   timeout: 5m
-  dependsOn:
-    - name: cnpg-crds
-      namespace: flux-system
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -113,9 +26,10 @@ metadata:
   name: &app cloudnative-pg-clusters
   namespace: flux-system
 spec:
-  targetNamespace: database
   dependsOn:
-    - name: cnpg-crds
+    - name: cloudnative-pg-operator
+      namespace: flux-system
+  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
