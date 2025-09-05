@@ -1,20 +1,20 @@
 ---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: '3'
+version: "3"
 
 set: [pipefail]
 shopt: [globstar]
 
 vars:
-  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
-  PRIVATE_DIR: '{{.ROOT_DIR}}/.private'
-  TALHELPER_DIR: '{{.ROOT_DIR}}/kubernetes/bootstrap/talos'
-  TALOSCONFIG: '{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig'
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
+  TALHELPER_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos"
+  TALOSCONFIG: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig"
 
 env:
-  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
-  SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  TALOSCONFIG: '{{.TALOSCONFIG}}'
+  KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
+  SOPS_AGE_KEY_FILE: "{{.ROOT_DIR}}/age.key"
+  TALOSCONFIG: "{{.TALOSCONFIG}}"
 
 includes:
   bootstrap: .taskfiles/bootstrap
@@ -22,7 +22,6 @@ includes:
   kubernetes: .taskfiles/kubernetes
 
 tasks:
-
   default: task --list
 
   reconcile:
