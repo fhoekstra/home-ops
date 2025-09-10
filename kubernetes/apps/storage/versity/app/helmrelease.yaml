@@ -71,10 +71,10 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 20Mi
+                memory: 64Mi
               limits:
                 cpu: 500m
-                memory: 100Mi
+                memory: 128Mi
     service:
       main:
         controller: *app
