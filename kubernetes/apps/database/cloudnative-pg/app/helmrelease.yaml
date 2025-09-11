@@ -3,17 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cloudnative-pg
+  name: &name cloudnative-pg
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: cloudnative-pg
-      version: 0.26.0
-      sourceRef:
-        kind: HelmRepository
-        name: cloudnative-pg
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *name
+    namespace: flux-system
   install:
     remediation:
       retries: -1
@@ -21,11 +17,10 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: cloudflared
-      namespace: network
   values:
     replicaCount: 2
+    nodeSelector:
+      kubernetes.io/arch: amd64
     crds:
       create: true
     resources:
