@@ -31,14 +31,14 @@ spec:
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when upgrading or recovering from another running instance
     recovery:
-      source: &recoveryServer cluster-17-v3
+      source: &recoveryServer cluster-17-v2
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: cluster-17-backup-local
-        serverName: &currentServer cluster-17-v4
+        serverName: &currentServer cluster-17-v2
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
