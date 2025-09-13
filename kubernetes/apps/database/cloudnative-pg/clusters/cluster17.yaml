@@ -26,28 +26,28 @@ spec:
     annotations:
       cnpg.io/skipEmptyWalArchiveCheck: enabled # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
   bootstrap:
-    initdb: {}
+    # initdb: {}
 
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when upgrading or recovering from another running instance
-    # recovery:
-    #   source: &currentServer cluster-17-v1
+    recovery:
+      source: &recoveryServer cluster-17-v2
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: cluster-17-backup-local
-        serverName: &currentServer cluster-17-v2
+        serverName: &currentServer cluster-17-v3
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
-    - name: *currentServer
+    - name: *recoveryServer
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: cluster-17-backup-local
-          serverName: *currentServer
+          serverName: *recoveryServer
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
