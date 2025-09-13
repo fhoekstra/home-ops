@@ -31,7 +31,7 @@ spec:
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when upgrading or recovering from another running instance
     recovery:
-      source: &recoveryServer cluster-17-v2
+      source: &recoveryServer cluster-17-v3
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
