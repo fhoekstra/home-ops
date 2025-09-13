@@ -30,6 +30,7 @@ spec:
               - --server-key=/server/tls.key
               - --client-cert=/client/tls.crt
               - --server-address=:9090
+              - --log-level=debug
             env:
               SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:${SIDECAR_IMAGE_VERSION}
             probes:
