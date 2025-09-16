@@ -2,6 +2,8 @@
 apiVersion: postgresql.cnpg.io/v1
 metadata:
   name: cluster-17
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 kind: Cluster
 spec:
   instances: 3
@@ -22,9 +24,6 @@ spec:
     parameters:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
-  inheritedMetadata:
-    annotations:
-      cnpg.io/skipEmptyWalArchiveCheck: enabled # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
   bootstrap:
     initdb: {}
 
