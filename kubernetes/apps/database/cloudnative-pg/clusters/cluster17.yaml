@@ -25,12 +25,12 @@ spec:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    initdb: {}
+    # initdb: {}
 
     # Note: previousCluster needs to be set to the name of the previous
     # cluster when upgrading or recovering from another running instance
-    # recovery:
-    #   source: &recoveryServer cluster-17-v3
+    recovery:
+      source: &recoveryServer cluster-17-v3
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -40,13 +40,13 @@ spec:
         serverName: &currentServer cluster-17-v3
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *recoveryServer
-  #     plugin:
-  #       name: barman-cloud.cloudnative-pg.io
-  #       parameters:
-  #         barmanObjectName: cluster-17-backup-local
-  #         serverName: *recoveryServer
+  externalClusters:
+    - name: *recoveryServer
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: cluster-17-backup-local
+          serverName: *recoveryServer
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
