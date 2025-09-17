@@ -347,7 +347,7 @@
         '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
       ],
       matchStrings: [
-        'image(Name)?: (?<depName>\\S+):(?<currentValue>.*\\-.*)',
+        'image(Name)?: (?<depName>\\S+):(?<currentValue>.*\\-.*\\-.*)',
       ],
       datasourceTemplate: 'docker',
       versioningTemplate: 'redhat',

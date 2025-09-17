@@ -7,7 +7,7 @@ metadata:
 kind: Cluster
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.5-22
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.6-minimal-trixie
   enableSuperuserAccess: true
   superuserSecret:
     name: pg-secret
