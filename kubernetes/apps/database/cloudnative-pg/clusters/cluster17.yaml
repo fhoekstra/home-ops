@@ -3,6 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 metadata:
   name: cluster-17
   annotations:
+    # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 kind: Cluster
 spec:
