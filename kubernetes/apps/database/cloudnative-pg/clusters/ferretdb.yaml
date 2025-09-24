@@ -69,19 +69,53 @@ spec:
         - create extension if not exists documentdb cascade;
         # Instead of doing a bunch of grants on different schemas you can just grant an included role
         - grant documentdb_admin_role to ferret;
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
-# apiVersion: postgresql.cnpg.io/v1
-# kind: ScheduledBackup
-# metadata:
-#   name: ferretdb
-# spec:
-#   backupOwnerReference: self
-#   cluster:
-#     name: ferretdb-pg-cluster
-#   method: barmanObjectStore
-#   schedule: "0 0 1 * * *"
-#   immediate: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: ferretdb-backupstore
+        serverName: &currentServer pg
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: ferretdb-backupstore
+spec:
+  retentionPolicy: 14d
+  instanceSidecarConfiguration:
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 1
+      requests:
+        memory: 128Mi
+        cpu: 10m
+  configuration:
+    destinationPath: s3://cnpg/ferretdb/
+    endpointURL: http://versity.storage.svc.cluster.local:7070
+    s3Credentials:
+      accessKeyId:
+        name: s3-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: s3-creds
+        key: SECRET_KEY
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: ferretdb
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: ferretdb-pg-cluster
+  schedule: "0 0 1 * * *"
+  immediate: true
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
 ---
 apiVersion: apps/v1
 kind: Deployment
