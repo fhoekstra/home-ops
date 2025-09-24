@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./cluster17.yaml
   - ./ferretdb.yaml
-  # - ./ferretdb-new.yaml
   - ./pg-secret.sops.yaml
