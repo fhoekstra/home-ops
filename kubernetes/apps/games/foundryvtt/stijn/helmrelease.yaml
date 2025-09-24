@@ -1,0 +1,211 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: app-template
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.3.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app foundryvtt-stijn
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  driftDetection:
+    mode: enabled
+  maxHistory: 3
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    force: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+
+    controllers:
+      *app :
+        pod:
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 100m
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/felddy/foundryvtt
+              tag: 13.348.0
+
+            env:
+              TIMEZONE: "${TIMEZONE}"
+              CONTAINER_CACHE: /data/container_cache
+              CONTAINER_PATCHES: /data/container_patches
+              CONTAINER_VERBOSE: "true"
+              FOUNDRY_TELEMETRY: false
+              FOUNDRY_HOSTNAME: &host "foundry-stijn.${CLUSTER_DOMAIN}"
+              FOUNDRY_LOCAL_HOSTNAME: *host
+              FOUNDRY_MINIFY_STATIC_FILES: "true"
+              FOUNDRY_PROTOCOL: "4"
+              FOUNDRY_PROXY_PORT: "443"
+              FOUNDRY_PROXY_SSL: "true"
+
+              # Can be set to foundry, fantasy or scifi
+              FOUNDRY_CSS_THEME: foundry
+
+              # Does not work in v13 container yet: https://github.com/felddy/foundryvtt-docker/issues/1242 and https://github.com/felddy/foundryvtt-docker/pull/1241
+              # CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
+
+            envFrom:
+              - secretRef:
+                  name: foundryvtt-secret
+          sftpgo:
+            image:
+              repository: ghcr.io/drakkan/sftpgo
+              tag: v2.6.6@sha256:ca17d735651ce1b5c54a8fa2d4fb9c85036d4137e32b700de260324619ff3f88
+            env:
+              SFTPGO_DATA_PROVIDER__DRIVER: sqlite
+              SFTPGO_TELEMETRY__BIND_ADDRESS: 0.0.0.0
+              SFTPGO_TELEMETRY__BIND_PORT: 8081
+              # SFTPGO_SFTPD__BINDINGS__0__ADDRESS: 0.0.0.0
+              # SFTPGO_SFTPD__BINDINGS__0__PORT: 2022
+              SFTPGO_HTTPD__BINDINGS__0__ADDRESS: 0.0.0.0
+              SFTPGO_HTTPD__BINDINGS__0__PORT: 8080
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_ID: "MJ04uHbUwWj00-RYG3X4QACoW-45EF0u0ahDEpv48yDT~caYFZMb240_nT8Z3kHrY6jmvY~Q"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_SECRET: "${SECRET_SFTPGO_OAUTH_CLIENT_SECRET}"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL: "https://auth.${}"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__REDIRECT_BASE_URL: "https://sftpgo.${}"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__SCOPES: "openid,profile,email,preferred_username"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD: "preferred_username"
+              # SFTPGO_HTTPD__BINDINGS__0__OIDC__IMPLICIT_ROLES: "true"
+              # SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: 3
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+    service:
+      *app :
+        controller: *app
+        ports:
+          http:
+            port: 30000
+      sftpgo:
+        controller: *app
+        ports:
+          http:
+            port: 8080
+          # dav:
+          #   port: 8082
+          metrics:
+            port: 8081
+      # transfer:
+      #   controller: *app
+      #   type: LoadBalancer
+      #   loadBalancerIP: "${LB_IP_SFTPGO_SVC}"
+      #   externalTrafficPolicy: Local
+      #   annotations:
+      #     external-dns.alpha.kubernetes.io/hostname: sftp.${}
+      #     # external-dns.alpha.kubernetes.io/target: "${SECRET_GATEWAY}"
+      #   ports:
+      #     sftp:
+      #       port: 22
+      #       targetPort: 2022
+      #       protocol: TCP
+
+    ingress:
+      *app :
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
+          nginx.ingress.kubernetes.io/auth-method: "GET"
+          nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
+          nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
+      files:
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
+          nginx.ingress.kubernetes.io/auth-method: "GET"
+          nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
+          nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
+        hosts:
+          - host: foundry-stijn-files.${CLUSTER_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: sftpgo
+                  port: http
+
+    persistence:
+      *app :
+        enabled: true
+        existingClaim: *app
+        advancedMounts:
+          *app : # controller
+            *app : # container
+              - path: /data # where in container
+                subPath: foundryvtt # where in PVC
+            sftpgo: # container
+              - path: /foundryvtt
+                subPath: foundryvtt
+              - path: /data
+                subPath: sftpgo-data
+              - path: "/var/lib/sftpgo"
+                subPath: sftpgo-lib
