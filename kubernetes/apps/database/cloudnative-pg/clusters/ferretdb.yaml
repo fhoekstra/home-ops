@@ -13,6 +13,9 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: ferretdb-pg-cluster
+  annotations:
+    # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
@@ -60,21 +63,33 @@ spec:
       - host ferretDB postgres localhost trust
       # Fix FerretDB fe_sendauth error
       - host ferretDB ferret localhost trust
+
   bootstrap:
-    initdb:
-      database: ferretDB
-      owner: ferret
-      postInitApplicationSQL:
-        - create extension if not exists pg_cron;
-        - create extension if not exists documentdb cascade;
-        # Instead of doing a bunch of grants on different schemas you can just grant an included role
-        - grant documentdb_admin_role to ferret;
+    recovery:
+      source: &source pg
+    # initdb:
+    #   database: ferretDB
+    #   owner: ferret
+    #   postInitApplicationSQL:
+    #     - create extension if not exists pg_cron;
+    #     - create extension if not exists documentdb cascade;
+    #     # Instead of doing a bunch of grants on different schemas you can just grant an included role
+    #     - grant documentdb_admin_role to ferret;
+
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: ferretdb-backupstore
-        serverName: &currentServer pg
+        serverName: *source
+
+  externalClusters:
+    - name: *source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: ferretdb-backupstore
+          serverName: *source
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
 apiVersion: barmancloud.cnpg.io/v1
