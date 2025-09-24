@@ -88,7 +88,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: foundryvtt-secret
+                  name: foundryvtt-secret-victor
           sftpgo:
             image:
               repository: ghcr.io/drakkan/sftpgo
