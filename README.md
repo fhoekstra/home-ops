@@ -28,11 +28,11 @@ Currently 3 laptops that I got from the used market:
   - [x] forward the DNS zone to the k8s_gateway in the cluster
   - [x] test if a service that is only exposed internally resolves
 * [x] Set up a database (let's start with just cnpg)
-* Set up auth (either Authentik or Authelia + lldap)
+* [x] Set up auth (Authelia + lldap)
 * Start hosting some services
   - [x] [FoundryVTT](https://foundryvtt.com/)
   - [x] [Matrix](https://element.io/)
-* [x] Set up a distributed storage system such as ~~[Longhorn](https://longhorn.io/)~~ settled on [rook-ceph](https://rook.io)
+* [x] Set up a distributed storage system. I settled on [rook-ceph](https://rook.io)
  because it works flawlessly with VolSync.
 *  Once the setup is stable enough, migrate my [Home Assistant](https://www.home-assistant.io/) setup over, starting with its Add-Ons:
   - Mosquitto
