@@ -13,7 +13,7 @@ Currently 3 laptops that I got from the used market:
 | ------------- | ------------- | -------------- | -------------- |-------|
 | K8s controlplane, k8s workloads | Dell Latitude 5490 (Azerty) | i5-8350U (4C/8T) | 16GB | OS: 256GB SATA SK Hynix ; Ceph: 1.92TB Samsung SM863 (PLP) 2.5" SATA via USB3  |
 | K8s controlplane, k8s workloads | Dell Latitude 5470 (Qwerty) | i5-6300U (2C/4T) | 16GB | OS: 256GB SATA Samsung ; Ceph: 480GB Samsung SM863a (PLP) 2.5" SATA via USB3 |
-| K8s controlplane, k8s workloads | Lenovo ThinkPad X230 | i5-3210M (2C/4T) | 16GB | OS: 250GB SATA Saumsung; Ceph: 256GB Samsung PM871b (PLP) 2.5" SATA via USB3 |
+| K8s controlplane, k8s workloads | Lenovo ThinkPad X230 | i5-3210M (2C/4T) | 16GB | OS: 250GB SATA Saumsung; Ceph: 256GB Samsung PM871b 2.5" SATA via USB3 |
 | Cluster-external NFS (backups) | Raspberry Pi 4B |  | 4GB | 1TB SATA-via-USB3 Samsung QLC 870 Evo |
 
 
@@ -31,8 +31,9 @@ Currently 3 laptops that I got from the used market:
 * Set up auth (either Authentik or Authelia + lldap)
 * Start hosting some services
   - [x] [FoundryVTT](https://foundryvtt.com/)
-  - [Matrix](https://element.io/)
-* ~~Set up a distributed storage system such as [Longhorn](https://longhorn.io/)~~ this only makes sense after some serious hardware upgrades: without a dedicated (preferably internal) NVMe drive, this would cause more problems than it would solve.
-* Once the setup is stable enough, migrate my [Home Assistant](https://www.home-assistant.io/) setup over, starting with its Add-Ons:
+  - [x] [Matrix](https://element.io/)
+* [x] Set up a distributed storage system such as ~~[Longhorn](https://longhorn.io/)~~ settled on [rook-ceph](https://rook.io)
+ because it works flawlessly with VolSync.
+*  Once the setup is stable enough, migrate my [Home Assistant](https://www.home-assistant.io/) setup over, starting with its Add-Ons:
   - Mosquitto
   - Node-Red
