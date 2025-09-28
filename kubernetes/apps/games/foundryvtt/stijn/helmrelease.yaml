@@ -52,9 +52,11 @@ spec:
 
     controllers:
       *app :
+        type: statefulset # For consistent pod names for foundryvtt EULA check (which uses hostname)
         annotations:
           reloader.stakater.com/auto: "true"
 
+        replicas: 1
         containers:
           *app :
             image:
