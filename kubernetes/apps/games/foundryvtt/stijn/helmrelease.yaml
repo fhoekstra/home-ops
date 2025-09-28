@@ -52,13 +52,6 @@ spec:
 
     controllers:
       *app :
-        pod:
-          resources:
-            limits:
-              cpu: 1
-              memory: 1Gi
-            requests:
-              cpu: 100m
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -90,6 +83,13 @@ spec:
             envFrom:
               - secretRef:
                   name: foundryvtt-secret-stijn
+            resources:
+              limits:
+                cpu: 2
+                memory: 4Gi
+              requests:
+                cpu: 100m
+                memory: 2Gi
           sftpgo:
             image:
               repository: ghcr.io/drakkan/sftpgo
@@ -110,6 +110,13 @@ spec:
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD: "preferred_username"
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__IMPLICIT_ROLES: "true"
               # SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: 3
+            resources:
+              limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 10m
+                memory: 128Mi
             probes:
               liveness:
                 enabled: true

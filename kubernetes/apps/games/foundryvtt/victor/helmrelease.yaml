@@ -52,13 +52,6 @@ spec:
 
     controllers:
       *app :
-        pod:
-          resources:
-            limits:
-              cpu: 1
-              memory: 1Gi
-            requests:
-              cpu: 100m
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -87,6 +80,13 @@ spec:
               # Does not work in v13 container yet: https://github.com/felddy/foundryvtt-docker/issues/1242 and https://github.com/felddy/foundryvtt-docker/pull/1241
               # CONTAINER_PATCH_URLS: https://gist.githubusercontent.com/felddy/a02d66c3817f8223652d96febe580153/raw/foundryvtt-module-check.sh
 
+            resources:
+              limits:
+                cpu: 2
+                memory: 4Gi
+              requests:
+                cpu: 100m
+                memory: 2Gi
             envFrom:
               - secretRef:
                   name: foundryvtt-secret-victor
@@ -110,6 +110,13 @@ spec:
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD: "preferred_username"
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__IMPLICIT_ROLES: "true"
               # SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: 3
+            resources:
+              limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 10m
+                memory: 128Mi
             probes:
               liveness:
                 enabled: true
