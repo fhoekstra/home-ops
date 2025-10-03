@@ -29,6 +29,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg-operator
       namespace: flux-system
+    - name: versity
+      namespace: flux-system
   targetNamespace: database
   commonMetadata:
     labels:
