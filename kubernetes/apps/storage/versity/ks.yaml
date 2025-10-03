@@ -7,12 +7,12 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: storage
-  components:
-    - ../../../../components/volsync
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 50Gi
+  # components:
+  #   - ../../../../components/volsync
+  # postBuild:
+  #   substitute:
+  #     APP: *app
+  #     VOLSYNC_CAPACITY: 50Gi
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

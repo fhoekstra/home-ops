@@ -11,9 +11,9 @@ spec:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
   install:
     crds: CreateReplace
     timeout: 2m
@@ -92,6 +92,8 @@ spec:
                   port: *port
     persistence:
       data:
-        existingClaim: *app
+        type: nfs
+        server: ${NFS_SERVER_IP_ADDRESS}
+        path: /mnt/data/nfs/k8s/live/versity-backup
         globalMounts:
           - path: /data
