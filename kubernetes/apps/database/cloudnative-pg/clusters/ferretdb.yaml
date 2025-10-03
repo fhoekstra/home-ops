@@ -97,7 +97,7 @@ kind: ObjectStore
 metadata:
   name: ferretdb-backupstore
 spec:
-  retentionPolicy: 14d
+  retentionPolicy: 7d
   instanceSidecarConfiguration:
     resources:
       limits:

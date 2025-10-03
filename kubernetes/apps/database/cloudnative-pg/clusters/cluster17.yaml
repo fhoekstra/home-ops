@@ -52,7 +52,7 @@ kind: ObjectStore
 metadata:
   name: cluster-17-backup-local
 spec:
-  retentionPolicy: 30d
+  retentionPolicy: 15d
   instanceSidecarConfiguration:
     resources:
       limits:
