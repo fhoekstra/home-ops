@@ -26,6 +26,26 @@ cniConfig:
   name: none
 
 nodes:
+  - hostname: "ideapad-s340-14iwl"
+    ipAddress: "192.168.1.14"
+    installDiskSelector:
+      model: WDC PC SN520 SDAPMUW-512G-1001
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "3c:18:a0:cf:d3:b8"
+        dhcp: false
+        addresses:
+          - "192.168.1.14/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "192.168.1.1"
+        mtu: 1500
+        vip:
+          ip: "192.168.1.30"
   - hostname: "thinkpad-x230"
     ipAddress: "192.168.1.13"
     installDiskSelector:
