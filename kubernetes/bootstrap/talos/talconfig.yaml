@@ -15,7 +15,7 @@ clusterSvcNets:
 
 additionalApiServerCertSans: &sans
   - "192.168.1.30"
-  - "thinkpad-x230.local"
+  - "ideapad-s340-14iwl"
   - "latitude-5470"
   - "latitude-5490-azerty"
   - "127.0.0.1"
