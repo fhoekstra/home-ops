@@ -165,6 +165,7 @@ spec:
           volumeBindingMode: Immediate
           mountOptions: ["discard"]
           parameters:
+            min_size: "2"
             compression_mode: aggressive
             compression_algorithm: zstd
             imageFormat: "2"
