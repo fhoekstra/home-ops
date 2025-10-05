@@ -114,6 +114,20 @@
       },
     },
     {
+      description: 'CoreDNS Group',
+      groupName: 'CoreDNS',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/coredns/',
+        '/coredns/charts/coredns',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} both',
+      },
+    },
+    {
       matchDatasources: [
         'docker',
       ],
