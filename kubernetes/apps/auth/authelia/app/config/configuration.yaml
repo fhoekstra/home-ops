@@ -22,9 +22,9 @@ authentication_backend:
 
 session:
   same_site: lax
-  inactivity: 5m
-  expiration: 1h
-  remember_me: 1M
+  inactivity: 2h
+  expiration: 1d
+  remember_me: 2M
   cookies:
     - name: fhoekstra_session
       domain: ${CLUSTER_DOMAIN}
