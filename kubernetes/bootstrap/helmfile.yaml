@@ -40,7 +40,7 @@ releases:
 
   - name: cert-manager
     namespace: cert-manager
-    chart: jetstack/cert-manager
+    chart: oci://quay.io/jetstack/charts/cert-manager
     version: v1.18.2
     values:
       - ../apps/cert-manager/cert-manager/app/helm-values.yaml
