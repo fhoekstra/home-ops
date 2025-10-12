@@ -11,9 +11,6 @@ repositories:
   - name: cilium
     url: https://helm.cilium.io
 
-  - name: jetstack
-    url: https://charts.jetstack.io
-
 releases:
   - name: prometheus-operator-crds
     namespace: observability
