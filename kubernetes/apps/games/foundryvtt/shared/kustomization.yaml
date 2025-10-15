@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
 #   - ./block-local-eg-netpol.yaml
   - ./secret.sops.yaml
+  - ./app-template-repo.yaml
