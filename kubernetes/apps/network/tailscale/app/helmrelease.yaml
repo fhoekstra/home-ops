@@ -21,6 +21,7 @@ spec:
   values:
     controllers:
       tailscale:
+        type: statefulset
         replicas: 1
         strategy: RollingUpdate
         annotations:
