@@ -13,7 +13,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: vmsingle-ceph
+                name: vmsingle-vmsingle-ceph
                 port:
                   number: 8429
 ---
