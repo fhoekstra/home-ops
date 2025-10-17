@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/operator.victoriametrics.com/vmsingle_v1beta1.json
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMSingle
+metadata:
+  name: vmsingle-ceph
+spec:
+  extraArgs:
+    maxLabelsPerTimeseries: "40"
+    search.maxUniqueTimeseries: "600000"
+    search.minStalenessInterval: 5m
+    vmalert.proxyURL: http://vmalert-ceph.observability.svc:8080
+  replicaCount: 1
+  retentionPeriod: "6w"
+  storage:
+    storageClassName: ceph-block
+    accessModes: [ReadWriteOnce]
+    volumeMode: Filesystem
+    resources:
+      requests:
+        storage: 50Gi
+    dataSourceRef:
+      apiGroup: volsync.backube
+      kind: ReplicationDestination
+      name: victoria-metrics-backed-up-bootstrap
+  useDefaultResources: false
+  useStrictSecurity: true
+  resources:
+    limits:
+      memory: 2Gi
+      cpu: 1
+    requests:
+      cpu: 100m
