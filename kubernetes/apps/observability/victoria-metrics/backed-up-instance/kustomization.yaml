@@ -6,3 +6,4 @@ resources:
   - ./vmsingle.yaml
   - ./vmalert.yaml
   - ./ingress.yaml
+  - ./vmagent.yaml
