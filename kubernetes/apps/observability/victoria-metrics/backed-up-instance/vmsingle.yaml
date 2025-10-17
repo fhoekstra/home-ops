@@ -22,7 +22,7 @@ spec:
     dataSourceRef:
       apiGroup: volsync.backube
       kind: ReplicationDestination
-      name: victoria-metrics-backed-up-bootstrap
+      name: vmsingle-vmsingle-ceph-bootstrap
   useDefaultResources: false
   useStrictSecurity: true
   resources:

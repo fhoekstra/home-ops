@@ -64,6 +64,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      CLAIM: vmsingle-vmsingle-ceph
       VOLSYNC_CAPACITY: 50Gi
   prune: true
   sourceRef:
