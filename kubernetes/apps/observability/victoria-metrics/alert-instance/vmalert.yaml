@@ -3,21 +3,21 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlert
 metadata:
-  name: vmalert-ceph
+  name: vmalert
 spec:
   datasource:
-    url: http://vmsingle-ceph.observability.svc:8429
+    url: http://vm-local.observability.svc:8429
   evaluationInterval: 1m
   externalLabels:
-    cluster: vmsingle-ceph
-  # extraArgs:
-  #   external.url: https://vam.kantai.xyz
+    cluster: main
+  extraArgs:
+    external.url: "https://vm-local.${CLUSTER_DOMAIN}"
   notifiers:
     - url: http://alertmanager-operated.observability.svc:9093
   remoteRead:
-    url: http://vmsingle-ceph.observability.svc:8429
+    url: http://vm-local.observability.svc:8429
   remoteWrite:
-    url: http://vmsingle-ceph.observability.svc:8429
+    url: http://vm-local.observability.svc:8429
   replicaCount: 1
   selectAllByDefault: true
   useDefaultResources: false
