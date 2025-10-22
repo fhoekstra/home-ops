@@ -13,7 +13,7 @@ spec:
   extraArgs:
     external.url: "https://vm-local.${CLUSTER_DOMAIN}"
   notifiers:
-    - url: http://alertmanager-operated.observability.svc:9093
+    - url: http://alertmanager.observability.svc:9093
   remoteRead:
     url: http://vm-local.observability.svc:8429
   remoteWrite:
