@@ -3,7 +3,7 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMSingle
 metadata:
-  name: vmsingle-ceph
+  name: vm-ceph
 spec:
   extraArgs:
     maxLabelsPerTimeseries: "40"
@@ -19,10 +19,6 @@ spec:
     resources:
       requests:
         storage: 50Gi
-    dataSourceRef:
-      apiGroup: volsync.backube
-      kind: ReplicationDestination
-      name: vmsingle-vmsingle-ceph-bootstrap
   useDefaultResources: false
   useStrictSecurity: true
   resources:

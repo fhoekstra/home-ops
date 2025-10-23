@@ -46,26 +46,19 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app victoria-metrics-backed-up
+  name: &app victoria-metrics-ceph-backed
   namespace: flux-system
 spec:
   targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/victoria-metrics/backed-up-instance
+  path: ./kubernetes/apps/observability/victoria-metrics/ceph-backed-instance
   dependsOn:
     - name: victoria-metrics-operator
       namespace: flux-system
     - name: rook-ceph-cluster
       namespace: flux-system
-  components:
-    - ../../../../components/volsync
-  postBuild:
-    substitute:
-      APP: *app
-      CLAIM: vmsingle-vmsingle-ceph
-      VOLSYNC_CAPACITY: 50Gi
   prune: true
   sourceRef:
     kind: GitRepository

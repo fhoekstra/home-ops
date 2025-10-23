@@ -7,5 +7,5 @@ metadata:
 spec:
   remoteWrite:
     - url: "http://vmsingle-vm-local.observability.svc:8428/api/v1/write"
-    - url: "http://vmsingle-vmsingle-ceph.observability.svc:8428/api/v1/write"
+    - url: "http://vmsingle-vm-ceph.observability.svc:8428/api/v1/write"
   selectAllByDefault: true
