@@ -108,7 +108,7 @@ spec:
         mon:
           limits: &mon-hw
             cpu: 500m
-            memory: 640Mi
+            memory: 1024Mi
           requests: *mon-hw
         osd:
           limits:
@@ -120,7 +120,7 @@ spec:
         prepareosd:
           limits:
             cpu: 1000m
-            memory: 400Mi
+            memory: 3000Mi
           requests:
             cpu: 50m
             memory: 200Mi
