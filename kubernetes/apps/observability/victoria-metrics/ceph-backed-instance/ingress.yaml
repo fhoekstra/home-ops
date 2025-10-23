@@ -5,6 +5,7 @@ kind: Ingress
 metadata:
   name: vm-ceph-ingress
 spec:
+  ingressClassName: internal
   rules:
     - host: vm-ceph.${CLUSTER_DOMAIN}
       http:
@@ -16,5 +17,3 @@ spec:
                 name: vmsingle-vm-ceph
                 port:
                   number: 8429
----
-
