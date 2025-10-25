@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./prometheus-operator-crds/ks.yaml
   - ./victoria-metrics/ks.yaml
+  - ./grafana/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
