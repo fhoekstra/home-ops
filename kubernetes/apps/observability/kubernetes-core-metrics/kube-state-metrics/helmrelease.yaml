@@ -31,6 +31,8 @@ spec:
     remediation:
       retries: 3
   values:
+    fullnameOverride: kube-state-metrics
     prometheus:
       monitor:
         enabled: true
+        honorLabels: true
