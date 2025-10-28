@@ -6,7 +6,6 @@ resources:
   - ./prometheus-operator-crds/ks.yaml
   - ./victoria-metrics/ks.yaml
   - ./grafana/ks.yaml
-  - ./kubernetes-core-metrics/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
