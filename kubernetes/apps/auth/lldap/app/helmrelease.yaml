@@ -104,15 +104,6 @@ spec:
                   port: http
         tls:
           - hosts: [*host]
-    serviceMonitor:
-      app:
-        serviceName: *app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     persistence:
       data:
         type: emptyDir
