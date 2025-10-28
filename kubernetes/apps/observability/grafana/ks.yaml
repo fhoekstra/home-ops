@@ -61,6 +61,6 @@ spec:
           path: /spec/instanceSelector
           value:
             matchLabels:
-              grafana.internal/instance: grafana
+              dashboards: grafana
       target:
         kind: GrafanaDashboard
