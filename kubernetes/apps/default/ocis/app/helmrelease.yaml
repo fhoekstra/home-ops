@@ -52,7 +52,7 @@ spec:
               OCIS_LOG_LEVEL: info
               OCIS_LOG_PRETTY: true
               OCIS_URL: https://files.${CLUSTER_DOMAIN}
-              # PROXY_DEBUG_ADDR: 0.0.0.0:9205
+              PROXY_DEBUG_ADDR: 0.0.0.0:9205
               # PROXY_HTTP_ADDR: 0.0.0.0:9200
               PROXY_TLS: false
               # STORAGE_USERS_OCIS_ROOT: /data
