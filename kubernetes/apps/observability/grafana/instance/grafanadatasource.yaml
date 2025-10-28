@@ -7,7 +7,7 @@ metadata:
 spec:
   instanceSelector:
     matchLabels:
-      grafana.internal/instance: grafana
+      dashboards: grafana
   datasource:
     type: prometheus
     name: prometheus
@@ -23,7 +23,7 @@ spec:
 # spec:
 #   instanceSelector:
 #     matchLabels:
-#       grafana.internal/instance: grafana
+#       grafana.internal/instance: grafanadashboards: grafana
 #   datasource:
 #     type: alertmanager
 #     name: alertmanager
