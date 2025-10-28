@@ -1,0 +1,161 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: vm-k8s-stack
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.61.6
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vm-k8s-stack
+  namespace: monitoring
+spec:
+  interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: vm-k8s-stack
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      # -- Cluster label to use for dashboards and rules
+      clusterLabel: main-k8s-cluster
+      cluster:
+        # -- K8s cluster domain suffix, uses for building storage pods' FQDN. Details are [here](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/)
+        dnsDomain: cluster.local.
+    fullnameOverride: vmetrics
+
+    crds:
+      enabled: false
+
+    victoria-metrics-operator:
+      enabled: true
+
+    defaultDashboards:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+
+    defaultRules:
+      create: true
+
+    alertmanager:
+      enabled: false
+
+    vmalert:
+      enabled: false
+
+    grafana:
+      enabled: false
+
+    vmsingle:
+      enabled: true
+      spec:
+        extraArgs:
+          maxLabelsPerTimeseries: "40"
+          search.maxUniqueTimeseries: "600000"
+          search.minStalenessInterval: 5m
+        replicaCount: 1
+        retentionPeriod: "6w"
+        storage:
+          storageClassName: ceph-block
+          accessModes: [ReadWriteOnce]
+          volumeMode: Filesystem
+          resources:
+            requests:
+              storage: 50Gi
+        useDefaultResources: false
+        useStrictSecurity: true
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: 1
+          requests:
+            cpu: 100m
+      ingress:
+        enabled: true
+        path: "/"
+        pathType: Prefix
+        ingressClassName: "internal"
+        hosts:
+          - vmsingle.${CLUSTER_DOMAIN}
+
+    vmagent:
+      enabled: true
+      spec:
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1Gi
+        selectAllByDefault: true
+        scrapeInterval: 20s
+
+    defaultDatasources:
+      grafanaOperator:
+        # -- Create datasources as CRDs (requires grafana-operator to be installed)
+        enabled: true
+        spec:
+          instanceSelector:
+            matchLabels:
+              dashboards: grafana
+          allowCrossNamespaceImport: true
+
+    prometheus-node-exporter:
+      enabled: true
+
+    kube-state-metrics:
+      enabled: true
+
+    kubelet:
+      enabled: true
+
+    kubeApiServer:
+      enabled: true
+
+    kubeControllerManager:
+      enabled: true
+      service:
+        selector:
+          component: kube-apiserver # Selects controller node IPs
+
+    kubeEtcd:
+      enabled: true
+      service:
+        selector:
+          component: kube-apiserver
+        port: 2381
+        targetPort: 2381
+
+    kubeScheduler:
+      enabled: true
+      service:
+        selector:
+          component: kube-apiserver
+
+    kubeProxy:
+      enabled: false
+
+    coreDns:
+      enabled: true
+---
+
