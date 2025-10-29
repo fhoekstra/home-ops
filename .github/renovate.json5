@@ -70,6 +70,22 @@
     },
     {
       description: [
+        'Barman Cloud Group',
+      ],
+      groupName: 'Barman Cloud',
+      matchDatasources: [
+        'docker',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchPackageNames: [
+        '/cloudnative-pg/plugin-barman-cloud/',
+        '/cloudnative-pg/plugin-barman-cloud-sidecar/',
+      ],
+    },
+    {
+      description: [
         'Flux Operator Group',
       ],
       groupName: 'Flux Operator',
