@@ -31,6 +31,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/observability/victoria-metrics/vm-k8s-stack
+  postBuild:
+    substitute:
+      METRICS_STORAGE: 50Gi
   dependsOn:
     - name: victoria-metrics-crds
       namespace: flux-system

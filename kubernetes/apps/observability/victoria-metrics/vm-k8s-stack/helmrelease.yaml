@@ -83,7 +83,7 @@ spec:
           volumeMode: Filesystem
           resources:
             requests:
-              storage: 50Gi
+              storage: $METRICS_STORAGE
         useDefaultResources: false
         useStrictSecurity: true
         resources:
