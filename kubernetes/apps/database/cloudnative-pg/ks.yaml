@@ -37,10 +37,6 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/database/cloudnative-pg/barman-cloud
   prune: true
-  postBuild:
-    substitute:
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
-      SIDECAR_IMAGE_VERSION: v0.8.0
   sourceRef:
     kind: GitRepository
     name: flux-system
