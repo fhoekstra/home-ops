@@ -34,11 +34,14 @@ spec:
                   name: lldap-secret
             securityContext:
               runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
               repository: ghcr.io/lldap/lldap
-              tag: v0.6.2@sha256:9e605a66c02514bfcffd1b67cafb1e98d50992216bb2871d7ae44622047dd09d
+              tag: v0.6.2-alpine-rootless@sha256:35df821899ec54c11eaab395e9c68e191e2582592cba343b0a904f6821aadcd2
             env:
               TZ: America/New_York
               LLDAP_HTTP_PORT: &port 80
@@ -62,8 +65,8 @@ spec:
                 enabled: false
             securityContext:
               allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: false
-              # capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 5m
@@ -72,6 +75,18 @@ spec:
                 cpu: 100m
                 memory: 128Mi
     defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      shareProcessNamespace: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
