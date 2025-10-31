@@ -22,6 +22,19 @@ spec:
     remediation:
       retries: 5
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      shareProcessNamespace: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       *app :
         replicas: 1
@@ -41,6 +54,10 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: authelia-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
@@ -105,6 +122,10 @@ spec:
               requests:
                 cpu: 50m
                 memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
     # defaultPodOptions:
     # topologySpreadConstraints:
     #   - maxSkew: 1
