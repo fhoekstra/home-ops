@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: etcd-cluster-health
+spec:
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: "https://grafana.com/api/dashboards/12381/revisions/1/download"
