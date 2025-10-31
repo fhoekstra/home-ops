@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: trivy
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.31.0
+  url: oci://ghcr.io/aquasecurity/helm-charts/trivy-operator
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: trivy-operator
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: trivy
+  driftDetection:
+    mode: enabled
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    excludeNamespaces: "kube-system,flux-system,cert-manager,volsync-system"
+    operator:
+      replicas: 1
+      scanJobsConcurrentLimit: 3
+      scanJobTTL: 300s
+      scanJobTimeout: 20m
+      builtInTrivyServer: true
+      vulnerabilityScannerScanOnlyCurrentRevisions: true
+      configAuditScannerScanOnlyCurrentRevisions: true
+      annotations:
+        reloader.stakater.com/auto: "true"
+    trivy:
+      slow: true # flag is to use less CPU/memory for scanning though it takes more time than normal scanning
+      ignoreUnfixed: true
+      mode: ClientServer
+      severity: HIGH,CRITICAL
+      storageClassEnabled: false # ephemeral storage
+      resources:
+        requests:
+          cpu: 15m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+    trivyOperator:
+      excludeImages: "quay.io/backube/*"
+      skipResourceByLabels: "app.kubernetes.io/created-by=volsync"
+      resources:
+        requests:
+          cpu: 15m
+          memory: 512Mi
+        limits:
+          memory: 1500Mi
+
+    # https://github.com/aquasecurity/trivy-operator/issues/2566
+    # Configure node collector for Talos Linux (only mount writable /var paths)
+    nodeCollector:
+      useNodeSelector: false
+      volumeMounts:
+        - mountPath: /var/lib/etcd
+          name: var-lib-etcd
+          readOnly: true
+        - mountPath: /var/lib/kubelet
+          name: var-lib-kubelet
+          readOnly: true
+        - mountPath: /var/lib/kube-scheduler
+          name: var-lib-kube-scheduler
+          readOnly: true
+        - mountPath: /var/lib/kube-controller-manager
+          name: var-lib-kube-controller-manager
+          readOnly: true
+      volumes:
+        - name: var-lib-etcd
+          hostPath:
+            path: /var/lib/etcd
+        - name: var-lib-kubelet
+          hostPath:
+            path: /var/lib/kubelet
+        - name: var-lib-kube-scheduler
+          hostPath:
+            path: /var/lib/kube-scheduler
+        - name: var-lib-kube-controller-manager
+          hostPath:
+            path: /var/lib/kube-controller-manager
+    serviceMonitor:
+      enabled: true
