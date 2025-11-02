@@ -6,6 +6,8 @@ resources:
   - ./prometheus-operator-crds/ks.yaml
   - ./victoria-metrics/ks.yaml
   - ./grafana/ks.yaml
+  - ./fluent-bit/ks.yaml
+  - ./victoria-logs/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
