@@ -6,3 +6,4 @@ resources:
   - ./cluster17.yaml
   - ./ferretdb.yaml
   - ./pg-secret.sops.yaml
+  - https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
