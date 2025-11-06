@@ -8,7 +8,11 @@ metadata:
 kind: Cluster
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.6-minimal-trixie
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    major: 17
+    name: postgresql-minimal-trixie
   enableSuperuserAccess: true
   superuserSecret:
     name: pg-secret
