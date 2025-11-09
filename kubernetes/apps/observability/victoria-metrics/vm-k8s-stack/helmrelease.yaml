@@ -75,13 +75,14 @@ spec:
           search.minStalenessInterval: 5m
         replicaCount: 1
         retentionPeriod: "6w"
-        storage:
-          storageClassName: ceph-block
-          accessModes: [ReadWriteOnce]
-          volumeMode: Filesystem
-          resources:
-            requests:
-              storage: 50Gi
+        storageDataPath: &dataPath "/vm"
+        volumes:
+          - name: &volume vm
+            persistentVolumeClaim:
+              claimName: victoria-metrics-ceph
+        volumeMounts:
+          - name: *volume
+            mountPath: *dataPath
         useDefaultResources: false
         useStrictSecurity: true
         resources:
