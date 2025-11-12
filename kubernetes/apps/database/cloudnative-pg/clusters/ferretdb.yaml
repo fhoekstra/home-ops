@@ -177,3 +177,15 @@ spec:
       port: 27017
       targetPort: 27017
   type: NodePort
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: ferretdb-pg-cluster
+spec:
+  selector:
+    matchLabels:
+      cnpg.io/cluster: cluster-17
+  podMetricsEndpoints:
+    - port: metrics
