@@ -90,3 +90,15 @@ spec:
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: cluster-17
+spec:
+  selector:
+    matchLabels:
+      cnpg.io/cluster: cluster-17
+  podMetricsEndpoints:
+    - port: metrics
