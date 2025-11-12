@@ -158,17 +158,7 @@ spec:
             - scheme: http
 
     kubeScheduler:
-      enabled: true
-      service:
-        selector:
-          component: kube-apiserver # Selects controller node IPs
-      vmScrape:
-        spec:
-          endpoints:
-            - port: http-metrics
-              scheme: https
-              tlsConfig:
-                insecureSkipVerify: true
+      enabled: false
 
     kubeProxy:
       enabled: false
