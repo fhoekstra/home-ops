@@ -50,3 +50,5 @@ spec:
         memory: 128Mi
     monitoring:
       podMonitorEnabled: true
+      grafanaDashboard:
+        create: true

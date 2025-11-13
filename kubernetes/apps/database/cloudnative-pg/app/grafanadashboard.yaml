@@ -12,4 +12,6 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: "https://grafana.com/api/dashboards/20417/revisions/4/download"
+  configMapRef:
+    key: cnp.json
+    name: cnpg-grafana-dashboard
