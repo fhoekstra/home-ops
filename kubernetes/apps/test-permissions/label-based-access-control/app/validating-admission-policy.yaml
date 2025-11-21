@@ -13,14 +13,14 @@ spec:
   validations: # Replace with MongoDB labels and namespace prefix
     - expression: "'cnpg.io/cluster' in object.metadata.labels || object.metadata.namespace.startsWith('test-')"
   matchConstraints:
-    resourceRules: # Copied from ClusterRole read-all-workloads
-      - apiGroups: ["", "apps"]
+    resourceRules:
+      - apiVersions: ["v1", "apps/v1"]
         resources:
           - "pods"
           - "deployments"
           - "statefulsets"
           - "persistentvolumeclaims"
-        verbs: ["get", "watch", "list"]
+        operations: ["get", "watch", "list"]
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
