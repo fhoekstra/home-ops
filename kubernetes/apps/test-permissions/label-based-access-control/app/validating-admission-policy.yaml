@@ -9,7 +9,7 @@ spec:
     # - name: "only-requests-from-et-group"
     #   expression: '"et-group" in request.userInfo.groups' # Match requests made by ET group users
     - name: "only-requests-from-et-user"
-      expression: '"et-user" == request.userInfo.name'
+      expression: '"et-user" == request.userInfo.username'
   validations: # Replace with MongoDB labels and namespace prefix
     - expression: "'cnpg.io/cluster' in object.metadata.labels || object.metadata.namespace.startsWith('test-')"
   matchConstraints:
