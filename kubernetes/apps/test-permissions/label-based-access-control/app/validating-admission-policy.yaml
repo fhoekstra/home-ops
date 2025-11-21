@@ -1,0 +1,41 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "label-based-access-control"
+spec:
+  failurePolicy: Fail
+  matchConditions:
+    # - name: "only-requests-from-et-group"
+    #   expression: '"et-group" in request.userInfo.groups' # Match requests made by ET group users
+    - name: "only-requests-from-et-user"
+      expression: '"et-user" == request.userInfo.name'
+  validations: # Replace with MongoDB labels and namespace prefix
+    - expression: "'cnpg.io/cluster' in object.metadata.labels || object.metadata.namespace.startsWith('test-')"
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["v1", "apps/v1"]
+        resources:
+          - "pods"
+          - "deployments"
+          - "statefulsets"
+          - "persistentvolumeclaims"
+        verbs: ["get", "watch", "list"]
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "lbac-cnpg-outside-tp-namespace"
+spec:
+  policyName: "label-based-access-control"
+  validationActions: [Deny] # What to do with requests that do not conform to the policy
+  # paramRef:
+  #   name: "replica-limit-test.example.com"
+  #   namespace: "default"
+  #   parameterNotFoundAction: Deny
+  matchResources:
+    namespaceSelector:
+      matchExpressions: # Only apply for others' namespaces
+        - key: kubernetes.io/metadata.name # Replace with label that ties namespace to the team that the user is from (et)
+          operator: "NotIn"
+          values: ["test-permissions"]
