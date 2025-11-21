@@ -11,7 +11,7 @@ kind: ClusterRole
 metadata:
   name: read-all-workloads
 rules:
-  - apiGroups: ["v1", "apps/v1"]
+  - apiGroups: ["", "apps"]
     resources:
       - "pods"
       - "deployments"
@@ -25,7 +25,7 @@ kind: ClusterRole
 metadata:
   name: read-all-cnpg-things
 rules:
-  - apiGroups: ["postgresql.cnpg.io/v1"]
+  - apiGroups: ["postgresql.cnpg.io"]
     resources: ["*"]
     verbs: ["get", "watch", "list"]
 ---
@@ -35,7 +35,7 @@ kind: ClusterRoleBinding
 metadata:
   name: read-all-cnpg-things-et-user
 roleRef:
-  apiGroup: rbac.authorization.k8s.io/v1
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: read-all-cnpg-things
 subjects:
@@ -48,7 +48,7 @@ kind: ClusterRoleBinding
 metadata:
   name: read-all-workloads-et-user
 roleRef:
-  apiGroup: rbac.authorization.k8s.io/v1
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: read-all-workloads
 subjects:

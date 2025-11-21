@@ -13,8 +13,8 @@ spec:
   validations: # Replace with MongoDB labels and namespace prefix
     - expression: "'cnpg.io/cluster' in object.metadata.labels || object.metadata.namespace.startsWith('test-')"
   matchConstraints:
-    resourceRules:
-      - apiGroups: ["v1", "apps/v1"]
+    resourceRules: # Copied from ClusterRole read-all-workloads
+      - apiGroups: ["", "apps"]
         resources:
           - "pods"
           - "deployments"
