@@ -13,11 +13,6 @@ releases:
     chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
     version: 24.0.2
 
-  - name: grafana-operator
-    namespace: observability
-    chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
-    version: v5.20.0
-
   - name: cilium
     namespace: kube-system
     chart: oci://ghcr.io/astrateam-net/oci-charts/cilium
@@ -44,6 +39,13 @@ releases:
       - ../apps/cert-manager/cert-manager/app/helm-values.yaml
     needs:
       - kube-system/coredns
+
+  - name: grafana-operator
+    namespace: observability
+    chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
+    version: v5.20.0
+    needs:
+      - cert-manager/cert-manager
 
   - name: flux-operator
     namespace: flux-system
