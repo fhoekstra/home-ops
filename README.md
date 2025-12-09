@@ -7,6 +7,8 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
 
 # Hardware
 
+![IMG_20251209_104102](https://github.com/user-attachments/assets/fdc1cb26-5f4f-40e8-8fe0-6361bb9761c6)
+
 Currently 3 laptops that I got from the used market:
 
 | Role | Model | CPU | RAM | SSD |
