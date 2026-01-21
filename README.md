@@ -7,6 +7,9 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
 
 # Hardware
 
+> [!WARNING]
+> Connecting SSDs via USB causes problems with Ceph. I am currently replacing this hardware with a new set of energy-efficient nodes, this time with proper M.2 and SATA connections with enough room for multiple disks.
+
 ![IMG_20251209_104102](https://github.com/user-attachments/assets/fdc1cb26-5f4f-40e8-8fe0-6361bb9761c6)
 
 Currently 3 laptops that I got from the used market:
