@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/versity/versitygw
-              tag: v1.0.18@sha256:90f8280610a889d705ae93ae4b4064d74ffa9f3b565aacf2e3372b0614d7a796
+              tag: v1.0.20@sha256:c2f9b9289d237b85736214dfbef376b7d092b8540e1456d547aaa35dd03ad0b3
             args:
               - posix
               - /data
