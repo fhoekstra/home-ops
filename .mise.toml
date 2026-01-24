@@ -10,7 +10,7 @@ run = "uv pip install -r requirements.txt"
 
 [tools]
 # Template tools
-python = "3.14.0"
+python = "3.14.2"
 uv = "latest"
 # Operations tools
 "aqua:budimanjojo/talhelper" = "3.0.45"
