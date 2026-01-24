@@ -42,7 +42,6 @@ nodes:
           grow: true
     userVolumes:
       - name: ceph
-        # TODO: How do I make this available to Ceph?
         provisioning:
           diskSelector: *micron7450
           maxSize: 400GiB
