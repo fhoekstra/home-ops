@@ -96,7 +96,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: "/dev/disk/by-id/(ata-SAMSUNG_MZ7KM|ata-SSDSC2KG480G8R_PHY|ata-SAMSUNG_MZ7LH)*" # List these with: `talosctl get disks` then get name of disk and do `talosctl get disk diskname -o yaml` and check spec.symlinks
+        devicePathFilter: "^/dev/disk/by-partlabel/u-ceph$"
         config:
           osdsPerDevice: "1"
       resources:
