@@ -24,3 +24,6 @@ Brewfile.lock.json
 wiki
 # Bootstrap
 /config.yaml
+
+# Custom Talos overlay
+_out
