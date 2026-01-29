@@ -14,7 +14,7 @@ python = "3.14.2"
 uv = "latest"
 # Operations tools
 "aqua:budimanjojo/talhelper" = "3.1.3"
-"aqua:cloudflare/cloudflared" = "2025.11.1"
+"aqua:cloudflare/cloudflared" = "2026.1.2"
 "aqua:FiloSottile/age" = "1.3.1"
 "aqua:fluxcd/flux2" = "2.7.5"
 "aqua:getsops/sops" = "3.11.0"
