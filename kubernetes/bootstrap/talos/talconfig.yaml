@@ -39,7 +39,8 @@ nodes:
           diskSelector: &micron7450
             match: "disk.model.startsWith('Micron_7450_')"
           minSize: 250GiB
-          grow: true
+          maxSize: 250GiB
+          grow: false
     userVolumes:
       - name: ceph
         provisioning:
@@ -49,7 +50,7 @@ nodes:
           grow: false
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/50e58ad8468665c21178c80f201737019ffca122d13ee3e677d9ccf443ec489c
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -68,24 +69,13 @@ nodes:
     installDisk: /dev/mmcblk1 # This is the microSD card, as there is no onboard MMC on my Rock 5B+
     volumes:
       - name: EPHEMERAL
-        # EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding to "/var"
-        # This means all the writeable directories are under this partition:
-        # etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
-        # So by mounting this to the NVMe disk, we only use the MicroSD for the read-only root filesystem
         provisioning:
           diskSelector: *micron7450
           minSize: 250GiB
           grow: true
-    userVolumes:
-      - name: ceph
-        provisioning:
-          diskSelector:
-            match: "disk.model.startsWith('SSDSC2KG')" # SSDSC2KG480G8R  Intel S4610 480GB
-          minSize: 300GiB
-          grow: true
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/50e58ad8468665c21178c80f201737019ffca122d13ee3e677d9ccf443ec489c
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -104,24 +94,13 @@ nodes:
     installDisk: /dev/mmcblk1 # This is the microSD card, as there is no onboard MMC on my Rock 5B+
     volumes:
       - name: EPHEMERAL
-        # EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding to "/var"
-        # This means all the writeable directories are under this partition:
-        # etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
-        # So by mounting this to the NVMe disk, we only use the MicroSD for the read-only root filesystem
         provisioning:
           diskSelector: *micron7450
           minSize: 250GiB
           grow: true
-    userVolumes:
-      - name: ceph
-        provisioning:
-          diskSelector:
-            match: "disk.model.startsWith('SAMSUNG MZ7KM')" # 480 , SM863a 480GB
-          minSize: 300GiB
-          grow: true
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/50e58ad8468665c21178c80f201737019ffca122d13ee3e677d9ccf443ec489c
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
