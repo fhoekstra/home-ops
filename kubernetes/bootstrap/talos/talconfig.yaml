@@ -15,9 +15,9 @@ clusterSvcNets:
 
 additionalApiServerCertSans: &sans
   - "192.168.1.30"
-  - "ideapad-s340-14iwl"
-  - "latitude-5470"
-  - "latitude-5490-azerty"
+  - "talos-rock-1"
+  - "talos-rock-2"
+  - "talos-rock-3"
   - "127.0.0.1"
 additionalMachineCertSans: *sans
 
@@ -26,60 +26,88 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "ideapad-s340-14iwl"
-    ipAddress: "192.168.1.14"
-    installDiskSelector:
-      model: WDC PC SN520 SDAPMUW-512G-1001
+  - hostname: "talos-rock-1"
+    ipAddress: "192.168.1.21"
+    installDisk: /dev/mmcblk1 # This is the microSD card, as there is no onboard MMC on my Rock 5B+
+    volumes:
+      - name: EPHEMERAL
+        # EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding to "/var"
+        # This means all the writeable directories are under this partition:
+        # etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
+        # So by mounting this to the NVMe disk, we only use the MicroSD for the read-only root filesystem
+        provisioning:
+          diskSelector: &micron7450
+            match: "disk.model.startsWith('Micron_7450_')"
+          minSize: 250GiB
+          maxSize: 250GiB
+          grow: false
+    userVolumes:
+      - name: ceph
+        provisioning:
+          diskSelector: *micron7450
+          maxSize: 400GiB
+          minSize: 400GiB
+          grow: false
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "3c:18:a0:cf:d3:b8"
+          hardwareAddr: "00:e0:4c:0b:07:4c" # talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
         dhcp: false
         addresses:
-          - "192.168.1.14/24"
+          - "192.168.1.21/24"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.1.1"
         mtu: 1500
         vip:
           ip: "192.168.1.30"
-  - hostname: "latitude-5470"
-    ipAddress: "192.168.1.12"
-    installDiskSelector:
-      model: SAMSUNG SSD CM87
+  - hostname: "talos-rock-2"
+    ipAddress: "192.168.1.22"
+    installDisk: /dev/mmcblk1 # This is the microSD card, as there is no onboard MMC on my Rock 5B+
+    volumes:
+      - name: EPHEMERAL
+        provisioning:
+          diskSelector: *micron7450
+          minSize: 250GiB
+          grow: true
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "18:db:f2:3e:63:ef"
+          hardwareAddr: "00:e0:4c:0b:08:ad" # talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
         dhcp: false
         addresses:
-          - "192.168.1.12/24"
+          - "192.168.1.22/24"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.1.1"
         mtu: 1500
         vip:
           ip: "192.168.1.30"
-  - hostname: "latitude-5490-azerty"
-    ipAddress: "192.168.1.11"
-    installDiskSelector:
-      model: SK hynix SC401 S
+  - hostname: "talos-rock-3"
+    ipAddress: "192.168.1.23"
+    installDisk: /dev/mmcblk1 # This is the microSD card, as there is no onboard MMC on my Rock 5B+
+    volumes:
+      - name: EPHEMERAL
+        provisioning:
+          diskSelector: *micron7450
+          minSize: 250GiB
+          grow: true
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/249d9135de54962744e917cfe654117000cba369f9152fbab9d055a00aa3664f
+    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "8c:04:ba:0a:70:c2"
+          hardwareAddr: "00:e0:4c:0b:08:ad" # talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
         dhcp: false
         addresses:
-          - "192.168.1.11/24"
+          - "192.168.1.23/24"
         routes:
           - network: "0.0.0.0/0"
             gateway: "192.168.1.1"
@@ -96,7 +124,6 @@ patches:
   - "@./patches/global/machine-system-upgrade.yaml"
   - "@./patches/global/machine-time.yaml"
   - "@./patches/global/machine-democratic-csi.yaml"
-
 # Controller patches
 controlPlane:
   patches:
