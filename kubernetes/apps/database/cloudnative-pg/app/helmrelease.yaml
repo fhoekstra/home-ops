@@ -37,8 +37,6 @@ spec:
       retries: 3
   values:
     replicaCount: 2
-    nodeSelector:
-      kubernetes.io/arch: amd64
     crds:
       create: true
     resources:
