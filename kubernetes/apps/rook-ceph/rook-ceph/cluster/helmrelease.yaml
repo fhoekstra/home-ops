@@ -100,15 +100,15 @@ spec:
         nodes:
           - name: "talos-rock-1"
             devices:
-              - "/dev/disk/by-partlabel/u-ceph"
+              - name: "/dev/disk/by-partlabel/u-ceph"
           - name: "talos-rock-2"
             devices:
-              - "/dev/disk/by-id/ata-INTEL_SSDSC2BX400G4R_BTHC6272038A400VGN" # Intel DC S3610, 400GB
-              - "/dev/disk/by-id/ata-SSDSC2KG480G8R_PHYG147400A7480BGN" # Intel DC S4610, 480 GB
+              - name: "/dev/disk/by-id/ata-INTEL_SSDSC2BX400G4R_BTHC6272038A400VGN" # Intel DC S3610, 400GB
+              - name: "/dev/disk/by-id/ata-SSDSC2KG480G8R_PHYG147400A7480BGN" # Intel DC S4610, 480 GB
           - name: "talos-rock-3"
             devices:
-              - "/dev/disk/by-id/ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA1MB41492" # PM883, 480GB
-              - "/dev/disk/by-id/ata-SAMSUNG_MZ7KM480HMHQ-00005_S3F4NX0JA06408" # SM863a, 480GB
+              - name: "/dev/disk/by-id/ata-SAMSUNG_MZ7LH480HAHQ-00005_S45PNA1MB41492" # PM883, 480GB
+              - name: "/dev/disk/by-id/ata-SAMSUNG_MZ7KM480HMHQ-00005_S3F4NX0JA06408" # SM863a, 480GB
         config:
           osdsPerDevice: "1"
       resources:
