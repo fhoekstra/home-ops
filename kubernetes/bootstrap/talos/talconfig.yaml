@@ -41,13 +41,8 @@ nodes:
           minSize: 250GiB
           maxSize: 250GiB
           grow: false
-    userVolumes:
-      - name: ceph
-        provisioning:
-          diskSelector: *micron7450
-          maxSize: 400GiB
-          minSize: 400GiB
-          grow: false
+    patches:
+      - "@./patches/talos-rock-1/ceph-raw-volume.yaml"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics

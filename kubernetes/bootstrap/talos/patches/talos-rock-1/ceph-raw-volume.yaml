@@ -1,0 +1,9 @@
+---
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: ceph-data
+provisioning:
+  diskSelector:
+    match: "disk.model.startsWith('Micron_7450_')"
+  minSize: 400GiB
+  maxSize: 400GiB
