@@ -19,6 +19,9 @@ kind: HelmRelease
 metadata:
   name: fluent-bit
 spec:
+  dependsOn:
+    - name: victoria-logs
+      namespace: observability
   chartRef:
     kind: OCIRepository
     name: fluent-bit
