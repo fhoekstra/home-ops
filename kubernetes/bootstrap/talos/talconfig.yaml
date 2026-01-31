@@ -65,7 +65,8 @@ nodes:
     volumes:
       - name: EPHEMERAL
         provisioning:
-          diskSelector: *micron7450
+          diskSelector:
+            match: "disk.model.startsWith('SSDSC2KG480G8R')" # Intel DC S4610, 480 GB
           minSize: 250GiB
           grow: true
     machineSpec:
@@ -90,7 +91,8 @@ nodes:
     volumes:
       - name: EPHEMERAL
         provisioning:
-          diskSelector: *micron7450
+          diskSelector:
+            match: "disk.model.startsWith('SAMSUNG MZ7LH480')" # PM883, 480GB
           minSize: 250GiB
           grow: true
     machineSpec:
