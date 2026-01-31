@@ -100,7 +100,7 @@ spec:
         nodes:
           - name: "talos-rock-1"
             devices:
-              - name: "/dev/disk/by-partlabel/r-ceph-data"
+              - name: "/dev/disk/by-partlabel/r-osd-data"
           - name: "talos-rock-2"
             devices:
               - name: "/dev/disk/by-id/ata-INTEL_SSDSC2BX400G4R_BTHC6272038A400VGN" # Intel DC S3610, 400GB

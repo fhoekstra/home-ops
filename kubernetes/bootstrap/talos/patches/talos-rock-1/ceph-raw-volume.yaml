@@ -1,7 +1,7 @@
 ---
 apiVersion: v1alpha1
 kind: RawVolumeConfig
-name: ceph-data
+name: osd-data # Do not use "ceph" in this name, or rook will refuse to use it for an OSD!!
 provisioning:
   diskSelector:
     match: "disk.model.startsWith('Micron_7450_')"
