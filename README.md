@@ -41,3 +41,26 @@ Currently 3 laptops that I got from the used market:
 - FoundryVTT with an integrated SFTPGo container for remote filesystem access
 - OwnCloud Instant Scale (OCIS) for cloudnative filebrowser/sharing
 - Continuwuity Matrix server
+
+# Bootstrap
+
+If the cluster is still running, reset the nodes to maintenance mode. You can skip this if you booted off of install media.
+
+`task talos:reset`
+
+Then wait for machinestatus to be maintenance on all nodes:
+
+`talosctl get machinestatus -n <IP> --insecure`
+
+Then bootstrap Talos:
+
+`task bootstrap:talos`
+
+Wait for machinestatus to be running on all nodes:
+
+`talosctl get machinestatus` (because we have talconfig now, we can skip the IP and insecure flags)
+
+Then bootstrap the apps with helmfile and watch the operators (flux and volsync) take over to bring everything back up:
+
+`task bootstrap:apps`
+
