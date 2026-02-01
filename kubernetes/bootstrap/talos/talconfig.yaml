@@ -69,6 +69,15 @@ nodes:
             match: "disk.model.startsWith('SSDSC2KG480G8R')" # Intel DC S4610, 480 GB
           minSize: 250GiB
           grow: true
+    userVolumes:
+      - name: csi-local-hostpath
+        provisioning:
+          diskSelector:
+            match: "disk.model.startsWith('INTEL SSDSC2BX40')"
+          minSize: "50GiB"
+          grow: true
+    patches:
+      - "@./patches/talos-rock-2/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
