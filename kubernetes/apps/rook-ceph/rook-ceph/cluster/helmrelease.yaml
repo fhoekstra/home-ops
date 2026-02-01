@@ -126,11 +126,11 @@ spec:
           requests: *mon-hw
         osd:
           limits:
-            cpu: 1
-            memory: 1600Mi
+            cpu: 4
+            memory: 2Gi
           requests:
             cpu: 500m
-            memory: 1600Mi
+            memory: 2Gi
         prepareosd:
           limits:
             cpu: 1000m
