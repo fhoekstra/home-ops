@@ -75,14 +75,12 @@ spec:
           search.minStalenessInterval: 5m
         replicaCount: 1
         retentionPeriod: "6w"
-        storageDataPath: &dataPath "/vm"
-        volumes:
-          - name: &volume vm
-            persistentVolumeClaim:
-              claimName: victoria-metrics-ceph
-        volumeMounts:
-          - name: *volume
-            mountPath: *dataPath
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
         useDefaultResources: false
         useStrictSecurity: true
         resources:
@@ -165,5 +163,3 @@ spec:
 
     coreDns:
       enabled: true
----
-
