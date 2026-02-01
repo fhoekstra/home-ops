@@ -43,6 +43,7 @@ nodes:
           grow: false
     patches:
       - "@./patches/talos-rock-1/ceph-raw-volume.yaml"
+      - "@./patches/talos-rock-1/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
@@ -104,6 +105,8 @@ nodes:
             match: "disk.model.startsWith('SAMSUNG MZ7LH480')" # PM883, 480GB
           minSize: 250GiB
           grow: true
+    patches:
+      - "@./patches/talos-rock-3/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
@@ -129,7 +132,6 @@ patches:
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-system-upgrade.yaml"
   - "@./patches/global/machine-time.yaml"
-  - "@./patches/global/machine-democratic-csi.yaml"
 # Controller patches
 controlPlane:
   patches:
