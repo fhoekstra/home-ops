@@ -9,4 +9,3 @@ resources:
   - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
   - ./metrics-server.yaml
-  - ./spegel.yaml
