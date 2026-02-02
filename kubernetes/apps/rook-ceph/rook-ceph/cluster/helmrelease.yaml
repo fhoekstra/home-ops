@@ -126,7 +126,6 @@ spec:
           requests: *mon-hw
         osd:
           limits:
-            cpu: 4
             memory: 2Gi
           requests:
             cpu: 500m
