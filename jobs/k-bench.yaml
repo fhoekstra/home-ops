@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/persistentvolumeclaim-v1.json
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -12,6 +14,7 @@ spec:
     requests:
       storage: 33Gi
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/job-batch-v1.json
 apiVersion: batch/v1
 kind: Job
 metadata:
