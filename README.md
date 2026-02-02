@@ -52,13 +52,19 @@ Then wait for machinestatus to be maintenance on all nodes:
 
 `talosctl get machinestatus -n <IP> --insecure`
 
+Then wipe the disks:
+
+`talosctl wipe disk --inscure nvme0n1 -n <IP>`
+`talosctl wipe disk --inscure sda -n <IP>`
+`talosctl wipe disk --inscure sdb -n <IP>`
+
 Then bootstrap Talos:
 
 `task bootstrap:talos`
 
 Wait for machinestatus to be running on all nodes:
 
-`talosctl get machinestatus` (because we have talconfig now, we can skip the IP and insecure flags)
+`talosctl get machinestatus -w` (because we have talconfig now, we can skip the IP and insecure flags)
 
 Then bootstrap the apps with helmfile and watch the operators (flux and volsync) take over to bring everything back up:
 
