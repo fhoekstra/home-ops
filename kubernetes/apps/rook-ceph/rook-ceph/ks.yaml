@@ -33,6 +33,8 @@ spec:
   dependsOn:
     - name: rook-ceph
       namespace: flux-system
+    - name: volsync
+      namespace: flux-system
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   prune: true
   sourceRef:
