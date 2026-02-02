@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-hass
+spec:
+  ports:
+    - name: "http"
+      protocol: TCP
+      port: 80
+      targetPort: 8123
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/endpoints.json
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: proxy-hass
+subsets:
+  - addresses:
+      - ip: "${HOME_ASSISTANT_SERVER_IP_ADDRESS}"
+    ports:
+      - port: 8123
