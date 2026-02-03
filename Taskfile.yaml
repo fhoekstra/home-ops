@@ -30,3 +30,10 @@ tasks:
     preconditions:
       - test -f {{.KUBECONFIG}}
       - which flux
+
+  flux-local:
+    desc: Run flux-local to check correctness
+    cmd: flux-local test --enable-helm --all-namespaces --path kubernetes/flux/cluster -v
+    preconditions:
+      - sh: which flux-local
+        msg: "Install flux-local by running: uv venv; uv pip install flux-local"
