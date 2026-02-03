@@ -99,7 +99,6 @@ spec:
             mountPropagation: Bidirectional
         resources:
           limits:
-            cpu: 200m
             memory: 324Mi
           requests:
             cpu: 50m

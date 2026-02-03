@@ -75,7 +75,6 @@ spec:
                   name: foundryvtt-secret-stijn
             resources:
               limits:
-                cpu: 2
                 memory: 4Gi
               requests:
                 cpu: 100m
@@ -102,7 +101,6 @@ spec:
               # SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: 3
             resources:
               limits:
-                cpu: 1
                 memory: 1Gi
               requests:
                 cpu: 10m

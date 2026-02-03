@@ -74,7 +74,6 @@ socketLB:
   hostNamespaceOnly: true
 resources:
   limits:
-    cpu: 1
     memory: 1Gi
   requests:
     cpu: 200m

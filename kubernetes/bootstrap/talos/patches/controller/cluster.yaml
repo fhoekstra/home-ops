@@ -39,7 +39,6 @@ cluster:
         cpu: "400m"
         memory: "896Mi"
       limits:
-        cpu: "1"
         memory: "1.5Gi"
     extraArgs:
       feature-gates: MutatingAdmissionPolicy=true

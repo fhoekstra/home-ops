@@ -86,7 +86,6 @@ spec:
         resources:
           limits:
             memory: 2Gi
-            cpu: 1
           requests:
             cpu: 100m
       ingress:
@@ -102,7 +101,6 @@ spec:
       spec:
         resources:
           limits:
-            cpu: 2000m
             memory: 1Gi
         selectAllByDefault: true
         scrapeInterval: 20s

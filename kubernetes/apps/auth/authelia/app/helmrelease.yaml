@@ -68,7 +68,6 @@ spec:
                 cpu: 10m
                 memory: 32Mi
               limits:
-                cpu: 500m
                 memory: 128Mi
             probes:
               liveness: &probes
@@ -117,7 +116,6 @@ spec:
                 containerPort: &anubisPort 8923
             resources:
               limits:
-                cpu: 500m
                 memory: 256Mi
               requests:
                 cpu: 50m
