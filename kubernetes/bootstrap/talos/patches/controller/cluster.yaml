@@ -36,10 +36,10 @@ cluster:
   apiServer:
     resources:
       requests:
-        cpu: "400m"
-        memory: "896Mi"
+        cpu: "500m"
+        memory: "2Gi"
       limits:
-        memory: "1.5Gi"
+        memory: "2Gi"
     extraArgs:
       feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true

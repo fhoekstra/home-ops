@@ -23,7 +23,7 @@ spec:
     limits:
       memory: 256Mi
     requests:
-      cpu: 50m
+      cpu: 250m
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv

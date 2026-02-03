@@ -41,3 +41,9 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+    resources:
+      requests:
+        cpu: 600m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
