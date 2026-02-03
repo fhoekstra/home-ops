@@ -51,3 +51,7 @@ spec:
       enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-secret
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi

@@ -43,6 +43,12 @@ operator:
       enabled: true
   dashboards:
     enabled: true
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 prometheus:
   enabled: true
   serviceMonitor:
@@ -74,7 +80,8 @@ socketLB:
   hostNamespaceOnly: true
 resources:
   limits:
+    cpu: 500m
     memory: 1Gi
   requests:
-    cpu: 200m
-    memory: 512Mi
+    cpu: 500m
+    memory: 1Gi

@@ -38,3 +38,12 @@ spec:
       replicaCount: 2
       serviceMonitor:
         create: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    webhook:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 16Mi
