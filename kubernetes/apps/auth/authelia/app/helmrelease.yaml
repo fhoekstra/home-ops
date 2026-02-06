@@ -59,16 +59,16 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/authelia/authelia
               tag: 4.39.15
             resources:
               requests:
                 cpu: 10m
-                memory: 32Mi
+                memory: 100Mi
               limits:
-                memory: 128Mi
+                memory: 100Mi
             probes:
               liveness: &probes
                 enabled: true
@@ -116,10 +116,10 @@ spec:
                 containerPort: &anubisPort 8923
             resources:
               limits:
-                memory: 256Mi
+                memory: 100Mi
               requests:
-                cpu: 50m
-                memory: 256Mi
+                cpu: 26m
+                memory: 100Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

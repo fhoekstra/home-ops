@@ -38,7 +38,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/lldap/lldap
               tag: v0.6.2-alpine-rootless@sha256:35df821899ec54c11eaab395e9c68e191e2582592cba343b0a904f6821aadcd2
@@ -69,10 +69,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
-                memory: 128Mi
+                cpu: 10m
+                memory: 100Mi
               limits:
-                memory: 128Mi
+                memory: 100Mi
     defaultPodOptions:
       automountServiceAccountToken: false
       enableServiceLinks: false
