@@ -3,6 +3,10 @@ originRequest:
   originServerName: "external.${CLUSTER_DOMAIN}"
 
 ingress:
+  - hostname: "echo-server.${CLUSTER_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      noTLSVerify: true
   - hostname: "${CLUSTER_DOMAIN}"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
