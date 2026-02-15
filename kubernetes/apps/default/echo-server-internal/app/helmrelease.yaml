@@ -17,15 +17,12 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: internal-ingress-nginx
-      namespace: network
   values:
     controllers:
-      echo-server-internal:
+      *app :
         strategy: RollingUpdate
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/mendhak/http-https-echo
               tag: 39
@@ -63,13 +60,13 @@ spec:
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
             port: *port
     serviceMonitor:
-      app:
+      *app :
         serviceName: *app
         endpoints:
           - port: http
@@ -77,15 +74,13 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    ingress:
-      app:
-        className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
-        hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.${CLUSTER_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: http
