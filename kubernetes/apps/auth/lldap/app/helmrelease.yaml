@@ -94,7 +94,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: *app
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
@@ -103,21 +103,18 @@ spec:
             enabled: true
             port: *ldapPort
             protocol: TCP
-    ingress:
-      app:
-        enabled: true
-        className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${CLUSTER_DOMAIN}
-        hosts:
-          - host: &host lldap.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts: [*host]
+
+    route:
+      *app :
+        hostnames: ["lldap.${CLUSTER_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: http
+
     persistence:
       data:
         type: emptyDir
