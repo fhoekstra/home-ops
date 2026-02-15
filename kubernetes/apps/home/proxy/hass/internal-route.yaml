@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: hass-proxy
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+spec:
+  hostnames: ["hass.${CLUSTER_DOMAIN}"]
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: proxy-hass
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

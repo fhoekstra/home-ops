@@ -9,6 +9,9 @@ spec:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: games
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: home
   to:
     - group: ""
       kind: Service
