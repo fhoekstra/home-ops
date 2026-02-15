@@ -60,10 +60,8 @@ spec:
     resources:
       limits:
         memory: 512Mi
-        cpu: 1
       requests:
-        memory: 128Mi
-        cpu: 10m
+        cpu: 100m
   configuration:
     destinationPath: s3://cnpg/cluster-17/
     endpointURL: http://versity.storage.svc.cluster.local:7070
