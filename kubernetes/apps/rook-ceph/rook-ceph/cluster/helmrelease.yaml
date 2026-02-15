@@ -40,23 +40,15 @@ spec:
       createPrometheusRules: true
     toolbox:
       enabled: true
-    ingress:
-      # -- Enable an ingress for the ceph-dashboard
+    route:
       dashboard:
-        # labels:
-        #   external-dns/private: "true"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
         host:
-          name: &host "rook.${CLUSTER_DOMAIN}"
-          path: "/"
-        #   pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-        ## Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
-        ## to set the ingress class
-        ingressClassName: internal
+          name: "rook.${CLUSTER_DOMAIN}"
+          path: /
+          pathType: PathPrefix
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
 
     cephClusterSpec:
       dashboard:
