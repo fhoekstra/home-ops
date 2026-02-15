@@ -34,34 +34,25 @@ spec:
         enabled: true
         storageClassName: "ceph-block"
         size: "20Gi"
-      ingress:
+      route:
         enabled: true
-        ingressClassName: "internal"
-        pathType: "Prefix"
-        hosts:
-          - name: "vlogs.${CLUSTER_DOMAIN}"
-            path:
-              - "/"
-            port: "http"
-      # route:
-      #   enabled: true
-      #   hostnames:
-      #     - victoria-logs.turbo.ac
-      #   parentRefs:
-      #     - name: envoy-internal
-      #       namespace: network
-      #   extraRules:
-      #     - filters:
-      #         - type: RequestRedirect
-      #           requestRedirect:
-      #             path:
-      #               type: ReplaceFullPath
-      #               replaceFullPath: /select/vmui/
-      #             statusCode: 302
-      #       matches:
-      #         - path:
-      #             type: Exact
-      #             value: /
+        hostnames:
+          - "vlogs.${CLUSTER_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        extraRules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /select/vmui/
+                  statusCode: 302
+            matches:
+              - path:
+                  type: Exact
+                  value: /
       serviceMonitor:
         enabled: true
     dashboards:
