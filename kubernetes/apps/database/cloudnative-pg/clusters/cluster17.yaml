@@ -31,7 +31,7 @@ spec:
   bootstrap:
     # initdb: {}
     recovery:
-      source: &recoveryServer cluster-17-v5
+      source: &recoveryServer cluster-17-v6
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
