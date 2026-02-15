@@ -22,7 +22,7 @@ spec:
       retries: 3
   values:
     controllers:
-      ocis:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -40,7 +40,7 @@ spec:
               OCIS_INSECURE: true
 
         containers:
-          ocis:
+          *app :
             image:
               repository: docker.io/owncloud/ocis
               tag: 7.3.2
@@ -88,31 +88,29 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
-        controller: ocis
+      *app :
+        controller: *app
         ports:
           http:
-            port: &port 9200
+            port: 9200
             primary: true
           metrics:
             port: 9205
     serviceMonitor:
-      app:
+      *app :
         serviceName: *app
         endpoints:
           - port: metrics
-    ingress:
-      app:
-        className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
-        hosts:
-          - host: files.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
+    route:
+      *app :
+        hostnames: ["files.${CLUSTER_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: http
     persistence:
       # config:
       #   type: configMap
