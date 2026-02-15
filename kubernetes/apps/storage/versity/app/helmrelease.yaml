@@ -38,7 +38,7 @@ spec:
             fsGroupChangePolicy: Always
             seccompProfile: { type: RuntimeDefault }
         containers:
-          main:
+          *app :
             image:
               repository: ghcr.io/versity/versitygw
               tag: v1.1.0@sha256:f730e0dbc1ef3961aaab3e0560a804e64fe620c2cc6c58254fc303e197a17791
@@ -71,24 +71,21 @@ spec:
               limits:
                 memory: 128Mi
     service:
-      main:
+      *app :
         controller: *app
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        enabled: true
-        className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
-        hosts:
-          - host: "versity.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: *port
+    route:
+      *app :
+        hostnames: ["versity.${CLUSTER_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: http
     persistence:
       data:
         type: nfs
