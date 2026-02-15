@@ -40,7 +40,7 @@ spec:
       annotations:
         lbipam.cilium.io/ips: "192.168.1.35"
       externalTrafficPolicy: Cluster
-    watchedResources: ["Ingress", "Service"]
+    watchedResources: ["Ingress", "Service", "HTTPRoute"]
     resources:
       requests:
         cpu: 100m
