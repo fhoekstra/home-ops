@@ -87,7 +87,7 @@ spec:
               # SFTPGO_SFTPD__BINDINGS__0__ADDRESS: 0.0.0.0
               # SFTPGO_SFTPD__BINDINGS__0__PORT: 2022
               SFTPGO_HTTPD__BINDINGS__0__ADDRESS: 0.0.0.0
-              SFTPGO_HTTPD__BINDINGS__0__PORT: 8080
+              SFTPGO_HTTPD__BINDINGS__0__PORT: &sftpgo-http-port 8080
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_ID: "MJ04uHbUwWj00-RYG3X4QACoW-45EF0u0ahDEpv48yDT~caYFZMb240_nT8Z3kHrY6jmvY~Q"
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__CLIENT_SECRET: "${SECRET_SFTPGO_OAUTH_CLIENT_SECRET}"
               # SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL: "https://auth.${}"
@@ -135,7 +135,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 8080
+            port: *sftpgo-http-port
           # dav:
           #   port: 8082
           metrics:
@@ -154,37 +154,26 @@ spec:
       #       targetPort: 2022
       #       protocol: TCP
 
-    ingress:
+    route:
       *app :
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-          nginx.ingress.kubernetes.io/auth-method: "GET"
-          nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
-          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
-          nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+        hostnames: [*host]
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: *app
+                port: http
+
       files:
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-          nginx.ingress.kubernetes.io/auth-method: "GET"
-          nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
-          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
-          nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
-        hosts:
-          - host: foundry-victor-files.${CLUSTER_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: sftpgo
-                  port: http
+        hostnames: ["foundry-victor-files.${CLUSTER_DOMAIN}"]
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: sftpgo
+                port: http
 
     persistence:
       *app :
