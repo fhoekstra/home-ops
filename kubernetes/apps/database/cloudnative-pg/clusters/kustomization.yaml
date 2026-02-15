@@ -4,6 +4,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./cluster17.yaml
-  - ./ferretdb.yaml
+  # - ./ferretdb.yaml
   - ./pg-secret.sops.yaml
   - https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
