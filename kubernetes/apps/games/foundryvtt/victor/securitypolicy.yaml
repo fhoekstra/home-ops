@@ -26,7 +26,7 @@ spec:
           kind: Service
           name: "authelia"
           namespace: "auth"
-          port: 8923
+          port: 80
       path: "/api/authz/ext-authz/"
       headersToBackend:
         - Remote-User
