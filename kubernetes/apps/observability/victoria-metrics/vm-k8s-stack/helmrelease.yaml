@@ -88,13 +88,12 @@ spec:
             memory: 2Gi
           requests:
             cpu: 100m
-      ingress:
+      route:
         enabled: true
-        path: "/"
-        pathType: Prefix
-        ingressClassName: "internal"
-        hosts:
-          - vmsingle.${CLUSTER_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames: ["vmsingle.${CLUSTER_DOMAIN}"]
 
     vmagent:
       enabled: true
