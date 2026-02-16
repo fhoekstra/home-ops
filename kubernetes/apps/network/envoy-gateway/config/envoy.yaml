@@ -77,6 +77,11 @@ kind: ClientTrafficPolicy
 metadata:
   name: envoy
 spec:
+  headers:
+    earlyRequestHeaders:
+      set:
+        - name: X-Real-Ip
+          value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
   clientIPDetection:
     xForwardedFor:
       trustedCIDRs:
