@@ -14,7 +14,7 @@ spec:
   extAuth:
     headersToExtAuth:
       - "X-Forwarded-For" # this is here so we can get the real IP
-      - "X-Real-Ip" # See if this makes Anubis happy
+      - "X-Real-Ip" # Needed to make Anubis happy
       - "accept"
       - "cookie"
       - "authorization"

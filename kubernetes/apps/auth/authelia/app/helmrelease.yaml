@@ -155,6 +155,7 @@ spec:
           - backendRefs:
               - identifier: *app
                 port: anubis
+            # # This is commented out because it is moved to ClientTrafficPolicy instead. Anubis requires X-Real-Ip header to be set.
             # filters:
             #   - type: RequestHeaderModifier
             #     requestHeaderModifier:

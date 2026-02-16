@@ -80,7 +80,7 @@ spec:
   headers:
     earlyRequestHeaders:
       set:
-        - name: X-Real-Ip
+        - name: X-Real-Ip # Anubis requires this to be set
           value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
   clientIPDetection:
     xForwardedFor:
