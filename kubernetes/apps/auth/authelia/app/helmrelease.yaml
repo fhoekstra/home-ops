@@ -154,7 +154,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: *app
-                port: http # Bypass Anubis for now
+                port: anubis
     persistence:
       config:
         enabled: true
