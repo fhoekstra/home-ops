@@ -52,16 +52,6 @@ spec:
           response_direction_config:
             remove_accept_encoding_header: true
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network/envoy-external/https
-      operation:
-        op: add
-        jsonPath: /default_filter_chain/filters/*/typed_config/common_http_protocol_options/headers_with_overwrite/request_headers_to_add/-
-        value:
-          append: false
-          header:
-            key: X-Real-Ip
-            value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
-    - type: type.googleapis.com/envoy.config.listener.v3.Listener
       name: network/envoy-external/https-quic
       operation: *operation
   targetRef:

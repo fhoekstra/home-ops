@@ -155,12 +155,12 @@ spec:
           - backendRefs:
               - identifier: *app
                 port: anubis
-            # filters:
-            #   - type: RequestHeaderModifier
-            #     requestHeaderModifier:
-            #       set:
-            #         - name: X-Real-Ip # This is required by Anubis
-            #           value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  set:
+                    - name: X-Real-Ip
+                      value: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
     persistence:
       config:
         enabled: true
