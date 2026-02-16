@@ -8,6 +8,7 @@ resources:
   - ./grafana/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./victoria-logs/ks.yaml
+  - ./smartctl-exporter/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
