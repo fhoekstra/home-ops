@@ -46,7 +46,7 @@ nodes:
       - "@./patches/talos-rock-1/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
+    talosImageURL: factory.talos.dev/installer/c3d4a69df744bc8693e0de2ed632ede4d0d5ba36ab3fa6e2fc4e41756b7eb2c2 # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -81,7 +81,7 @@ nodes:
       - "@./patches/talos-rock-2/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
+    talosImageURL: factory.talos.dev/installer/c3d4a69df744bc8693e0de2ed632ede4d0d5ba36ab3fa6e2fc4e41756b7eb2c2 # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -109,7 +109,7 @@ nodes:
       - "@./patches/talos-rock-3/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/bb47dfe20ddca4944d23a36cfd73f4dd4754d51ede28ea85d05f99cc0c3eca4a # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
+    talosImageURL: factory.talos.dev/installer/c3d4a69df744bc8693e0de2ed632ede4d0d5ba36ab3fa6e2fc4e41756b7eb2c2 # Generated with: curl -X POST --data-binary @schematic-rock-5b-plus.yaml https://factory.talos.dev/schematics
     controlPlane: true
     networkInterfaces:
       - deviceSelector:

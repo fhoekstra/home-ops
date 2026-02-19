@@ -4,4 +4,4 @@ customization:
       - siderolabs/realtek-firmware
 overlay:
   name: rock5b-plus
-  image: ghcr.io/siderolabs/sbc-rockchip:v0.1.7-3-g76838fe # Unreleased rock5b-plus overlay for using both M.2 slots
+  image: ghcr.io/siderolabs/sbc-rockchip:v0.1.8

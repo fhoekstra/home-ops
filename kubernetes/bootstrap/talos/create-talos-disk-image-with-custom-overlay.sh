@@ -4,7 +4,7 @@
 # sudo dd if=_out/metal-arm64.raw of=/dev/sdb conv=fsync oflag=direct status=progress bs=4M
 
 export TALOS_VERSION=v1.12.4
-export OVERLAY_IMAGE="ghcr.io/siderolabs/sbc-rockchip:v0.1.7-3-g76838fe"
+export OVERLAY_IMAGE="ghcr.io/siderolabs/sbc-rockchip:v0.1.8"
 export OVERLAY_NAME="rock5b-plus"
 
 sudo docker run --rm -t -v ./_out:/out -v /dev:/dev --privileged \
