@@ -35,11 +35,20 @@ spec:
       namespace: flux-system
     - name: volsync
       namespace: flux-system
+  healthChecks:
+    - kind: CephCluster
+      apiVersion: ceph.rook.io/v1
+      name: rook-ceph
+  healthCheckExprs:
+    - kind: CephCluster
+      apiVersion: ceph.rook.io/v1
+      current: |-
+        status.ceph.health in ['HEALTH_OK']
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   interval: 30m
   timeout: 5m
