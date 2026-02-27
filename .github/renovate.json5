@@ -91,6 +91,7 @@
       groupName: 'Flux Operator',
       matchDatasources: [
         'docker',
+        'github-releases',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',
@@ -98,6 +99,7 @@
       matchPackageNames: [
         '/flux-operator/',
         '/flux-instance/',
+        '/fluxcd/flux2',
       ],
     },
     {
