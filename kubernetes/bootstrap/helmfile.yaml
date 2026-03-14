@@ -43,7 +43,7 @@ releases:
   - name: grafana-operator
     namespace: observability
     chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
-    version: 5.22.0
+    version: 5.22.1
     needs:
       - cert-manager/cert-manager
 
