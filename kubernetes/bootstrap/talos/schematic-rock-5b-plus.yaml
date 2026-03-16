@@ -4,4 +4,4 @@ customization:
       - siderolabs/realtek-firmware
 overlay:
   name: rock5b-plus
-  image: ghcr.io/siderolabs/sbc-rockchip:v0.1.8
+  image: ghcr.io/siderolabs/sbc-rockchip:v0.2.0
