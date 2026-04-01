@@ -11,6 +11,7 @@ spec:
     operation: copy
   ref:
     tag: 10.0.26
+    digest: 'sha256:ae29f19474ce4a43362e3ace099d9204e8a369897ca49a877475e62bd7abb92d'
   url: oci://ghcr.io/emberstack/helm-charts/reflector
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
