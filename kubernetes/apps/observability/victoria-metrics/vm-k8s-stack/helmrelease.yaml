@@ -59,6 +59,8 @@ spec:
 
     alertmanager:
       enabled: true
+      spec:
+        disableNamespaceMatcher: true
 
     vmalert:
       enabled: true
