@@ -101,6 +101,9 @@ spec:
         resources:
           limits:
             memory: 1Gi
+            cpu: 1
+          requests:
+            cpu: 150m
         selectAllByDefault: true
         scrapeInterval: 20s
 
