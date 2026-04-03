@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app alertmanager
+  namespace: flux-system
+spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/observability/alert-manager/manifests
+  prune: true
+  dependsOn:
+    - name: vm-k8s-stack
+      namespace: flux-system
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  timeout: 5m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: telegram
+        optional: false
