@@ -58,10 +58,10 @@ spec:
       create: true
 
     alertmanager:
-      enabled: false
+      enabled: true
 
     vmalert:
-      enabled: false
+      enabled: true
 
     grafana:
       enabled: false

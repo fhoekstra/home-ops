@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/alertmanagerconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alertmanager-config
+  namespace: observability
+spec:
+  route:
+    receiver: telegram
+    groupBy:
+      - alertname
+      - namespace
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 4h
+  receivers:
+    - name: telegram
+      telegramConfigs:
+        # Whether to notify about resolved alerts.
+        - sendResolved: true
+          botToken:
+            name: telegram
+            key: BOT_TOKEN
+          chatID: ${TELEGRAM_CHAT_ID}
+    # Optional: fallback "blackhole" receiver to prevent dropped alerts
+    - name: blackhole
+  inhibitRules:
+    - sourceMatch:
+        - name: alertname
+          value: InfoInhibitor
+      targetMatch:
+        - name: severity
+          value: info
+      equal:
+        - namespace
