@@ -112,6 +112,10 @@ spec:
               SERVE_ROBOTS_TXT: "true"
               TARGET: "http://localhost:80"
             ports:
+              - name: *app
+                containerPort: *port
+              - name: metrics
+                containerPort: &metricsPort 8080
               - name: anubis
                 containerPort: &anubisPort 8923
             resources:
@@ -140,6 +144,8 @@ spec:
             port: *port
           anubis:
             port: *anubisPort
+          metrics:
+            port: *metricsPort
     serviceMonitor:
       app:
         serviceName: *app
