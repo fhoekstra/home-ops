@@ -13,6 +13,28 @@ spec:
     groupWait: 30s
     groupInterval: 5m
     repeatInterval: 4h
+    routes:
+      - receiver: blackhole
+        matchers:
+          - name: alertname
+            value: InfoInhibitor
+            matchType: =
+      - receiver: blackhole
+        groupWait: 0s
+        groupInterval: 5m
+        repeatInterval: 5m
+        matchers:
+          - name: alertname
+            value: Watchdog
+            matchType: =
+      - receiver: telegram
+        matchers:
+          - name: severity
+            value: critical
+            matchType: =
+          - name: severity
+            value: warning
+            matchType: =
   receivers:
     - name: telegram
       telegramConfigs:
