@@ -1,0 +1,95 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: [
+        'Barman Cloud Group',
+      ],
+      groupName: 'Barman Cloud',
+      matchDatasources: [
+        'docker',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchPackageNames: [
+        '/cloudnative-pg/plugin-barman-cloud/',
+        '/cloudnative-pg/plugin-barman-cloud-sidecar/',
+      ],
+    },
+    {
+      description: [
+        'Flux Operator Group',
+      ],
+      groupName: 'Flux Operator',
+      matchDatasources: [
+        'docker',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchPackageNames: [
+        '/flux-operator/',
+        '/flux-instance/',
+      ],
+    },
+    {
+      description: 'Cloudflared Group',
+      groupName: 'cloudflared',
+      matchPackageNames: [
+        '/cloudflare/cloudflared/',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchDatasources: [
+        'docker',
+        'github-releases',
+        'github-tags',
+      ],
+    },
+    {
+      description: 'Talos Group',
+      groupName: 'talos',
+      matchPackageNames: [
+        '/siderolabs/installer/',
+        '/siderolabs/talos/',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchManagers: [
+        'custom.regex',
+        'mise',
+      ],
+    },
+    {
+      description: 'Rook-Ceph Group',
+      groupName: 'Rook-Ceph',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/rook-ceph/',
+        '/rook-ceph-cluster/',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
+    {
+      description: 'CoreDNS Group',
+      groupName: 'CoreDNS',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/coredns/',
+        '/coredns/charts/coredns',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} both',
+      },
+    },
+  ]
+}

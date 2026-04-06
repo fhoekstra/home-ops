@@ -1,57 +1,5 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: [
-    'config:recommended',
-    'docker:enableMajor',
-    ':automergeBranch',
-    ':dependencyDashboard',
-    ':disableRateLimiting',
-    ':semanticCommits',
-    ':separatePatchReleases',
-  ],
-  dependencyDashboard: true,
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
-  ],
-  schedule: [
-    'every weekend',
-    '* * * * 2',
-  ],
-  ignorePaths: [
-    '**/*.sops.*',
-  ],
-  flux: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
-    ],
-  },
-  'helm-values': {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
-    ],
-  },
-  helmfile: {
-    managerFilePatterns: [
-      '/(^|/)helmfile\\.ya?ml(?:\\.j2)?$/',
-    ],
-  },
-  kubernetes: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
-    ],
-  },
-  kustomize: {
-    managerFilePatterns: [
-      '/(^|/)kustomization\\.ya?ml(?:\\.j2)?$/',
-    ],
-  },
-  pip_requirements: {
-    managerFilePatterns: [
-      '/(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)(?:\\.j2)?$/',
-    ],
-  },
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
       description: [
@@ -67,96 +15,6 @@
         'minor',
         'patch',
       ],
-    },
-    {
-      description: [
-        'Barman Cloud Group',
-      ],
-      groupName: 'Barman Cloud',
-      matchDatasources: [
-        'docker',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchPackageNames: [
-        '/cloudnative-pg/plugin-barman-cloud/',
-        '/cloudnative-pg/plugin-barman-cloud-sidecar/',
-      ],
-    },
-    {
-      description: [
-        'Flux Operator Group',
-      ],
-      groupName: 'Flux Operator',
-      matchDatasources: [
-        'docker',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchPackageNames: [
-        '/flux-operator/',
-        '/flux-instance/',
-      ],
-    },
-    {
-      description: 'Cloudflared Group',
-      groupName: 'cloudflared',
-      matchPackageNames: [
-        '/cloudflare/cloudflared/',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchDatasources: [
-        'docker',
-        'github-releases',
-        'github-tags',
-      ],
-    },
-    {
-      description: 'Talos Group',
-      groupName: 'talos',
-      matchPackageNames: [
-        '/siderolabs/installer/',
-        '/siderolabs/talos/',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchManagers: [
-        'custom.regex',
-        'mise',
-      ],
-    },
-    {
-      description: 'Rook-Ceph Group',
-      groupName: 'Rook-Ceph',
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/rook-ceph/',
-        '/rook-ceph-cluster/',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-    },
-    {
-      description: 'CoreDNS Group',
-      groupName: 'CoreDNS',
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/coredns/',
-        '/coredns/charts/coredns',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} both',
-      },
     },
     {
       matchDatasources: [
@@ -369,33 +227,6 @@
       addLabels: [
         'renovate/github-action',
       ],
-    },
-  ],
-  customManagers: [
-    {
-      customType: 'regex',
-      description: [
-        'Process YAML custom dependencies',
-      ],
-      managerFilePatterns: [
-        '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
-      ],
-      matchStrings: [
-        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)',
-      ],
-      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
-    },
-    {
-      customType: 'regex',
-      description: 'Process CloudnativePG Postgresql version',
-      managerFilePatterns: [
-        '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
-      ],
-      matchStrings: [
-        'image(Name)?: (?<depName>\\S+):(?<currentValue>.*\\-.*\\-.*)',
-      ],
-      datasourceTemplate: 'docker',
-      versioningTemplate: 'redhat',
     },
   ],
 }
