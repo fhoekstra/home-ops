@@ -8,12 +8,6 @@ creation_rules:
       - age:
           - "age1th0ayw6msyjqrehtp00pp0tj20l70vr4jn7jsuga8katkg69xd7snevqy4"
   - path_regex: kubernetes/.*\.sops\.ya?ml
-    encrypted_comment_regex: "sops:encrypt"
-    mac_only_encrypted: true
-    key_groups:
-      - age:
-          - "age1th0ayw6msyjqrehtp00pp0tj20l70vr4jn7jsuga8katkg69xd7snevqy4"
-  - path_regex: kubernetes/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     mac_only_encrypted: true
     key_groups:
