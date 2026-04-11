@@ -55,7 +55,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        # prometheusEndpoint: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        prometheusEndpoint: http://vmsingle-vmetrics.observability.svc.cluster.local:8428
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
