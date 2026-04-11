@@ -108,7 +108,7 @@ spec:
       resources:
         mgr:
           limits: &mgr-hw
-            cpu: 1
+            cpu: 2
             memory: 700Mi
           requests:
             <<: *mgr-hw
