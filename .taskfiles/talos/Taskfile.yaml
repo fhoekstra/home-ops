@@ -27,6 +27,18 @@ tasks:
       - test -f {{.TALOSCONFIG}}
       - which talhelper talosctl yq
 
+  apply-node-from-maintenance:
+    desc: Apply Talos config to a node from maintenance mode [IP=required]
+    dir: "{{.TALHELPER_DIR}}"
+    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode=reboot' --extra-flags --insecure | bash
+    requires:
+      vars: [IP]
+    preconditions:
+      - talosctl get machinestatus --nodes {{.IP}} --insecure
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which talhelper talosctl yq
+
   upgrade-node:
     desc: Upgrade Talos on a single node [IP=required]
     dir: "{{.TALHELPER_DIR}}"
