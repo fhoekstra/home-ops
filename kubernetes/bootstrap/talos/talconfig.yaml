@@ -42,7 +42,9 @@ nodes:
           maxSize: 250GiB
           grow: false
     patches:
+      # We also create a raw volume for Ceph on the same NVMe disk
       - "@./patches/talos-rock-1/ceph-raw-volume.yaml"
+      # And bind-mount a path for local host storage to the kubelet
       - "@./patches/talos-rock-1/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
@@ -78,6 +80,7 @@ nodes:
           minSize: "50GiB"
           grow: true
     patches:
+      # Here we bind the local hostpath from the separate device so we have a different patch than in talos-rock-1
       - "@./patches/talos-rock-2/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
