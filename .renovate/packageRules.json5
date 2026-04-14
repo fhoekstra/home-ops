@@ -189,6 +189,23 @@
       ignoreTests: true,
     },
     {
+      description: [
+        'Auto-merge reloader patch releases',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/charts/reloader',
+      ],
+      matchUpdateTypes: [
+        'patch',
+      ],
+      automerge: true,
+      automergeType: 'branch',
+      ignoreTests: true,
+    },
+    {
       matchUpdateTypes: [
         'major',
       ],
