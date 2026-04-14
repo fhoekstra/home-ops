@@ -24,6 +24,9 @@
     'every weekend',
     '* * * * 2',
   ],
+  minimumReleaseAge: "2 days",
+  minimumReleaseAgeBehaviour: "timestamp-optional",
+  internalChecksFilter: "strict",
   ignorePaths: [
     '**/*.sops.*',
   ],
