@@ -39,6 +39,20 @@ tasks:
       - test -f {{.TALOSCONFIG}}
       - which talhelper talosctl yq
 
+  fetch-raw-disk-image-for-sbc:
+    desc: Fetch the metal-arm64.raw disk image for the schematic that is set in the talconfig file from the Talos Image Factory API.
+    cmds:
+      - curl -L https://factory.talos.dev/image/{{ .SCHEMATIC_ID }}/{{ .TALOS_VERSION }}/metal-arm64.raw.xz --output metal-arm64.raw.xz
+      - xz -d metal-arm64.raw.xz
+    vars:
+      SCHEMATIC_ID:
+        sh: yq '.nodes[0].talosImageURL | split("/")[-1]' {{.TALHELPER_DIR}}/talconfig.yaml
+      TALOS_VERSION:
+        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+    preconditions:
+      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
+      - which curl
+
   upgrade-node:
     desc: Upgrade Talos on a single node [IP=required]
     dir: "{{.TALHELPER_DIR}}"
