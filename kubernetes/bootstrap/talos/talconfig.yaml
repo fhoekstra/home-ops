@@ -116,7 +116,7 @@ nodes:
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "00:e0:4c:0b:08:ad" # talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
+          hardwareAddr: "00:e0:4c:0b:08:b5" # talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
         dhcp: false
         addresses:
           - "192.168.1.23/24"
