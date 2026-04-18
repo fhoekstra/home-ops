@@ -1,0 +1,13 @@
+---
+config:
+  envoyGateway:
+    extensionApis:
+      enableBackend: true
+      enableEnvoyPatchPolicy: true
+    provider:
+      type: Kubernetes
+      kubernetes:
+        deploy:
+          type: GatewayNamespace
+global:
+  imageRegistry: mirror.gcr.io

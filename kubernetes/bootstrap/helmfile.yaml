@@ -47,6 +47,15 @@ releases:
     needs:
       - cert-manager/cert-manager
 
+  - name: envoy-gateway
+    namespace: network
+    chart: oci://docker.io/envoyproxy/gateway-helm
+    version: 1.7.1
+    values:
+      - ../apps/network/envoy-gateway/app/helm-values.yaml
+    needs:
+      - cert-manager/cert-manager
+
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator

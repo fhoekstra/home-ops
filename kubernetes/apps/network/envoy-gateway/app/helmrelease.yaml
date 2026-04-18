@@ -27,16 +27,6 @@ spec:
   interval: 30m
   upgrade:
     crds: CreateReplace
-  values:
-    config:
-      envoyGateway:
-        extensionApis:
-          enableBackend: true
-          enableEnvoyPatchPolicy: true
-        provider:
-          type: Kubernetes
-          kubernetes:
-            deploy:
-              type: GatewayNamespace
-    global:
-      imageRegistry: mirror.gcr.io
+  valuesFrom:
+    - kind: ConfigMap
+      name: envoy-gateway-helm-values
