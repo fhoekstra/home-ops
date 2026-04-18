@@ -73,12 +73,12 @@ spec:
         reclaimPolicy: Delete
         volumeBindingMode: WaitForFirstConsumer
         allowVolumeExpansion: true
-    volumeSnapshotClasses:
-      - name: csi-local-hostpath
-        annotations:
-          snapshot.storage.kubernetes.io/is-default-class: "true"
-        deletionPolicy: Delete
-        parameters: {}
+    # volumeSnapshotClasses:
+    #   - name: csi-local-hostpath
+    #     annotations:
+    #       snapshot.storage.kubernetes.io/is-default-class: "true"
+    #     deletionPolicy: Delete
+    #     parameters: {}
     driver:
       config:
         driver: local-hostpath
