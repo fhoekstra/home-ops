@@ -44,6 +44,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system
   path: ./kubernetes/apps/games/foundryvtt/victor
   prune: true
   sourceRef:

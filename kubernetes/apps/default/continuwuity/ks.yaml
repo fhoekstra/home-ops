@@ -16,6 +16,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system
   path: ./kubernetes/apps/default/continuwuity/app
   prune: true
   sourceRef:
