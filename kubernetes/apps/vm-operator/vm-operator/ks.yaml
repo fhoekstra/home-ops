@@ -3,23 +3,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app vm-k8s-stack
+  name: &app vm-operator
   namespace: flux-system
 spec:
-  targetNamespace: observability
+  targetNamespace: vm-operator
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/victoria-metrics/vm-k8s-stack
-  dependsOn:
-    - name: vm-operator
-      namespace: flux-system
-    - name: envoy-gateway-config
-      namespace: flux-system
+  path: ./kubernetes/apps/vm-operator/vm-operator/app
+  healthChecks:
+    - kind: CustomResourceDefinition
+      name: vmsingles.operator.victoriametrics.com
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: true
   interval: 30m
-  timeout: 5m
+  timeout: 15m

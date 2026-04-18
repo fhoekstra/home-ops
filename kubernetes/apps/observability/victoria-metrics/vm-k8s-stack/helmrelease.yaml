@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.72.6
+    tag: 0.74.1
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -26,6 +26,7 @@ spec:
     name: vm-k8s-stack
   maxHistory: 2
   install:
+    timeout: 15m
     createNamespace: true
     remediation:
       retries: 3
@@ -39,6 +40,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: vm-operator
+      namespace: vm-operator
   values:
     global:
       cluster:
@@ -50,7 +53,7 @@ spec:
       enabled: false
 
     victoria-metrics-operator:
-      enabled: true
+      enabled: false
 
     defaultDashboards:
       enabled: true
