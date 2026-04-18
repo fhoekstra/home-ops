@@ -3,32 +3,33 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: victoria-metrics-crds-chart
+  name: vm-operator-chart
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.8.0
-  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator-crds
+    tag: 0.60.0
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-metrics-crds
-  namespace: operators
+  name: vm-operator
+  namespace: vm-operator
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: victoria-metrics-crds-chart
+    name: vm-operator-chart
   maxHistory: 2
   install:
     crds: CreateReplace
     remediation:
       retries: 3
+    timeout: 15m
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true
