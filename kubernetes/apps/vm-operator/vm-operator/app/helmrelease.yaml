@@ -37,3 +37,8 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  values:
+    crds:
+      enabled: true
+      cleanup:
+        enabled: false
