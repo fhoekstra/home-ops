@@ -35,6 +35,9 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  dependsOn:
+    - name: democratic-csi
+      namespace: storage
   values:
     replicaCount: 2
     crds:
