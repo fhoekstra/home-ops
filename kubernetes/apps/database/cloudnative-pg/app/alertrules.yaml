@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cnpg-backup-alert-rules
+spec:
+  groups:
+    - name: cnpg-barman-cloud
+      rules:
+        - alert: CNPGBackupFailedRecently
+          expr: |
+            max by (namespace, job) (barman_cloud_cloudnative_pg_io_last_failed_backup_timestamp)
+              >
+            max by (namespace, job) (barman_cloud_cloudnative_pg_io_last_available_backup_timestamp)
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "CNPG backup failed ({{ $labels.namespace }}/{{ $labels.pod }})"
+            description: "Most recent backup failure is newer than the most recent success."
+        - alert: CNPGWalArchivingFailing
+          expr: |
+            max by (namespace, job) (cnpg_pg_stat_archiver_last_failed_time)
+              >
+            max by (namespace, job) (cnpg_pg_stat_archiver_last_archived_time)
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "CNPG WAL archiving failing ({{ $labels.namespace }}/{{ $labels.pod }})"
+            description: "Latest WAL archiving failure is newer than the last successful archival."
