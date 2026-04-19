@@ -196,7 +196,7 @@
         'docker',
       ],
       matchPackageNames: [
-        '/charts/reloader',
+        '/charts/reloader/',
       ],
       matchUpdateTypes: [
         'patch',
