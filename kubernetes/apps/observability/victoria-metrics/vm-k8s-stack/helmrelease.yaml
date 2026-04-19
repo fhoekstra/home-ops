@@ -42,6 +42,10 @@ spec:
       namespace: rook-ceph
     - name: vm-operator
       namespace: vm-operator
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
   values:
     global:
       cluster:
