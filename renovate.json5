@@ -13,6 +13,7 @@
     ':disableRateLimiting',
     ':semanticCommits',
     ':separatePatchReleases',
+    ':timezone(Europe/Amsterdam)'
   ],
   dependencyDashboard: true,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
