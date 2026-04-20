@@ -21,6 +21,7 @@
     'prEditedNotification',
     'prIgnoreNotification',
   ],
+  timezone: "Europe/Amsterdam",
   schedule: [
     'every weekend',
     '* * * * 2',
