@@ -51,10 +51,9 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-            resources:
+            resources: &res
               requests:
                 cpu: 10m
-                memory: 256Mi
               limits:
                 memory: 1Gi
             securityContext:
@@ -78,12 +77,7 @@ spec:
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
               - --hide-scrollbars
-            resources:
-              requests:
-                cpu: 10m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
+            resources: *res
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -106,7 +100,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 256Mi
               limits:
                 memory: 2Gi
             securityContext:
