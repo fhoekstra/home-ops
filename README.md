@@ -7,18 +7,19 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
 
 # Hardware
 
-> [!WARNING]
-> Connecting SSDs via USB causes problems with Ceph. I am currently replacing this hardware with a new set of energy-efficient nodes, this time with proper M.2 and SATA connections with enough room for multiple disks.
+> [!NOTE]
+> For an in-depth write-up of my current homelab hardware, check out my [blog at **fhoekstra.eu**](https://fhoekstra.eu/posts/the-kube-the-smallest-enterprise-home-lab/)
 
-![IMG_20251209_104102](https://github.com/user-attachments/assets/fdc1cb26-5f4f-40e8-8fe0-6361bb9761c6)
 
-Currently 3 laptops that I got from the used market:
+<img width="4640" height="3472" alt="3_kubes_finished" src="https://github.com/user-attachments/assets/61a5f19d-5e53-44cb-84ee-7eaed92830e9" />
+
+<br/>
 
 | Role | Model | CPU | RAM | SSD |
 | ------------- | ------------- | -------------- | -------------- |-------|
-| K8s controlplane, k8s workloads | Dell Latitude 5490 (Azerty) | i5-8350U (4C/8T) | 16GB | OS: 256GB SATA SK Hynix ; Ceph: 1.92TB Samsung SM863 (PLP) 2.5" SATA via USB3  |
-| K8s controlplane, k8s workloads | Dell Latitude 5470 (Qwerty) | i5-6300U (2C/4T) | 16GB | OS: 256GB SATA Samsung ; Ceph: 480GB Samsung SM863a (PLP) 2.5" SATA via USB3 |
-| K8s controlplane, k8s workloads | Lenovo IdeaPad S340-14IWL | i5-8265U (4C/8T) | 20GB | OS: 256GB SATA; Ceph: 480GB Samsung PM883 (PLP) 2.5" SATA via USB3 |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/talconfig.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/talconfig.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/talconfig.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
 | Cluster-external NFS (backups) | Raspberry Pi 4B |  | 4GB | 1TB SATA-via-USB3 Samsung QLC 870 Evo |
 
 # Infra
@@ -30,7 +31,7 @@ Currently 3 laptops that I got from the used market:
 - Data:
   - CloudnativePG for relational databases
   - Rook-ceph for cluster internal storage
-  - volsync for backup to and automatic restore from NFS and/or S3
+  - volsync for backup to and automatic restore from NFS and/or OVHCloud object storage
   - versitygw for access to NFS via S3-compatible interface (for database backups)
 - Observability:
   - VictoriaMetrics
@@ -38,7 +39,8 @@ Currently 3 laptops that I got from the used market:
   - VictoriaLogs
 
 # Apps
-- FoundryVTT with an integrated SFTPGo container for remote filesystem access
+- Karakeep bookmark manager and RSS reader
+- FoundryVTT with an integrated SFTPGo container for remote filesystem access for the game admin
 - OwnCloud Instant Scale (OCIS) for cloudnative filebrowser/sharing
 - Continuwuity Matrix server
 
@@ -52,12 +54,6 @@ Then wait for machinestatus to be maintenance on all nodes:
 
 `talosctl get machinestatus -n <IP> --insecure`
 
-Then wipe the disks:
-
-`talosctl wipe disk --inscure nvme0n1 -n <IP>`
-`talosctl wipe disk --inscure sda -n <IP>`
-`talosctl wipe disk --inscure sdb -n <IP>`
-
 Then bootstrap Talos:
 
 `task bootstrap:talos`
@@ -69,4 +65,6 @@ Wait for machinestatus to be running on all nodes:
 Then bootstrap the apps with helmfile and watch the operators (flux and volsync) take over to bring everything back up:
 
 `task bootstrap:apps`
+
+The only app that may need some manual intervention after that is Tailscale, if the token has expired.
 
