@@ -43,5 +43,5 @@ spec:
       cleanup:
         enabled: false
         image:
-          tag: v1.35.4
+          tag: v1.36.0
           repository: mirror.gcr.io/rancher/kubectl
