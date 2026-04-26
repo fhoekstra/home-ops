@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: towonel-agent
+spec:
+  endpoints:
+    - dnsName: ingress-ext.${NEW_CLUSTER_DOMAIN}
+      recordType: A
+      targets:
+        - &vps_ip 135.125.53.129
+    - dnsName: twnl.${NEW_CLUSTER_DOMAIN}
+      recordType: A
+      targets:
+        - *vps_ip
+    - dnsName: tunnel.${NEW_CLUSTER_DOMAIN}
+      recordType: A
+      targets:
+        - *vps_ip
