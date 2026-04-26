@@ -3,15 +3,15 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: envoy-external
+  name: envoy-external-kubes
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.${CLUSTER_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: &hostname external.${NEW_CLUSTER_DOMAIN}
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: ${ENVOY_EXTERNAL_LB_IP}
+      lbipam.cilium.io/ips: ${ENVOY_EXTERNAL_LB_IP_2}
   listeners:
     - name: http
       protocol: HTTP
@@ -28,13 +28,13 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${CLUSTER_DOMAIN/./-}-production-tls
+            name: ${NEW_CLUSTER_DOMAIN/./-}-production-tls
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyPatchPolicy
 metadata:
-  name: envoy-external
+  name: &gw envoy-external-kubes
 spec:
   jsonPatches:
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
@@ -57,5 +57,5 @@ spec:
   targetRef:
     group: gateway.networking.k8s.io
     kind: Gateway
-    name: envoy-external
+    name: *gw
   type: JSONPatch
