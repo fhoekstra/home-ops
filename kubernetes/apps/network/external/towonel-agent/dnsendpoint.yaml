@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: towonel-agent
+spec:
+  endpoints:
+    - dnsName: external.${NEW_CLUSTER_DOMAIN}
+      recordType: CNAME
+      targets:
+        - &erwan_towonel_server tunnel.erwanleboucher.dev
+    - dnsName: twnl.${NEW_CLUSTER_DOMAIN}
+      recordType: CNAME
+      targets:
+        - *erwan_towonel_server
+    - dnsName: tunnel.${NEW_CLUSTER_DOMAIN}
+      recordType: CNAME
+      targets:
+        - *erwan_towonel_server

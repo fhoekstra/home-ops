@@ -88,6 +88,8 @@ spec:
         - 10.96.0.0/16 # Cluster pod CIDR
   http2:
     onInvalidMessage: TerminateStream
+  proxyProtocol:
+    optional: true
   http3: {}
   targetSelectors:
     - group: gateway.networking.k8s.io
@@ -112,6 +114,9 @@ spec:
       namespace: network
       sectionName: http
     - name: envoy-external
+      namespace: network
+      sectionName: http
+    - name: envoy-external-kubes
       namespace: network
       sectionName: http
   rules:
