@@ -20,11 +20,11 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${NEW_CLUSTER_DOMAIN/./-}-production"
+  name: "${NEW_CLUSTER_DOMAIN/./-}-staging"
 spec:
-  secretName: "${NEW_CLUSTER_DOMAIN/./-}-production-tls"
+  secretName: "${NEW_CLUSTER_DOMAIN/./-}-staging-tls"
   issuerRef:
-    name: letsencrypt-production-ovh
+    name: letsencrypt-staging-ovh
     kind: ClusterIssuer
   commonName: "${NEW_CLUSTER_DOMAIN}"
   dnsNames:

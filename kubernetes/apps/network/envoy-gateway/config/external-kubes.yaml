@@ -28,7 +28,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${NEW_CLUSTER_DOMAIN/./-}-production-tls
+            name: ${NEW_CLUSTER_DOMAIN/./-}-staging-tls
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
