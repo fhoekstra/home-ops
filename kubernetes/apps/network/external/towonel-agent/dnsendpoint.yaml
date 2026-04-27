@@ -6,15 +6,15 @@ metadata:
   name: towonel-agent
 spec:
   endpoints:
-    - dnsName: ingress-ext.${NEW_CLUSTER_DOMAIN}
-      recordType: A
+    - dnsName: external.${NEW_CLUSTER_DOMAIN}
+      recordType: CNAME
       targets:
-        - &vps_ip 135.125.53.129
+        - &erwan_towonel_server tunnel.erwanleboucher.dev
     - dnsName: twnl.${NEW_CLUSTER_DOMAIN}
-      recordType: A
+      recordType: CNAME
       targets:
-        - *vps_ip
+        - *erwan_towonel_server
     - dnsName: tunnel.${NEW_CLUSTER_DOMAIN}
-      recordType: A
+      recordType: CNAME
       targets:
-        - *vps_ip
+        - *erwan_towonel_server
