@@ -47,7 +47,7 @@ spec:
     extraArgs:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-name=envoy-external
+      - --gateway-name=envoy-external-kubes
     podAnnotations:
       secret.reloader.stakater.com/reload: externaldns-ovh-secret
     policy: sync
