@@ -116,6 +116,9 @@ spec:
     - name: envoy-external
       namespace: network
       sectionName: http
+    - name: envoy-external-kubes
+      namespace: network
+      sectionName: http
   rules:
     - filters:
         - type: RequestRedirect
