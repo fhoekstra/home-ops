@@ -36,3 +36,24 @@ spec:
     rotationPolicy: Always
   usages:
     - digital signature
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${NEW_CLUSTER_DOMAIN/./-}-production"
+spec:
+  secretName: "${NEW_CLUSTER_DOMAIN/./-}-production-tls"
+  issuerRef:
+    name: letsencrypt-production-ovh
+    kind: ClusterIssuer
+  commonName: "${NEW_CLUSTER_DOMAIN}"
+  dnsNames:
+    - "${NEW_CLUSTER_DOMAIN}"
+    - "*.${NEW_CLUSTER_DOMAIN}"
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
+  usages:
+    - digital signature
