@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: blog-redirect
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "external.kubes.cloud"
+spec:
+  hostnames:
+    - "why.kubes.cloud"
+  parentRefs:
+    - name: envoy-external-kubes
+      namespace: network
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: fhoekstra.eu
+            path:
+              type: ReplaceFullPath
+              replaceFullPath: posts/the-kube-the-smallest-enterprise-home-lab
+            statusCode: 301
