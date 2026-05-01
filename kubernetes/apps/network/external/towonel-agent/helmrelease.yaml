@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: git.erwanleboucher.dev/eleboucher/towonel-agent
-              tag: 0.0.22
+              tag: 0.0.23
             env:
               RUST_LOG: info
               TOWONEL_AGENT_SERVICES: '[{"hostname":"*.kubes.cloud","origin":"envoy-external-kubes.network.svc.cluster.local:443"}]'
