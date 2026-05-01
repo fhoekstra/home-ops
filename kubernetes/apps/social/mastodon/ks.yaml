@@ -25,3 +25,23 @@ spec:
   wait: true
   interval: 30m
   timeout: 5m
+---
+# yaml-language-server: $schema=https://k8s-schemas.erwanleboucher.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app phanpy
+  namespace: flux-system
+spec:
+  targetNamespace: social
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/social/mastodon/phanpy
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  timeout: 5m
