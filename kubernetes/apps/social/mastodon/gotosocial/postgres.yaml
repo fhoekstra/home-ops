@@ -1,0 +1,104 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+metadata:
+  name: gts-pg
+  annotations:
+    # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+kind: Cluster
+spec:
+  instances: 2
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    major: 18
+    name: postgresql-minimal-trixie
+  enableSuperuserAccess: false
+  storage:
+    size: 15Gi
+    storageClass: local-hostpath
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 100m
+  postgresql:
+    parameters:
+      dynamic_shared_memory_type: sysv
+      shared_buffers: 128MB
+  bootstrap:
+    initdb:
+      database: gotosocial
+      owner: gotosocial
+      secret:
+        name: gts-pg-secret
+    # recovery:
+    #   source: &recoveryServer gts
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: gts-backup-local
+        serverName: &currentServer gts
+
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *recoveryServer
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: cluster-17-backup-local
+  #         serverName: *recoveryServer
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: gts-backup-local
+spec:
+  retentionPolicy: 15d
+  instanceSidecarConfiguration:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 50m
+  configuration:
+    destinationPath: s3://cnpg/gotosocial/ # TODO: create bucket
+    endpointURL: http://versity.storage.svc.cluster.local:7070
+    s3Credentials:
+      accessKeyId:
+        name: s3-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: s3-creds
+        key: SECRET_KEY
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: gts-pg-nightly
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: gts-pg
+  schedule: "0 37 2 ? * *"
+  immediate: true
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: gts-pg
+spec:
+  selector:
+    matchLabels:
+      cnpg.io/cluster: gts-pg
+  podMetricsEndpoints:
+    - port: metrics
