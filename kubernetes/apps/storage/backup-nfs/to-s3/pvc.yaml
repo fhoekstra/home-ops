@@ -12,7 +12,7 @@ spec:
   storageClassName: "" # Static provisioning
   nfs:
     server: ${NFS_SERVER_IP_ADDRESS}
-    path: /mnt/data/nfs/k8s/live
+    path: /mnt/data/nfs/backed-up/k8s
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/persistentvolumeclaim-v1.json
 apiVersion: v1

@@ -16,7 +16,7 @@ spec:
         volumeSource:
           nfs:
             server: "${NFS_SERVER_IP_ADDRESS}"
-            path: /mnt/data/nfs/k8s/volsync
+            path: /mnt/data/nfs/not-backed-up/k8s/volsync
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}"

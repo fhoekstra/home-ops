@@ -90,6 +90,6 @@ spec:
       data:
         type: nfs
         server: ${NFS_SERVER_IP_ADDRESS}
-        path: /mnt/data/nfs/k8s/live/versity-backup
+        path: /mnt/data/nfs/backed-up/k8s/versity-backup
         globalMounts:
           - path: /data
