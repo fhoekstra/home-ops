@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app phanpy
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      *app :
+        containers:
+          *app :
+            image:
+              repository: "ghcr.io/jjgadgets/phanpy"
+              tag: 2025.01.26.24f03f5
+            env:
+              PHANPY_WEBSITE: &host "phanpy.kubes.cloud"
+              PHANPY_DEFAULT_INSTANCE: "gts.kubes.cloud"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 32Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      shareProcessNamespace: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      *app :
+        controller: *app
+        ports:
+          http:
+            port: 8080
+    route:
+      *app :
+        parentRefs:
+          - name: envoy-internal
+            # - name: envoy-external-kubes
+            namespace: network
+        hostnames:
+          - *host
