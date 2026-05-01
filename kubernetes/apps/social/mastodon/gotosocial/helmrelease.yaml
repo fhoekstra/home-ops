@@ -37,6 +37,10 @@ spec:
               OTEL_METRICS_PRODUCERS: prometheus
               OTEL_METRICS_EXPORTER: prometheus
 
+              # Temporarily allow signups
+              GTS_ALLOW_REGISTRATION_OPEN: "true"
+              GTS_ACCOUNTS_REASON_REQUIRED: "false"
+
               GTS_OIDC_ENABLED: "false"
               # GTS_OIDC_IDP_NAME: "Kanidm"
               # GTS_OIDC_ISSUER: "https://idm.erwanleboucher.dev/oauth2/openid/gotosocial"
@@ -110,7 +114,9 @@ spec:
     route:
       *app :
         parentRefs:
-          - name: envoy-external-kubes
+          # Temporarily expose internally only until I have created an account
+          - name: envoy-internal
+            # - name: envoy-external-kubes
             namespace: network
         hostnames:
           - *host
