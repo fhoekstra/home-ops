@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app gotosocial
+  namespace: flux-system
+spec:
+  targetNamespace: social
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cloudnative-pg-barman-cloud
+      namespace: flux-system
+    - name: cloudnative-pg-operator
+      namespace: flux-system
+    - name: democratic-csi
+      namespace: flux-system
+  path: ./kubernetes/apps/social/mastodon/gotosocial
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  timeout: 5m
