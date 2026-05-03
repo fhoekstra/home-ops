@@ -92,7 +92,7 @@ spec:
         nodes:
           - name: "talos-rock-1"
             devices:
-              - name: "/dev/disk/by-partlabel/r-osd-data"
+              - name: "/dev/nvme0n1" # Micron 7450 Pro 1TB
           - name: "talos-rock-2"
             devices:
               - name: "/dev/nvme0n1" # Micron 7450 Pro 1TB

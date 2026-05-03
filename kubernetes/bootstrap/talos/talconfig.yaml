@@ -34,17 +34,12 @@ nodes:
         # EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding to "/var"
         # This means all the writeable directories are under this partition:
         # etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
-        # So by mounting this to the NVMe disk, we only use the MicroSD for the read-only root filesystem
         provisioning:
-          diskSelector: &micron7450
-            match: "disk.model.startsWith('Micron_7450_')"
+          diskSelector:
+            match: "disk.model.startsWith('SSDSC2KG480G8R')"
           minSize: 250GiB
-          maxSize: 250GiB
-          grow: false
+          grow: true
     patches:
-      # We also create a raw volume for Ceph on the same NVMe disk
-      - "@./patches/talos-rock-1/ceph-raw-volume.yaml"
-      # And bind-mount a path for local host storage to the kubelet
       - "@./patches/talos-rock-1/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false
