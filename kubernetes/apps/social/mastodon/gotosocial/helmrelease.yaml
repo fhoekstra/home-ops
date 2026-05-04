@@ -14,9 +14,6 @@ spec:
     controllers:
       *app :
         type: deployment
-        pod:
-          securityContext:
-            fsGroup: 1000
         containers:
           *app :
             image:
