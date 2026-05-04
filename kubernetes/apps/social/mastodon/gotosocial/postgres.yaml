@@ -28,9 +28,9 @@ spec:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    initdb: {}
-    # recovery:
-    #   source: &recoveryServer gts
+    # initdb: {}
+    recovery:
+      source: &recoveryServer gts
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -39,14 +39,13 @@ spec:
         barmanObjectName: gts-backup-local
         serverName: &currentServer gts
 
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *recoveryServer
-  #     plugin:
-  #       name: barman-cloud.cloudnative-pg.io
-  #       parameters:
-  #         barmanObjectName: cluster-17-backup-local
-  #         serverName: *recoveryServer
+  externalClusters:
+    - name: *recoveryServer
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: gts-backup-local
+          serverName: *recoveryServer
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
 apiVersion: barmancloud.cnpg.io/v1
