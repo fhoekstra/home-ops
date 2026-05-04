@@ -25,7 +25,7 @@ spec:
             env:
               TZ: Europe/Amsterdam
               GTS_HOST: &host gts.kubes.cloud
-              GTS_ACCOUNT_DOMAIN: kubes.cloud
+              GTS_ACCOUNT_DOMAIN: &account_domain kubes.cloud
               GTS_STORAGE_LOCAL_BASE_PATH: /storage
               GTS_SEMAPHORE_URL: https://phanpy.kubes.cloud
               GTS_LANDING_PAGE_USER: "freek"
@@ -138,6 +138,28 @@ spec:
                     - "https://phanpy.kubes.cloud"
                   maxAge: 86400
                 type: CORS
+      webfinger-gts:
+        hostnames:
+          - *account_domain
+        parentRefs:
+          # - name: envoy-external-kubes
+          #   namespace: network
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: Exact
+                  value: /.well-known/webfinger
+              - path:
+                  type: Exact
+                  value: /.well-known/host-meta
+              - path:
+                  type: Exact
+                  value: /.well-known/nodeinfo
+            backendRefs:
+              - identifier: *app
+                port: *http
     serviceMonitor:
       *app :
         endpoints:
