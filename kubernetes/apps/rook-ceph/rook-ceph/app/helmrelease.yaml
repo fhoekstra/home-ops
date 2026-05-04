@@ -38,7 +38,7 @@ spec:
       enableCephfsSnapshotter: false
       enableLiveness: true
       serviceMonitor:
-        enabled: true
+        enabled: false
       csiRBDProvisionerResource: |
         - name : csi-provisioner
           resource:
