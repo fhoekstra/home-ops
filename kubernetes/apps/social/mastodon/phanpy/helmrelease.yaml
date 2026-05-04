@@ -43,7 +43,8 @@ spec:
       *app :
         parentRefs:
           - name: envoy-internal
-            # - name: envoy-external-kubes
+            namespace: network
+          - name: envoy-external-kubes
             namespace: network
         hostnames:
           - *host
