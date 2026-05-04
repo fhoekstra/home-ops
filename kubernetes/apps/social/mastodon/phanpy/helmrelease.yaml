@@ -26,10 +26,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 32Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       automountServiceAccountToken: false
       enableServiceLinks: false
@@ -37,12 +33,6 @@ spec:
       # hostNetwork: false
       # hostPID: false
       # shareProcessNamespace: false
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       *app :
         controller: *app
