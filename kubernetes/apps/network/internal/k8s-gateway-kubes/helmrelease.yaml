@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: k8s-gateway-kubes
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 3.7.1
+  url: oci://ghcr.io/k8s-gateway/charts/k8s-gateway
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app k8s-gateway-kubes
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: k8s-gateway
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: *app
+    domain: "${NEW_CLUSTER_DOMAIN}"
+    ttl: 1
+    service:
+      type: LoadBalancer
+      port: 53
+      annotations:
+        lbipam.cilium.io/ips: "192.168.1.37"
+      externalTrafficPolicy: Cluster
+    watchedResources: ["Ingress", "Service", "HTTPRoute"]
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
