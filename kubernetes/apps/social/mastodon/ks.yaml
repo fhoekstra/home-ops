@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/social/mastodon/phanpy
   prune: true
   sourceRef:
-    kind: OCIRepository
+    kind: GitRepository
     name: flux-system
   wait: false
   interval: 30m
