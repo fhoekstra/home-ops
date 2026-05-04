@@ -76,7 +76,10 @@ spec:
             scrapeTimeout: 10s
     route:
       *app :
-        hostnames: ["{{ .Release.Name }}.${CLUSTER_DOMAIN}"]
+        hostnames:
+          - "{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"
+          - "{{ .Release.Name }}.freek.cloud"
+          - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network
