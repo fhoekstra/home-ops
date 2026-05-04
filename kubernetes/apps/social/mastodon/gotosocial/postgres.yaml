@@ -85,7 +85,7 @@ spec:
   backupOwnerReference: self
   cluster:
     name: gts-pg
-  schedule: "0 37 2 ? * *"
+  schedule: "0 47 2 ? * *"
   immediate: true
   method: plugin
   pluginConfiguration:
