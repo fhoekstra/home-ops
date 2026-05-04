@@ -66,7 +66,7 @@ spec:
       requests:
         cpu: 50m
   configuration:
-    destinationPath: s3://cnpg/gotosocial/ # TODO: create bucket
+    destinationPath: s3://cnpg/gotosocial/
     endpointURL: http://versity.storage.svc.cluster.local:7070
     s3Credentials:
       accessKeyId:
