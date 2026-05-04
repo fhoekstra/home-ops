@@ -62,8 +62,8 @@ spec:
               GTS_DB_POSTGRES_CONNECTION_STRING:
                 valueFrom:
                   secretKeyRef: #
-                    name: gotosocial-postgres
-                    key: url
+                    name: gts-pg-app
+                    key: fqdn-uri
             resources:
               requests:
                 cpu: 10m

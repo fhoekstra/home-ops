@@ -28,11 +28,7 @@ spec:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    initdb:
-      database: gotosocial
-      owner: gotosocial
-      secret:
-        name: gts-pg-secret
+    initdb: {}
     # recovery:
     #   source: &recoveryServer gts
 
