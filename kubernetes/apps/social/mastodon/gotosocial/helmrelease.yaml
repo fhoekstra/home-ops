@@ -76,11 +76,11 @@ spec:
 
     defaultPodOptions:
       automountServiceAccountToken: false
-      enableServiceLinks: false
-      hostIPC: false
-      hostNetwork: false
-      hostPID: false
-      shareProcessNamespace: false
+      # enableServiceLinks: false
+      # hostIPC: false
+      # hostNetwork: false
+      # hostPID: false
+      # shareProcessNamespace: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
