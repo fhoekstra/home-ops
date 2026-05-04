@@ -37,8 +37,8 @@ spec:
               OTEL_METRICS_EXPORTER: prometheus
 
               # Temporarily allow signups
-              GTS_ACCOUNTS_REGISTRATION_OPEN: "true"
-              GTS_ACCOUNTS_REASON_REQUIRED: "false"
+              GTS_ACCOUNTS_REGISTRATION_OPEN: "false"
+              GTS_ACCOUNTS_REASON_REQUIRED: "true"
 
               GTS_OIDC_ENABLED: "false"
               # GTS_OIDC_IDP_NAME: "Kanidm"
