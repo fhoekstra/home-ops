@@ -141,8 +141,8 @@ spec:
         hostnames:
           - *account_domain
         parentRefs:
-          # - name: envoy-external-kubes
-          #   namespace: network
+          - name: envoy-external-kubes
+            namespace: network
           - name: envoy-internal
             namespace: network
         rules:
