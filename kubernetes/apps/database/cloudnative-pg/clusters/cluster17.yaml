@@ -29,11 +29,7 @@ spec:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    # initdb: {}
-    recovery:
-      source: cluster-17-v6
-      recoveryTarget:
-        targetTime: "2026-03-26T20:00:39"
+    initdb: {}
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
