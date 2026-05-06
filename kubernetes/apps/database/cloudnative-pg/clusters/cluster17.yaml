@@ -31,7 +31,8 @@ spec:
   bootstrap:
     # initdb: {}
     recovery:
-      source: &recoveryServer cluster-17-v6
+      backup:
+        name: cluster-17-20260503091730
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -42,7 +43,7 @@ spec:
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
-    - name: *recoveryServer
+    - name: &recoveryServer cluster-17-v6
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
