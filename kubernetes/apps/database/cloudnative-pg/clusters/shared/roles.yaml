@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-shared
+spec:
+  managed:
+    roles:
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: authelia
+        login: true
+        passwordSecret:
+          name: authelia-secret
+      - connectionLimit: -1
+        ensure: present
+        inherit: true
+        name: lldap
+        login: true
+        passwordSecret:
+          name: lldap-secret

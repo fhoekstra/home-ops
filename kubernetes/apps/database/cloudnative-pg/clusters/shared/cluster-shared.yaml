@@ -1,17 +1,20 @@
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 metadata:
-  name: cluster-17
+  name: cluster-shared
   annotations:
     # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
-    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+    # cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+    #
+    # Also set stakaer reloader annotations to point at s3-creds, authelia-secret and lldap-secret
+    # secret.reloader.stakater.com/reload: "s3-creds,authelia-secret,lldap-secret"
 kind: Cluster
 spec:
   instances: 2
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
     kind: ClusterImageCatalog
-    major: 17
+    major: 18
     name: postgresql-minimal-trixie
   enableSuperuserAccess: true
   superuserSecret:
@@ -29,18 +32,13 @@ spec:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    # initdb: {}
-    recovery:
-      source: cluster-17-v6
-      recoveryTarget:
-        targetTime: "2026-03-26T20:00:39"
-
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: cluster-17-backup-local
-        serverName: &currentServer cluster-17-v6
+    initdb: {}
+  plugins: []
+    # - name: barman-cloud.cloudnative-pg.io
+    #   isWALArchiver: true
+    #   parameters:
+    #     barmanObjectName: cluster-shared-backup-local
+    #     serverName: &currentServer cluster-shared-v1
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
@@ -55,7 +53,7 @@ spec:
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: cluster-17-backup-local
+  name: cluster-shared-backup-local
 spec:
   retentionPolicy: 15d
   instanceSidecarConfiguration:
@@ -65,7 +63,7 @@ spec:
       requests:
         cpu: 100m
   configuration:
-    destinationPath: s3://cnpg/cluster-17/
+    destinationPath: s3://cnpg/cluster-shared/
     endpointURL: http://versity.storage.svc.cluster.local:7070
     s3Credentials:
       accessKeyId:
@@ -79,11 +77,11 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: cluster-17
+  name: cluster-shared
 spec:
   backupOwnerReference: self
   cluster:
-    name: cluster-17
+    name: cluster-shared
   schedule: "0 37 2 ? * *"
   immediate: true
   method: plugin
@@ -94,10 +92,10 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: cluster-17
+  name: cluster-shared
 spec:
   selector:
     matchLabels:
-      cnpg.io/cluster: cluster-17
+      cnpg.io/cluster: cluster-shared
   podMetricsEndpoints:
     - port: metrics
