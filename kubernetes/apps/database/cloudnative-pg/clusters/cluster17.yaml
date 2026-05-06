@@ -31,8 +31,9 @@ spec:
   bootstrap:
     # initdb: {}
     recovery:
-      backup:
-        name: cluster-17-20260503091730
+      source: cluster-17-v6
+      recoveryTarget:
+        targetTime: "2026-03-26T20:00:39"
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
