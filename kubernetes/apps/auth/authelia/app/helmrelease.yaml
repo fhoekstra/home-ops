@@ -66,9 +66,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 100Mi
+                memory: 42Mi
               limits:
-                memory: 100Mi
+                memory: 42Mi
             probes:
               liveness: &probes
                 enabled: true
@@ -120,10 +120,10 @@ spec:
                 containerPort: &anubisPort 8923
             resources:
               limits:
-                memory: 100Mi
+                memory: 16Mi
               requests:
                 cpu: 26m
-                memory: 100Mi
+                memory: 16Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

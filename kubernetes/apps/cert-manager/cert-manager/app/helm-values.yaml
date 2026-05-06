@@ -10,12 +10,16 @@ prometheus:
     enabled: true
 resources: &resources
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 10m
+    memory: 40Mi
   limits:
-    cpu: 100m
-    memory: 128Mi
+    memory: 40Mi
 webhook:
   resources: *resources
 cainjector:
-  resources: *resources
+  resources:
+    requests:
+      cpu: 10m
+      memory: 90Mi
+    limits:
+      memory: 90Mi

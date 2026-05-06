@@ -80,11 +80,11 @@ spec:
               - secretRef:
                   name: continuwuity
             resources:
+              limits:
+                memory: 256Mi
               requests:
                 cpu: 10m
-                memory: 512Mi
-              limits:
-                memory: 1Gi
+                memory: 256Mi
             # probes:
             #   liveness: &probes
             #     enabled: false
