@@ -99,10 +99,10 @@ spec:
             mountPropagation: Bidirectional
         resources:
           limits:
-            memory: 324Mi
+            memory: 128Mi
           requests:
             cpu: 50m
-            memory: 324Mi
+            memory: 128Mi
       extraVolumes:
         - name: local-hostpath
           hostPath:

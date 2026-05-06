@@ -114,10 +114,10 @@ spec:
             cpu: 500m
         mon:
           limits:
-            memory: 1024Mi
+            memory: 768Mi
           requests:
             cpu: 250m
-            memory: 1024Mi
+            memory: 768Mi
         osd:
           limits:
             memory: 2Gi
@@ -138,14 +138,12 @@ spec:
             memory: 40Mi
         crashcollector:
           limits:
-            cpu: 100m
             memory: 64M
           requests:
             cpu: 15m
             memory: 32M
         logcollector:
           limits:
-            cpu: 50m
             memory: 32Mi
           requests:
             cpu: 5m

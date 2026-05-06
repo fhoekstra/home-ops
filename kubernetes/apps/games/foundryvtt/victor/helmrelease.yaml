@@ -69,10 +69,10 @@ spec:
 
             resources:
               limits:
-                memory: 4Gi
+                memory: 1Gi
               requests:
-                cpu: 100m
-                memory: 2Gi
+                cpu: 50m
+                memory: 256Mi
             envFrom:
               - secretRef:
                   name: foundryvtt-secret-victor

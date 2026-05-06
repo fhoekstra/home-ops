@@ -51,11 +51,11 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-            resources: &res
+            resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -77,7 +77,11 @@ spec:
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
               - --hide-scrollbars
-            resources: *res
+            resources:
+              requests:
+                cpu: 50m
+              limits:
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -99,9 +103,9 @@ spec:
                     key: meilisearch_master_key
             resources:
               requests:
-                cpu: 10m
+                cpu: 50m
               limits:
-                memory: 2Gi
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

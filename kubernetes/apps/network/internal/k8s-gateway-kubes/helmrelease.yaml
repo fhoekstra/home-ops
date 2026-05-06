@@ -43,6 +43,7 @@ spec:
     watchedResources: ["Ingress", "Service", "HTTPRoute"]
     resources:
       limits:
-        memory: 128Mi
+        memory: 32Mi
       requests:
         cpu: 100m
+        memory: 32Mi

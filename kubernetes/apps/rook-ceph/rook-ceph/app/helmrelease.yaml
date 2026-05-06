@@ -123,4 +123,4 @@ spec:
         cpu: 100m # unchangable
       limits:
         cpu: 500m
-        memory: 480Mi
+        memory: 256Mi
