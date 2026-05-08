@@ -33,20 +33,20 @@ spec:
       shared_buffers: 128MB
   bootstrap:
     initdb: {}
-  plugins: []
-    # - name: barman-cloud.cloudnative-pg.io
-    #   isWALArchiver: true
-    #   parameters:
-    #     barmanObjectName: cluster-shared-backup-local
-    #     serverName: &currentServer cluster-shared-v1
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: cluster-shared-backup-local
+        serverName: cluster-shared-v1
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
-    - name: &recoveryServer cluster-17-v6
+    - name: &recoveryServer cluster-shared-v1
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: cluster-17-backup-local
+          barmanObjectName: cluster-shared-backup-local
           serverName: *recoveryServer
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
