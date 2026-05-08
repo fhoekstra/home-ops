@@ -4,10 +4,10 @@ metadata:
   name: cluster-shared
   annotations:
     # required for seamless bootstrap: https://github.com/cloudnative-pg/cloudnative-pg/issues/5778#issuecomment-2783417464
-    # cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
     #
     # Also set stakaer reloader annotations to point at s3-creds, authelia-secret and lldap-secret
-    # secret.reloader.stakater.com/reload: "s3-creds,authelia-secret,lldap-secret"
+    secret.reloader.stakater.com/reload: "s3-creds,authelia-secret,lldap-secret"
 kind: Cluster
 spec:
   instances: 2
@@ -26,13 +26,14 @@ spec:
     limits:
       memory: 256Mi
     requests:
-      cpu: 250m
+      cpu: 50m
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv
       shared_buffers: 128MB
   bootstrap:
-    initdb: {}
+    recovery:
+      source: cluster-shared-v1
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
