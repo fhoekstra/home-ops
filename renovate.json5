@@ -8,6 +8,7 @@
     "github>fhoekstra/home-ops//.renovate/grafana.json5",
     "github>fhoekstra/home-ops//.renovate/groups.json5",
     "github>fhoekstra/home-ops//.renovate/packageRules.json5",
+    "github>fhoekstra/home-ops//.renovate/automerge.json5",
     ':automergeBranch',
     ':dependencyDashboard',
     ':disableRateLimiting',

@@ -2,21 +2,6 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: [
-        'Auto-merge GitHub Actions for minor and patch',
-      ],
-      matchManagers: [
-        'github-actions',
-      ],
-      automerge: true,
-      automergeType: 'branch',
-      ignoreTests: true,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-    },
-    {
       matchDatasources: [
         'docker',
       ],
@@ -170,40 +155,6 @@
       semanticCommitScope: 'github-action',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: '( {{currentVersion}} → {{newVersion}} )',
-    },
-    {
-      description: [
-        'Auto-merge reflector patch releases',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/helm-charts/reflector/',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
-      automerge: true,
-      automergeType: 'branch',
-      ignoreTests: true,
-    },
-    {
-      description: [
-        'Auto-merge reloader patch releases',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/charts/reloader/',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
-      automerge: true,
-      automergeType: 'branch',
-      ignoreTests: true,
     },
     {
       matchUpdateTypes: [
