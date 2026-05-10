@@ -28,7 +28,7 @@ spec:
         initContainers:
           init-config:
             image:
-              repository: docker.io/owncloud/ocis
+              repository: mirror.gcr.io/owncloud/ocis
               tag: 8.0.1
             command:
               - /bin/sh
@@ -42,7 +42,7 @@ spec:
         containers:
           *app :
             image:
-              repository: docker.io/owncloud/ocis
+              repository: mirror.gcr.io/owncloud/ocis
               tag: 8.0.1
             env:
               # DEMO_USERS: true

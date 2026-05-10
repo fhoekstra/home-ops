@@ -91,7 +91,7 @@ spec:
         containers:
           *search :
             image:
-              repository: docker.io/getmeili/meilisearch
+              repository: mirror.gcr.io/getmeili/meilisearch
               tag: v1.43.0
             args: ["/bin/meilisearch"]
             env:

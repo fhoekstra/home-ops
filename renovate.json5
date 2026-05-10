@@ -29,6 +29,9 @@
   minimumReleaseAge: "2 days",
   minimumReleaseAgeBehaviour: "timestamp-optional",
   internalChecksFilter: "strict",
+  registryAliases: {
+    "mirror.gcr.io": "docker.io",
+  },
   ignorePaths: [
     '**/*.sops.*',
   ],
