@@ -19,7 +19,7 @@ spec:
         containers:
           *app :
             image:
-              repository: docker.io/superseriousbusiness/gotosocial
+              repository: mirror.gcr.io/superseriousbusiness/gotosocial
               tag: "0.21.2"
             env:
               TZ: Europe/Amsterdam
