@@ -62,8 +62,12 @@ spec:
       limits:
         memory: 512Mi
       requests:
+        memory: 32Mi
         cpu: 100m
   configuration:
+    wal:
+      compression: bzip2
+      maxParallel: 8
     destinationPath: s3://cnpg/cluster-shared/
     endpointURL: http://versity.storage.svc.cluster.local:7070
     s3Credentials:
