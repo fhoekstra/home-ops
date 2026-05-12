@@ -112,9 +112,7 @@ spec:
 
     route:
       *app :
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
+        parentRefs: &gateways
           - name: envoy-external-kubes
             namespace: network
         hostnames:
@@ -140,11 +138,7 @@ spec:
       webfinger-gts:
         hostnames:
           - *account_domain
-        parentRefs:
-          - name: envoy-external-kubes
-            namespace: network
-          - name: envoy-internal
-            namespace: network
+        parentRefs: *gateways
         rules:
           - matches:
               - path:
