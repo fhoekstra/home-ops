@@ -123,9 +123,8 @@ spec:
         hostnames:
           - m.kubes.cloud
         parentRefs: &gateways
-          - name: envoy-external
+          - name: envoy-external-kubes
             namespace: networking
-            sectionName: https
       matrix-webfinger:
         hostnames:
           - kubes.cloud
