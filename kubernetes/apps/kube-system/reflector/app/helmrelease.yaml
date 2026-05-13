@@ -30,3 +30,10 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  values:
+    image:
+      repository: mirror.gcr.io/emberstack/kubernetes-reflector
+    cron:
+      enabled: true
+      schedule: "*/17 * * * *"
+      activeDeadlineSeconds: 600
