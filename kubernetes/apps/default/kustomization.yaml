@@ -7,7 +7,6 @@ resources:
   - ./echo-server-internal/ks.yaml
   - ./echo-server-towonel/ks.yaml
   - ./ocis/ks.yaml
-  - ./continuwuity/ks.yaml
   - ./karakeep/ks.yaml
   - ./blog/ks.yaml
 components:

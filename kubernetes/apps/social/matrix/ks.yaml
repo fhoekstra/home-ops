@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app continuwuity
+  name: &app matrix-continuwuity
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -19,7 +19,7 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: flux-system
-  path: ./kubernetes/apps/default/continuwuity/app
+  path: ./kubernetes/apps/social/matrix/app
   prune: true
   sourceRef:
     kind: GitRepository
