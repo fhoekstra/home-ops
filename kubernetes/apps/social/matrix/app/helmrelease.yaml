@@ -70,12 +70,12 @@ spec:
               CONTINUWUITY_QUERY_OVER_TCP_ONLY: "true" # Query DNS over TCP only: recommended in containers
               CONTINUWUITY_IP_LOOKUP_STRATEGY: "1" # Remove when IPv6 networking is added to my cluster
               CONTINUWUITY_NEW_USER_DISPLAYNAME_SUFFIX: ""
-              CONTINUWUITY_FORBIDDEN_REMOTE_SERVER_NAMES: |
-                ["matrix.org"]
-              CONTINUWUITY_FORBIDDEN_REMOTE_ROOM_DIRECTORY_SERVER_NAMES: |
-                ["matrix.org"]
-              CONTINUWUITY_URL_PREVIEW_DOMAIN_EXPLICIT_DENYLIST: |
-                ["matrix.org"]
+              # CONTINUWUITY_FORBIDDEN_REMOTE_SERVER_NAMES: |
+              #   ["matrix.org"]
+              # CONTINUWUITY_FORBIDDEN_REMOTE_ROOM_DIRECTORY_SERVER_NAMES: |
+              #   ["matrix.org"]
+              # CONTINUWUITY_URL_PREVIEW_DOMAIN_EXPLICIT_DENYLIST: |
+              #   ["matrix.org"]
               CONTINUWUITY_QUERY_TRUSTED_KEY_SERVERS_FIRST: false # NOTE: this is because continuwuity only supports Synapse as trusted key servers
               CONTINUWUITY_QUERY_TRUSTED_KEY_SERVERS_FIRST_ON_JOIN: false
             envFrom:
