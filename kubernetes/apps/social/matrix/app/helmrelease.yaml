@@ -122,17 +122,14 @@ spec:
       *app :
         hostnames:
           - m.kubes.cloud
-        parentRefs:
+        parentRefs: &gateways
           - name: envoy-external
             namespace: networking
             sectionName: https
       matrix-webfinger:
         hostnames:
           - kubes.cloud
-        parentRefs:
-          - name: envoy-external
-            namespace: networking
-            sectionName: https
+        parentRefs: *gateways
         rules:
           - matches:
               - path:
