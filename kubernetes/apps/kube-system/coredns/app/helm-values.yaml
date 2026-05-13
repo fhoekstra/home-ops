@@ -1,6 +1,8 @@
 ---
 fullnameOverride: coredns
 k8sAppLabelOverride: kube-dns
+image:
+  repository: mirror.gcr.io/coredns/coredns
 serviceAccount:
   coredns:
     enabled: true

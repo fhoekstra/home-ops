@@ -65,7 +65,7 @@ spec:
                     key: fqdn-uri
             resources:
               requests:
-                cpu: 250m
+                cpu: 50m
               limits:
                 memory: 768Mi
             securityContext:

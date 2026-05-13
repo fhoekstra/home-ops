@@ -32,6 +32,8 @@ spec:
     remediation:
       retries: 3
   values:
+    image:
+      repository: ghcr.io/rook/ceph
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableCephfsDriver: false
@@ -122,5 +124,4 @@ spec:
         memory: 128Mi # unchangable
         cpu: 100m # unchangable
       limits:
-        cpu: 500m
         memory: 256Mi

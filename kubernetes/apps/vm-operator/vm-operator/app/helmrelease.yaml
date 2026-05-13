@@ -38,6 +38,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    global:
+      image:
+        registry: quay.io
     crds:
       enabled: true
       cleanup:
