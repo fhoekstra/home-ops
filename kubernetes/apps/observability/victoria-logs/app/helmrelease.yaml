@@ -28,6 +28,9 @@ spec:
       namespace: rook-ceph
   values:
     fullnameOverride: *app
+    global:
+      image:
+        registry: quay.io
     server:
       retentionMaxDiskUsagePercent: 80
       persistentVolume:
