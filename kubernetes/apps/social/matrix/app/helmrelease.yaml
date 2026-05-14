@@ -56,7 +56,7 @@ spec:
               CONTINUWUITY_ROCKSDB_BOTTOMMOST_COMPRESSION: "true"
               CONTINUWUITY_WELL_KNOWN__CLIENT: "https://m.kubes.cloud"
               CONTINUWUITY_WELL_KNOWN__SERVER: "m.kubes.cloud:443"
-              COnTINUWUITY_ALLOW_ENCRYPTION: "true"
+              CONTINUWUITY_ALLOW_ENCRYPTION: "true"
               CONTINUWUITY_ALLOW_FEDERATION: "true"
               CONTINUWUITY_ALLOW_REGISTRATION: "true"
               CONTINUWUITY_SUSPEND_ON_REGISTER: "true"
