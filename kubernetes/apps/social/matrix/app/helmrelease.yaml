@@ -124,7 +124,7 @@ spec:
           - m.kubes.cloud
         parentRefs: &gateways
           - name: envoy-external-kubes
-            namespace: networking
+            namespace: network
         rules:
           - backendRefs:
               - name: *app
