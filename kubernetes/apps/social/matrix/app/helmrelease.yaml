@@ -126,6 +126,8 @@ spec:
           - name: envoy-external-kubes
             namespace: networking
       matrix-webfinger:
+        annotations: # DNS for kubes.cloud. root is managed separately through an A record
+          external-dns.alpha.kubernetes.io/controller: "ignore"
         hostnames:
           - kubes.cloud
         parentRefs: *gateways

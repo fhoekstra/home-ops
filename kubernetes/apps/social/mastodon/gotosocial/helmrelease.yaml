@@ -136,6 +136,8 @@ spec:
                   maxAge: 86400
                 type: CORS
       webfinger-gts:
+        annotations: # DNS for kubes.cloud. root is managed separately through an A record
+          external-dns.alpha.kubernetes.io/controller: "ignore"
         hostnames:
           - *account_domain
         parentRefs: *gateways
