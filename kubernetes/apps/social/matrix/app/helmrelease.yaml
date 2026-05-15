@@ -41,7 +41,7 @@ spec:
           app:
             image:
               repository: forgejo.ellis.link/continuwuation/continuwuity
-              tag: v0.5.9
+              tag: v0.5.9-maxperf
             env:
               CONTINUWUITY_LOG: "info"
               CONTINUWUITY_SERVER_NAME: &acc_domain "kubes.cloud"
