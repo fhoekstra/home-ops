@@ -20,6 +20,6 @@ cainjector:
   resources:
     requests:
       cpu: 10m
-      memory: 90Mi
+      memory: 128Mi
     limits:
-      memory: 90Mi
+      memory: 128Mi
