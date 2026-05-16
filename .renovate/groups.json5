@@ -64,6 +64,21 @@
       ],
     },
     {
+      description: 'Kubernetes Group',
+      groupName: 'kubernetes',
+      matchPackageNames: [
+        '/siderolabs/kubelet/',
+        '/kubernetes/kubectl/',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      matchManagers: [
+        'custom.regex',
+        'mise',
+      ],
+    },
+    {
       description: 'Rook-Ceph Group',
       groupName: 'Rook-Ceph',
       matchDatasources: [
