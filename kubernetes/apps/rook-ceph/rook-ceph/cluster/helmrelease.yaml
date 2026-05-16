@@ -111,18 +111,18 @@ spec:
             memory: 700Mi
           requests:
             memory: 700Mi
-            cpu: 500m
+            cpu: 100m
         mon:
           limits:
             memory: 768Mi
           requests:
-            cpu: 250m
+            cpu: 100m
             memory: 768Mi
         osd:
           limits:
             memory: 2Gi
           requests:
-            cpu: 500m
+            cpu: 150m
             memory: 2Gi
         prepareosd:
           limits:
