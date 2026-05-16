@@ -44,6 +44,22 @@ spec:
             name: telegram
             key: BOT_TOKEN
           chatID: ${TELEGRAM_CHAT_ID}
+          message: |-
+            {{ if gt (len .Alerts.Firing) 0 }}
+            🚨 *FIRING ALERTS*
+            {{ range .Alerts.Firing }}
+              *Alert:* {{ .Labels.alertname }}
+              *Summary:* {{ .Annotations.summary }}
+            {{ end }}
+            {{ end }}
+            {{ if gt (len .Alerts.Resolved) 0 }}
+            ✅ *RESOLVED ALERTS*
+            {{ range .Alerts.Resolved }}
+              *Alert:* {{ .Labels.alertname }}
+              *Summary:* {{ .Annotations.summary }}
+            {{ end }}
+            {{ end }}
+          parseMode: Markdown
     # Optional: fallback "blackhole" receiver to prevent dropped alerts
     - name: blackhole
   inhibitRules:
