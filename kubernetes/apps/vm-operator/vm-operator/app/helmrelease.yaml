@@ -40,7 +40,7 @@ spec:
   values:
     global:
       image:
-        registry: quay.io
+        registry: mirror.gcr.io
     crds:
       enabled: true
       cleanup:
