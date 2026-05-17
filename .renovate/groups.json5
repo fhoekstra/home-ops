@@ -49,21 +49,6 @@
       ],
     },
     {
-      description: 'Talos Group',
-      groupName: 'talos',
-      matchPackageNames: [
-        '/siderolabs/talos/',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchManagers: [
-        'custom.regex',
-        'custom.talos-factory'
-        'mise',
-      ],
-    },
-    {
       description: 'Kubernetes Group',
       groupName: 'kubernetes',
       matchPackageNames: [
