@@ -52,16 +52,11 @@
       description: 'Talos Group',
       groupName: 'talos',
       matchPackageNames: [
-        '/siderolabs/installer/',
         '/siderolabs/talos/',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',
       },
-      matchManagers: [
-        'custom.regex',
-        'mise',
-      ],
     },
     {
       description: 'Kubernetes Group',
