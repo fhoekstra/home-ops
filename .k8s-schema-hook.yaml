@@ -1,0 +1,13 @@
+---
+domain: k8s-schemas.home-operations.com
+
+overrides:
+  - name: kustomize
+    match:
+      apiGroup: kustomize.config.k8s.io
+    schema: https://json.schemastore.org/kustomization
+  - name: helmrelease-app-template
+    match:
+      kind: HelmRelease
+      chartRefOciUrl: oci://ghcr.io/bjw-s-labs/helm/app-template
+    schema: https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
