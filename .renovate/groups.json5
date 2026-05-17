@@ -52,7 +52,6 @@
       description: 'Talos Group',
       groupName: 'talos',
       matchPackageNames: [
-        '/siderolabs/installer/',
         '/siderolabs/talos/',
       ],
       group: {
@@ -60,6 +59,7 @@
       },
       matchManagers: [
         'custom.regex',
+        'custom.talos-factory'
         'mise',
       ],
     },
