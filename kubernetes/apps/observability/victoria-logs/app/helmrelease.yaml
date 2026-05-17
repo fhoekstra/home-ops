@@ -59,6 +59,12 @@ spec:
                   value: /
       serviceMonitor:
         enabled: true
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 35m
+          memory: 512Mi
     dashboards:
       enabled: true
       grafanaOperator:
