@@ -24,7 +24,7 @@ spec:
     storageClass: local-hostpath
   resources:
     limits:
-      memory: 256Mi
+      memory: 128Mi
     requests:
       cpu: 50m
   postgresql:
@@ -62,7 +62,7 @@ spec:
       limits:
         memory: 512Mi
       requests:
-        memory: 32Mi
+        memory: 20Mi
         cpu: 100m
   configuration:
     wal:

@@ -61,10 +61,10 @@ spec:
         enabled: true
       resources:
         limits:
-          memory: 1Gi
+          memory: 256Mi
         requests:
-          cpu: 35m
-          memory: 512Mi
+          cpu: 30m
+          memory: 256Mi
     dashboards:
       enabled: true
       grafanaOperator:

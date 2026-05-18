@@ -110,10 +110,10 @@ spec:
                 containerPort: &anubisPort 8923
             resources:
               limits:
-                memory: 16Mi
+                memory: 256Mi
               requests:
                 cpu: 26m
-                memory: 16Mi
+                memory: 256Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

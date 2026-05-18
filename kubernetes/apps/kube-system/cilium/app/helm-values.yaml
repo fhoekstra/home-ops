@@ -47,7 +47,7 @@ operator:
     limits:
       memory: 128Mi
     requests:
-      cpu: 100m
+      cpu: 5m
       memory: 128Mi
 prometheus:
   enabled: true
@@ -80,7 +80,7 @@ socketLB:
   hostNamespaceOnly: true
 resources:
   limits:
-    memory: 768Mi
+    memory: 512Mi
   requests:
-    cpu: 250m
-    memory: 768Mi
+    cpu: 75m
+    memory: 256Mi
