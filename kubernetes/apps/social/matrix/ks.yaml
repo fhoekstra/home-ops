@@ -19,7 +19,7 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: flux-system
-  path: ./kubernetes/apps/social/matrix/app
+  path: ./kubernetes/apps/social/matrix/continuwuity
   prune: true
   sourceRef:
     kind: GitRepository
