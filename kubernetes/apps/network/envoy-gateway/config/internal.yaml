@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.${NEW_CLUSTER_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: &hostname internal.${CLUSTER_DOMAIN}
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -28,7 +28,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${NEW_CLUSTER_DOMAIN/./-}-production-tls
+            name: ${CLUSTER_DOMAIN/./-}-production-tls
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1

@@ -10,7 +10,7 @@ spec:
   hostnames:
     - "why.kubes.cloud"
   parentRefs:
-    - name: envoy-external-kubes
+    - name: envoy-external
       namespace: network
   rules:
     - filters:

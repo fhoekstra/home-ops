@@ -78,7 +78,7 @@ spec:
             port: *port
     route:
       *app :
-        hostnames: ["versity.${NEW_CLUSTER_DOMAIN}"]
+        hostnames: ["versity.${CLUSTER_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: network

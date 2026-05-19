@@ -80,7 +80,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"
+          - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
         parentRefs:
-          - name: envoy-external-kubes
+          - name: envoy-external
             namespace: network

@@ -22,7 +22,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: k8s-gateway
+    name: *app
   install:
     remediation:
       retries: -1

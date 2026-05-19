@@ -3,9 +3,9 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: envoy-external-kubes
+  name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.${NEW_CLUSTER_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: &hostname external.${CLUSTER_DOMAIN}
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -28,4 +28,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${NEW_CLUSTER_DOMAIN/./-}-production-tls
+            name: ${CLUSTER_DOMAIN/./-}-production-tls

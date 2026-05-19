@@ -6,5 +6,5 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  NEW_CLUSTER_DOMAIN: kubes.cloud
+  CLUSTER_DOMAIN: kubes.cloud
   PERSONAL_DOMAIN: freek.cloud

@@ -108,7 +108,7 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-        hostnames: ["vmsingle.${NEW_CLUSTER_DOMAIN}"]
+        hostnames: ["vmsingle.${CLUSTER_DOMAIN}"]
 
     vmagent:
       enabled: true

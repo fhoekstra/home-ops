@@ -43,7 +43,7 @@ spec:
     route:
       dashboard:
         host:
-          name: "rook.${NEW_CLUSTER_DOMAIN}"
+          name: "rook.${CLUSTER_DOMAIN}"
           path: /
           pathType: PathPrefix
         parentRefs:

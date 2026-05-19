@@ -113,7 +113,7 @@ spec:
     route:
       *app :
         parentRefs: &gateways
-          - name: envoy-external-kubes
+          - name: envoy-external
             namespace: network
         hostnames:
           - *host

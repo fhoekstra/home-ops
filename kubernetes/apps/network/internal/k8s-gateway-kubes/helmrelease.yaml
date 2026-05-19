@@ -22,7 +22,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: k8s-gateway
+    name: *app
   install:
     remediation:
       retries: -1
@@ -32,7 +32,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    domain: "${NEW_CLUSTER_DOMAIN}"
+    domain: "${CLUSTER_DOMAIN}"
     ttl: 1
     service:
       type: LoadBalancer

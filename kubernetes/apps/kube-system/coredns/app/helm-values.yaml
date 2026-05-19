@@ -33,7 +33,7 @@ servers:
           pods insecure
           fallthrough in-addr.arpa ip6.arpa
       - name: forward
-        parameters: ${NEW_CLUSTER_DOMAIN} 192.168.1.37
+        parameters: ${CLUSTER_DOMAIN} 192.168.1.37
       - name: forward
         parameters: ${PERSONAL_DOMAIN} 192.168.1.38
       - name: forward

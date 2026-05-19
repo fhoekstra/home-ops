@@ -55,7 +55,7 @@ spec:
               CONTAINER_PATCHES: /data/container_patches
               CONTAINER_VERBOSE: "true"
               FOUNDRY_TELEMETRY: false
-              FOUNDRY_HOSTNAME: &host "foundry-stijn.${NEW_CLUSTER_DOMAIN}"
+              FOUNDRY_HOSTNAME: &host "foundry-stijn.${CLUSTER_DOMAIN}"
               FOUNDRY_LOCAL_HOSTNAME: *host
               FOUNDRY_MINIFY_STATIC_FILES: "true"
               FOUNDRY_PROTOCOL: "4"
@@ -161,10 +161,10 @@ spec:
       *app :
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${NEW_CLUSTER_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/auth-method: "GET"
           nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
-          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${NEW_CLUSTER_DOMAIN}?rm=$request_method"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
           nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
         hosts:
           - host: *host
@@ -176,13 +176,13 @@ spec:
       files:
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${NEW_CLUSTER_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/auth-method: "GET"
           nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
-          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${NEW_CLUSTER_DOMAIN}?rm=$request_method"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
           nginx.ingress.kubernetes.io/auth-response-headers: "Remote-User,Remote-Name,Remote-Groups,Remote-Email"
         hosts:
-          - host: foundry-stijn-files.${NEW_CLUSTER_DOMAIN}
+          - host: foundry-stijn-files.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 service:

@@ -27,9 +27,9 @@ session:
   remember_me: 2M
   cookies:
     - name: fhoekstra_session
-      domain: ${NEW_CLUSTER_DOMAIN}
-      authelia_url: https://auth.${NEW_CLUSTER_DOMAIN}
-      default_redirection_url: https://${NEW_CLUSTER_DOMAIN}
+      domain: ${CLUSTER_DOMAIN}
+      authelia_url: https://auth.${CLUSTER_DOMAIN}
+      default_redirection_url: https://${CLUSTER_DOMAIN}
 
 notifier:
   disable_startup_check: true
@@ -68,10 +68,10 @@ access_control:
         - internal
         - trusted
       policy: one_factor
-      domain: "*.${NEW_CLUSTER_DOMAIN}"
+      domain: "*.${CLUSTER_DOMAIN}"
     # This just reduces logging noise in authelia
     - domain:
-        - whoami.${NEW_CLUSTER_DOMAIN}
+        - whoami.${CLUSTER_DOMAIN}
       resources:
         - ^/health$
         - ^/health/

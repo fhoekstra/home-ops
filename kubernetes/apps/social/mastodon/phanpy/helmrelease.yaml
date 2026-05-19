@@ -45,7 +45,7 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-          - name: envoy-external-kubes
+          - name: envoy-external
             namespace: network
         hostnames:
           - *host

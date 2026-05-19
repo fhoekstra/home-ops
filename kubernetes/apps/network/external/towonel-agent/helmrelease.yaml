@@ -33,7 +33,7 @@ spec:
               tag: 0.0.29
             env:
               RUST_LOG: info
-              TOWONEL_AGENT_SERVICES: '[{"hostname": "*.kubes.cloud", "origin": "envoy-external-kubes.network.svc.cluster.local:443"}, {"hostname": "kubes.cloud",   "origin": "envoy-external-kubes.network.svc.cluster.local:443"}]'
+              TOWONEL_AGENT_SERVICES: '[{"hostname": "*.kubes.cloud", "origin": "envoy-external.network.svc.cluster.local:443"}, {"hostname": "kubes.cloud",   "origin": "envoy-external.network.svc.cluster.local:443"}]'
               # TOWONEL_AGENT_TCP_SERVICES: '[{"name":"forgejo-ssh", "origin":"forgejo-ssh.forge.svc.cluster.local:22", "listen_port":22}]'
               TOWONEL_INVITE_TOKEN:
                 valueFrom:

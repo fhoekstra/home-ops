@@ -132,7 +132,7 @@ spec:
         hostnames:
           - m.kubes.cloud
         parentRefs: &gateways
-          - name: envoy-external-kubes
+          - name: envoy-external
             namespace: network
         rules:
           - backendRefs:

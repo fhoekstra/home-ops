@@ -27,7 +27,7 @@ spec:
     fullnameOverride: externaldns-ovh
     logLevel: info
     domainFilters:
-      - ${NEW_CLUSTER_DOMAIN}
+      - ${CLUSTER_DOMAIN}
     env:
       - name: OVH_APPLICATION_KEY
         valueFrom:
@@ -47,7 +47,7 @@ spec:
     extraArgs:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-name=envoy-external-kubes
+      - --gateway-name=envoy-external
     podAnnotations:
       secret.reloader.stakater.com/reload: externaldns-ovh-secret
     policy: sync

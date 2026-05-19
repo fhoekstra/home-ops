@@ -3,16 +3,16 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${NEW_CLUSTER_DOMAIN/./-}-staging"
+  name: "${CLUSTER_DOMAIN/./-}-staging"
 spec:
-  secretName: "${NEW_CLUSTER_DOMAIN/./-}-staging-tls"
+  secretName: "${CLUSTER_DOMAIN/./-}-staging-tls"
   issuerRef:
     name: letsencrypt-staging-ovh
     kind: ClusterIssuer
-  commonName: "${NEW_CLUSTER_DOMAIN}"
+  commonName: "${CLUSTER_DOMAIN}"
   dnsNames:
-    - "${NEW_CLUSTER_DOMAIN}"
-    - "*.${NEW_CLUSTER_DOMAIN}"
+    - "${CLUSTER_DOMAIN}"
+    - "*.${CLUSTER_DOMAIN}"
   privateKey:
     algorithm: ECDSA
     size: 256
@@ -24,16 +24,16 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${NEW_CLUSTER_DOMAIN/./-}-production"
+  name: "${CLUSTER_DOMAIN/./-}-production"
 spec:
-  secretName: "${NEW_CLUSTER_DOMAIN/./-}-production-tls"
+  secretName: "${CLUSTER_DOMAIN/./-}-production-tls"
   issuerRef:
     name: letsencrypt-production-ovh
     kind: ClusterIssuer
-  commonName: "${NEW_CLUSTER_DOMAIN}"
+  commonName: "${CLUSTER_DOMAIN}"
   dnsNames:
-    - "${NEW_CLUSTER_DOMAIN}"
-    - "*.${NEW_CLUSTER_DOMAIN}"
+    - "${CLUSTER_DOMAIN}"
+    - "*.${CLUSTER_DOMAIN}"
   privateKey:
     algorithm: ECDSA
     size: 256
