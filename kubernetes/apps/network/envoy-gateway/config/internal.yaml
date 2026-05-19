@@ -11,6 +11,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.alpha.kubernetes.io/ttl: "1m"
       lbipam.cilium.io/ips: ${ENVOY_INTERNAL_LB_IP}
   listeners:
     - name: http
