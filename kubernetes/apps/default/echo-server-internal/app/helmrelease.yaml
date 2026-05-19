@@ -77,9 +77,8 @@ spec:
     route:
       *app :
         hostnames:
-          - "{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"
           - "{{ .Release.Name }}.freek.cloud"
-          - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - "{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network

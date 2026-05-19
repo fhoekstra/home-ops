@@ -18,7 +18,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: cloudflared
+    - name: towonel-agent
       namespace: network
   values:
     controllers:
@@ -80,19 +80,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - "{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"
         parentRefs:
-          - name: envoy-external
+          - name: envoy-external-kubes
             namespace: network
-    # ingress:
-    #   app:
-    #     className: external
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-    #     hosts:
-    #       - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http

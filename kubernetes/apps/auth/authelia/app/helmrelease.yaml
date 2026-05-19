@@ -143,9 +143,9 @@ spec:
           - port: metrics
     route:
       *app :
-        hostnames: ["auth.${CLUSTER_DOMAIN}"]
+        hostnames: ["auth.${NEW_CLUSTER_DOMAIN}"]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-external-kubes
             namespace: network
         rules:
           - backendRefs:

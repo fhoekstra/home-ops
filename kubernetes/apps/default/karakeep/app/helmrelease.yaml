@@ -45,7 +45,7 @@ spec:
                   secretKeyRef:
                     name: karakeep-secret
                     key: nextauth_secret
-              NEXTAUTH_URL: https://karakeep.${CLUSTER_DOMAIN}
+              NEXTAUTH_URL: https://karakeep.${NEW_CLUSTER_DOMAIN}
             probes:
               liveness:
                 enabled: true
@@ -147,7 +147,7 @@ spec:
 
     route:
       home:
-        hostnames: ["{{ .Release.Name }}.${CLUSTER_DOMAIN}"]
+        hostnames: ["{{ .Release.Name }}.${NEW_CLUSTER_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: network

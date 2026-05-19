@@ -34,21 +34,6 @@
       ],
     },
     {
-      description: 'Cloudflared Group',
-      groupName: 'cloudflared',
-      matchPackageNames: [
-        '/cloudflare/cloudflared/',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      matchDatasources: [
-        'docker',
-        'github-releases',
-        'github-tags',
-      ],
-    },
-    {
       description: 'Talos Group',
       groupName: 'talos',
       matchPackageNames: [

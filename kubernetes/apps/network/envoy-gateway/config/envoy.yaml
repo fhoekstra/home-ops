@@ -113,9 +113,6 @@ spec:
     - name: envoy-internal
       namespace: network
       sectionName: http
-    - name: envoy-external
-      namespace: network
-      sectionName: http
     - name: envoy-external-kubes
       namespace: network
       sectionName: http

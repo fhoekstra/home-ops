@@ -41,7 +41,7 @@ spec:
       route:
         enabled: true
         hostnames:
-          - "vlogs.${CLUSTER_DOMAIN}"
+          - "vlogs.${NEW_CLUSTER_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network

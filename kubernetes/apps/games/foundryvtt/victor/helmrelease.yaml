@@ -54,7 +54,7 @@ spec:
               CONTAINER_PATCHES: /data/container_patches
               CONTAINER_VERBOSE: "true"
               FOUNDRY_TELEMETRY: false
-              FOUNDRY_HOSTNAME: &host "foundry-victor.${CLUSTER_DOMAIN}"
+              FOUNDRY_HOSTNAME: &host "foundry-victor.${NEW_CLUSTER_DOMAIN}"
               FOUNDRY_LOCAL_HOSTNAME: *host
               FOUNDRY_MINIFY_STATIC_FILES: "true"
               FOUNDRY_PROTOCOL: "4"
@@ -158,7 +158,7 @@ spec:
       *app :
         hostnames: [*host]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-external-kubes
             namespace: network
         rules:
           - backendRefs:
@@ -166,9 +166,9 @@ spec:
                 port: http
 
       files:
-        hostnames: ["foundry-victor-files.${CLUSTER_DOMAIN}"]
+        hostnames: ["foundry-victor-files.${NEW_CLUSTER_DOMAIN}"]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-external-kubes
             namespace: network
         rules:
           - backendRefs:

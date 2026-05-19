@@ -4,9 +4,9 @@ kind: HTTPRoute
 metadata:
   name: grafana-route
   annotations:
-    external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: "internal.${NEW_CLUSTER_DOMAIN}"
 spec:
-  hostnames: ["grafana.${CLUSTER_DOMAIN}"]
+  hostnames: ["grafana.${NEW_CLUSTER_DOMAIN}"]
   parentRefs:
     - name: envoy-internal
       namespace: network
