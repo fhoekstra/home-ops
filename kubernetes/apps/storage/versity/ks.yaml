@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: storage
   # components:
-  #   - ../../../../components/volsync
+  #   - ../../../../components/volsync/hot
   # postBuild:
   #   substitute:
   #     APP: *app

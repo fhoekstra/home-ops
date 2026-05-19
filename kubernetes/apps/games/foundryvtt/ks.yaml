@@ -8,7 +8,7 @@
 # spec:
 #   targetNamespace: games
 #   components:
-#     - ../../../../components/volsync
+#     - ../../../../components/volsync/hot
 #   postBuild:
 #     substitute:
 #       APP: *app
@@ -35,7 +35,7 @@ metadata:
 spec:
   targetNamespace: games
   components:
-    - ../../../../components/volsync
+    - ../../../../components/volsync/hot
   postBuild:
     substitute:
       APP: *app
