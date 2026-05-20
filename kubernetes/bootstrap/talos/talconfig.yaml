@@ -130,6 +130,7 @@ patches:
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-system-upgrade.yaml"
   - "@./patches/global/machine-time.yaml"
+  - "@./patches/global/oom-config.yaml"
 # Controller patches
 controlPlane:
   patches:
