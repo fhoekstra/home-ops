@@ -17,7 +17,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: cold-snapshot-restart-controller-${APP}
-              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1
+              image: mirror.gcr.io/alpine/k8s:1.36.1
               env:
                 - name: NAMESPACE
                   valueFrom:
@@ -95,7 +95,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: cold-snapshot-restart-controller-${APP}
-              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1
+              image: mirror.gcr.io/alpine/k8s:1.36.1
               env:
                 - name: NAMESPACE
                   valueFrom:

@@ -8,10 +8,10 @@ metadata:
 spec:
   targetNamespace: social
   components:
-    - ../../../../components/volsync/cold
+    - ../../../../components/volsync/hot
   postBuild:
     substitute:
-      VOLSYNC_CRON_LOCAL: "14 * * * *" # Just testing
+      VOLSYNC_CRON_LOCAL: "23 * * * *" # Do not take hourly COLD backups
       # VOLSYNC_CRON_LOCAL: "30 2-17/7 * * *" # Do not take hourly COLD backups
       VOLSYNC_CRON_REMOTE: "40 3 * * *"
       APP: *app
