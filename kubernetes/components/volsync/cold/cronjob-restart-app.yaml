@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/v1.34.0/cronjob-batch-v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: volsync-cold-snapshot-local
+spec:
+  schedule: "${VOLSYNC_CRON_LOCAL:='0 * * * *'}"
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: volsync-restart-${APP}
+          restartPolicy: OnFailure
+          volumes:
+            - name: scripts
+              configMap:
+                name: volsync-cold-snapshot-${APP}-script
+                defaultMode: 0755
+          containers:
+            - name: cold-snapshot-restart-controller-${APP}
+              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1-1
+              env:
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: STATEFULSET
+                  value: "${STATEFULSET:=${APP}}"
+                - name: PVC
+                  value: "${CLAIM:=${APP}}"
+              command:
+                - /scripts/cold-snapshot.sh
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: volsync-cold-snapshot-remote
+spec:
+  schedule: "${VOLSYNC_CRON_REMOTE='20 3 * * *'}"
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: volsync-restart-${APP}
+          restartPolicy: OnFailure
+          volumes:
+            - name: scripts
+              configMap:
+                name: volsync-cold-snapshot-${APP}-script
+                defaultMode: 0755
+          containers:
+            - name: cold-snapshot-restart-controller-${APP}
+              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1-1
+              env:
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: STATEFULSET
+                  value: "${STATEFULSET:=${APP}}"
+                - name: PVC
+                  value: "${CLAIM:=${APP}}"
+              command:
+                - /scripts/cold-snapshot.sh
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
