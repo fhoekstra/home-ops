@@ -6,5 +6,11 @@ resources:
   - ../base
   - ./cronjob-restart-app.yaml
   - ./rbac-app-restart.yaml
+configMapGenerator:
+  - name: volsync-cold-snapshot-${APP}-script
+    files:
+      - scripts/cold-snapshot.sh
+    options:
+      disableNameSuffixHash: true
 patches:
   - path: ./pvc-annotation-patch.yaml
