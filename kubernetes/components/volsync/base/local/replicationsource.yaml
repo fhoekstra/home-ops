@@ -3,14 +3,20 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "${APP}-s3"
+  name: "${APP}"
 spec:
   sourcePVC: "${CLAIM:=${APP}}"
   trigger:
-    schedule: "20 3 * * *"
+    schedule: "${VOLSYNC_CRON_LOCAL:='0 * * * *'}"
   restic:
+    repository: "${APP}-volsync"
+    moverVolumes:
+      - mountPath: repository # Results in mount at /mnt/repository
+        volumeSource:
+          nfs:
+            server: "${NFS_SERVER_IP_ADDRESS}"
+            path: /mnt/data/nfs/not-backed-up/k8s/volsync
     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
-    repository: "${APP}-volsync-s3"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
@@ -21,6 +27,9 @@ spec:
       runAsUser: ${VOLSYNC_PUID:=1000}
       runAsGroup: ${VOLSYNC_PGID:=1000}
       fsGroup: ${VOLSYNC_PGID:=1000}
-    pruneIntervalDays: 21
+    pruneIntervalDays: 7
     retain:
-      daily: 9
+      hourly: 24
+      daily: 7
+      weekly: 3
+      monthly: 3

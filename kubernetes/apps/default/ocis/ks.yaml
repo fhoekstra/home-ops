@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/volsync
+    - ../../../../components/volsync/hot
   postBuild:
     substitute:
       APP: ocis
