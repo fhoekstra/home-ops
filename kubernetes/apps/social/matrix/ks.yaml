@@ -11,7 +11,7 @@ spec:
     - ../../../../components/volsync/cold
   postBuild:
     substitute:
-      VOLSYNC_CRON_LOCAL: "0 23,3,9 * * *"
+      VOLSYNC_CRON_LOCAL: "10 23,3,9 * * *"
       VOLSYNC_CRON_REMOTE: "40 3 * * *"
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
