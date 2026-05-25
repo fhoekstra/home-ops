@@ -38,6 +38,9 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
+      prometheusRuleOverrides:
+        CephNodeDiskspaceWarning:  # So many false positives
+          disabled: true
     toolbox:
       enabled: true
     route:
