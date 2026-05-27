@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: dragonfly-shared
+spec:
+  image: ghcr.io/dragonflydb/dragonfly:v1.38.1
+  replicas: 2
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+    - --cluster_mode=emulated
+    - --lock_on_hashtags # https://github.com/dragonflydb/dragonfly/issues/782
+    - --default_lua_flags=allow-undeclared-keys
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: dragonfly
+---
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dragonfly
+spec:
+  selector:
+    matchLabels:
+      app: dragonfly
+  podTargetLabels: ["app"]
+  podMetricsEndpoints:
+    - port: admin
+  fallbackScrapeProtocol: PrometheusText1.0.0
