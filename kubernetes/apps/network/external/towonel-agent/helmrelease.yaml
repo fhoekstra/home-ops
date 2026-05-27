@@ -29,12 +29,13 @@ spec:
         containers:
           app:
             image:
-              repository: registry.erwanleboucher.dev/eleboucher/towonel-agent
-              tag: 0.0.43
+              repository: codeberg.org/towonel/towonel-agent
+              tag: "0.1.14"
             env:
               RUST_LOG: info
               TOWONEL_AGENT_SERVICES: '[{"hostname": "*.kubes.cloud", "origin": "envoy-external.network.svc.cluster.local:443"}, {"hostname": "kubes.cloud", "origin": "envoy-external.network.svc.cluster.local:443"}]'
               # TOWONEL_AGENT_TCP_SERVICES: '[{"name":"forgejo-ssh", "origin":"forgejo-ssh.forge.svc.cluster.local:22", "listen_port":2222}]'
+              TOWONEL_AGENT_HEALTH_LISTEN_ADDR: "0.0.0.0:9090"
               TOWONEL_INVITE_TOKEN:
                 valueFrom:
                   secretKeyRef:
