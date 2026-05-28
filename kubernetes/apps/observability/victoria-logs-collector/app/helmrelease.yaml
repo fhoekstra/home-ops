@@ -36,6 +36,12 @@ spec:
     remoteWrite:
       - url: http://victoria-logs-server.observability.svc.cluster.local:9428
         maxDiskUsagePerURL: 10GB
+    collector:
+      streamFields:
+        - kubernetes.pod_name # Included by default
+        - kubernetes.pod_namespace # Included by default
+        - kubernetes.container_name # Included by default
+        - kubernetes.pod_labels.app.kubernetes.io/name # Helps to filter on workload level across pods
     resources:
       limits:
         memory: 256Mi
