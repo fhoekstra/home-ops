@@ -20,6 +20,7 @@ includes:
   bootstrap: .taskfiles/bootstrap
   talos: .taskfiles/talos
   kubernetes: .taskfiles/kubernetes
+  sops: .taskfiles/sops
 
 tasks:
   default: task --list

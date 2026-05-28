@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  updatekeys:
+    desc: "Re-encrypt all SOPS-encrypted files with the current keys from .sops.yaml"
+    cmds:
+      - find {{.ROOT_DIR}} \( -name "*.sops.yaml" -o -name "*.sops.yml" \) -exec sops updatekeys --yes {} \;
+    preconditions: &sops_preconditions
+      - sh: test -f {{.ROOT_DIR}}/.sops.yaml
+        msg: ".sops.yaml not found at {{.ROOT_DIR}}/.sops.yaml"
+      - sh: test -f {{.SOPS_AGE_KEY_FILE}}
+        msg: "AGE key file not found at {{.SOPS_AGE_KEY_FILE}}. Generate with: age-keygen -pq -o {{.SOPS_AGE_KEY_FILE}}"
+      - which sops
+
+  rotatesecrets:
+    desc: "Rotate all SOPS-encrypted secrets (decrypt then re-encrypt with current keys)"
+    cmds:
+      - find {{.ROOT_DIR}} \( -name "*.sops.yaml" -o -name "*.sops.yml" \) -exec sops rotate --in-place {} \;
+    preconditions: *sops_preconditions
