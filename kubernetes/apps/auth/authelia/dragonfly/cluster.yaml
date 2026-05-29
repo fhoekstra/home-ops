@@ -3,10 +3,14 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: dragonfly-shared
+  name: dragonfly-auth
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.38.1
-  replicas: 2
+  replicas: 3
+  authentication:
+    passwordFromSecret:
+      name: dragonfly-auth-secret
+      key: AUTHELIA_SESSION_REDIS_PASSWORD
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -32,17 +36,3 @@ spec:
       labelSelector:
         matchLabels:
           app.kubernetes.io/part-of: dragonfly
----
-# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/monitoring.coreos.com/podmonitor_v1.json
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
-  name: dragonfly
-spec:
-  selector:
-    matchLabels:
-      app: dragonfly
-  podTargetLabels: ["app"]
-  podMetricsEndpoints:
-    - port: admin
-  fallbackScrapeProtocol: PrometheusText1.0.0

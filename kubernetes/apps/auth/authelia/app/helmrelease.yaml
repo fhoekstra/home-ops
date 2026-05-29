@@ -37,7 +37,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     controllers:
       *app :
-        replicas: 1
+        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -73,6 +73,8 @@ spec:
             envFrom:
               - secretRef:
                   name: authelia-secret
+              - secretRef:
+                  name: dragonfly-auth-secret
             env:
               X_AUTHELIA_CONFIG: /config/configuration.yaml
               X_AUTHELIA_CONFIG_FILTERS: template
