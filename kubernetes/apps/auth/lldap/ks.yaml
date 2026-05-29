@@ -9,6 +9,9 @@ spec:
   targetNamespace: auth
   dependsOn:
     - name: cloudnative-pg-clusters
+      namespace: flux-system
+    - name: reflector
+      namespace: flux-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

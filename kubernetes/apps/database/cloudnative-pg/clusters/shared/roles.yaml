@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -12,11 +11,11 @@ spec:
         name: authelia
         login: true
         passwordSecret:
-          name: authelia-secret
+          name: authelia-pg-secret
       - connectionLimit: -1
         ensure: present
         inherit: true
         name: lldap
         login: true
         passwordSecret:
-          name: lldap-secret
+          name: lldap-pg-secret

@@ -37,6 +37,8 @@ spec:
             envFrom:
               - secretRef:
                   name: lldap-secret
+              - secretRef:
+                  name: lldap-pg-secret
             probes:
               liveness: &probes
                 enabled: true

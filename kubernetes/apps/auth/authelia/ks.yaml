@@ -12,6 +12,8 @@ spec:
       namespace: flux-system
     - name: dragonfly-auth
       namespace: flux-system
+    - name: reflector
+      namespace: flux-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

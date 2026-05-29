@@ -74,6 +74,8 @@ spec:
               - secretRef:
                   name: authelia-secret
               - secretRef:
+                  name: authelia-pg-secret
+              - secretRef:
                   name: dragonfly-auth-secret
             env:
               X_AUTHELIA_CONFIG: /config/configuration.yaml
