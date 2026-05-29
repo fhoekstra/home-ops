@@ -7,6 +7,7 @@ metadata:
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.38.1
   replicas: 3
+  networkPolicyEnabled: false
   authentication:
     passwordFromSecret:
       name: dragonfly-auth-secret
