@@ -24,7 +24,7 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
 
 # Infra
 
-- Cloudflare external ingress
+- [Towonel](https://erwanleboucher.dev/blog/towonel/) external ingress
 - k8s_gateway for exposing DNS to LAN
 - Authelia + lldap auth stack for external users
 - Tailscale for remote private access
@@ -33,16 +33,18 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
   - Rook-ceph for cluster internal storage
   - volsync for backup to and automatic restore from NFS and/or OVHCloud object storage
   - versitygw for access to NFS via S3-compatible interface (for database backups)
+  - dragonfly-operator for Redis-compatible caching
 - Observability:
   - VictoriaMetrics
-  - Grafana
   - VictoriaLogs
+  - Grafana
 
 # Apps
 - Karakeep bookmark manager and RSS reader
-- FoundryVTT with an integrated SFTPGo container for remote filesystem access for the game admin
+- FoundryVTT with an integrated SFTPGo container for remote filesystem access for the game admin, both protected by Authelia
 - OwnCloud Instant Scale (OCIS) for cloudnative filebrowser/sharing
 - Continuwuity Matrix server
+- GoToSocial Fediverse (~Mastodon) server
 
 # Bootstrap
 
