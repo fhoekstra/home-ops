@@ -30,13 +30,12 @@ spec:
               GTS_LANDING_PAGE_USER: "freek"
               GTS_METRICS_ENABLED: "true"
               GTS_TRUSTED_PROXIES: "127.0.0.1/32,::1,10.96.0.0/16,10.69.0.0/16"
-              GTS_ADVANCED_RATE_LIMIT_EXCEPTIONS: "192.168.1.0/24"
+              GTS_ADVANCED_RATE_LIMIT_EXCEPTIONS: "192.168.1.0/24,10.69.0.0/16"
               OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
               GTS_ACCOUNTS_ALLOW_CUSTOM_CSS: "true"
               OTEL_METRICS_PRODUCERS: prometheus
               OTEL_METRICS_EXPORTER: prometheus
 
-              # Temporarily allow signups
               GTS_ACCOUNTS_REGISTRATION_OPEN: "false"
               GTS_ACCOUNTS_REASON_REQUIRED: "true"
 
