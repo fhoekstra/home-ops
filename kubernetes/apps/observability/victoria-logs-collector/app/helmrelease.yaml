@@ -42,6 +42,9 @@ spec:
         - kubernetes.pod_namespace # Included by default
         - kubernetes.container_name # Included by default
         - kubernetes.pod_labels.app.kubernetes.io/name # Helps to filter on workload level across pods
+      excludeFilter: "kubernetes.pod_name:~'foundryvtt-.*'"
+    extraArgs:
+      "kubernetesCollector.decolorizeFields": _msg # Continuwuity logs ANSI color codes by default, other apps might too
     resources:
       limits:
         memory: 256Mi
