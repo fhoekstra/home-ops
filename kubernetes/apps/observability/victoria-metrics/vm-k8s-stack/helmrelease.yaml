@@ -67,7 +67,7 @@ spec:
         enabled: true
 
     defaultRules:
-      create: true
+      enabled: true
 
     alertmanager:
       enabled: true
