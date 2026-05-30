@@ -18,7 +18,7 @@ spec:
       recordType: CNAME
       targets:
         - *erwan_towonel_server
-    - dnsName: ${CLUSTER_DOMAIN}.
+    - dnsName: ${CLUSTER_DOMAIN}
       recordType: A
       targets:
         - "54.36.18.175"
