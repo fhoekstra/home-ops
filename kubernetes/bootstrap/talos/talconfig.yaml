@@ -67,15 +67,7 @@ nodes:
             match: "disk.model.startsWith('SSDSC2KG480G8R')" # Intel DC S4610, 480 GB
           minSize: 250GiB
           grow: true
-    userVolumes:
-      - name: csi-local-hostpath
-        provisioning:
-          diskSelector:
-            match: "disk.model.startsWith('INTEL SSDSC2BX40')"
-          minSize: "50GiB"
-          grow: true
     patches:
-      # Here we bind the local hostpath from the separate device so we have a different patch than in talos-rock-1
       - "@./patches/talos-rock-2/csi-local-hostpath.yaml"
     machineSpec:
       secureboot: false

@@ -3,5 +3,5 @@ machine:
     extraMounts:
       - destination: /var/lib/csi-local-hostpath
         type: bind
-        source: /var/mnt/csi-local-hostpath
+        source: /var/lib/csi-local-hostpath
         options: ["bind", "rshared", "rw"]
