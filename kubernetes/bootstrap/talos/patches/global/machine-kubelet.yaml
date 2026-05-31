@@ -1,6 +1,7 @@
 machine:
   kubelet:
     extraConfig:
+      maxPods: 200
       imageMaximumGCAge: 168h # One week
     nodeIP:
       validSubnets:
