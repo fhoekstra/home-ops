@@ -35,6 +35,13 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
     controllers:
       *app :
         replicas: 2
@@ -122,14 +129,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    # defaultPodOptions:
-    # topologySpreadConstraints:
-    #   - maxSkew: 1
-    #     topologyKey: kubernetes.io/hostname
-    #     whenUnsatisfiable: DoNotSchedule
-    #     labelSelector:
-    #       matchLabels:
-    #         app.kubernetes.io/name: *app
     service:
       *app :
         controller: *app

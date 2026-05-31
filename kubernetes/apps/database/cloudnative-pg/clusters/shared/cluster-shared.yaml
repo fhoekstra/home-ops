@@ -10,6 +10,8 @@ metadata:
     secret.reloader.stakater.com/reload: "s3-creds,authelia-secret,lldap-secret"
 kind: Cluster
 spec:
+  affinity:
+    podAntiAffinityType: "required"
   instances: 2
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io

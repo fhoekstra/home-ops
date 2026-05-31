@@ -9,6 +9,8 @@ metadata:
 kind: Cluster
 spec:
   instances: 2
+  affinity:
+    podAntiAffinityType: "required"
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
     kind: ClusterImageCatalog
