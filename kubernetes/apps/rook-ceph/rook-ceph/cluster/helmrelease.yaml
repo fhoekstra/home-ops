@@ -41,6 +41,8 @@ spec:
       prometheusRuleOverrides:
         CephNodeDiskspaceWarning:  # So many false positives
           disabled: true
+        CephPoolGrowthWarning:  # Causing errors in VMAlert
+          disabled: true
     toolbox:
       enabled: true
     route:
