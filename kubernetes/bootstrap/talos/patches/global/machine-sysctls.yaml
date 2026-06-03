@@ -4,3 +4,4 @@ machine:
     fs.inotify.max_user_instances: "8192" # Watchdog
     net.core.rmem_max: "7500000" # Towonel | QUIC
     net.core.wmem_max: "7500000" # Towonel | QUIC
+    user.max_user_namespaces: 11255 # User Namespaces
