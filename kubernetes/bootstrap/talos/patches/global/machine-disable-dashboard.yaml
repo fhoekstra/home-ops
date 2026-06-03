@@ -1,0 +1,4 @@
+machine:
+  install:
+    kernelArgs:
+      - talos.dashboard.disabled=1

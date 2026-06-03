@@ -123,6 +123,7 @@ patches:
   - "@./patches/global/machine-system-upgrade.yaml"
   - "@./patches/global/machine-time.yaml"
   - "@./patches/global/oom-config.yaml"
+  # - "@./patches/global/machine-disable-dashboard.yaml"
 # Controller patches
 controlPlane:
   patches:
