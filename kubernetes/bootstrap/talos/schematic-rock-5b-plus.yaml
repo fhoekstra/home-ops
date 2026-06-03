@@ -1,7 +1,9 @@
+overlay:
+  image: siderolabs/sbc-rockchip
+  name: rock5b-plus
 customization:
   systemExtensions:
     officialExtensions:
+      - siderolabs/panfrost
       - siderolabs/realtek-firmware
-overlay:
-  name: rock5b-plus
-  image: ghcr.io/siderolabs/sbc-rockchip:v0.2.0
+      - siderolabs/rockchip-rknn
