@@ -42,6 +42,7 @@ tasks:
   fetch-raw-disk-image-for-sbc:
     desc: Fetch the metal-arm64.raw disk image for the schematic that is set in the talconfig file from the Talos Image Factory API.
     cmds:
+      - rm --force metal-arm64.raw metal-arm64.raw.xz
       - curl -L https://factory.talos.dev/image/{{ .SCHEMATIC_ID }}/{{ .TALOS_VERSION }}/metal-arm64.raw.xz --output metal-arm64.raw.xz
       - xz -d metal-arm64.raw.xz
     vars:
