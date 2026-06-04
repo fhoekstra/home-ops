@@ -68,6 +68,9 @@ spec:
 
     defaultRules:
       enabled: true
+      rules:
+        KubeHpaMaxedOut:
+          enabled: false
 
     alertmanager:
       enabled: true

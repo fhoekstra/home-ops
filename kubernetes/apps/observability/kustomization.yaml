@@ -10,6 +10,8 @@ resources:
   - ./victoria-logs/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./alert-manager/ks.yaml
+  - ./blackbox-exporter/ks.yaml
+  - ./prometheus-adapter/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:

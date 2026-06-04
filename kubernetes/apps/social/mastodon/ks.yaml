@@ -7,6 +7,11 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: social
+  components:
+    - ../../../../components/zeroscaler
+  postBuild:
+    substitute:
+      APP: *app
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -26,7 +31,7 @@ spec:
   interval: 30m
   timeout: 5m
 ---
-# yaml-language-server: $schema=https://k8s-schemas.erwanleboucher.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
