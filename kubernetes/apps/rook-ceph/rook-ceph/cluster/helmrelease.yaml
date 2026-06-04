@@ -39,9 +39,11 @@ spec:
       enabled: true
       createPrometheusRules: true
       prometheusRuleOverrides:
-        CephNodeDiskspaceWarning:  # So many false positives
+        CephNodeDiskspaceWarning: # So many false positives
           disabled: true
-        CephPoolGrowthWarning:  # Causing errors in VMAlert
+        CephPoolGrowthWarning: # Causing errors in VMAlert
+          disabled: true
+        CephNodeNetworkPacketDrops:
           disabled: true
     toolbox:
       enabled: true
