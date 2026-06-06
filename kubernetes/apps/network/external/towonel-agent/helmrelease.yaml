@@ -35,6 +35,17 @@ spec:
           origin: envoy-external.network.svc.cluster.local:443
         - hostname: "kubes.cloud"
           origin: envoy-external.network.svc.cluster.local:443
+      tcpServices:
+        - name: stunner-turns-tls
+          origin: stunner.network.svc.cluster.local:15349
+          listen_port: 15349
+        # - name: forgejo-ssh
+        #   origin: envoy-external.network.svc.cluster.local:2222
+        #   listen_port: 2222
+      udpServices:
+        - name: stunner-turn-udp
+          origin: stunner.network.svc.cluster.local:13478
+          listen_port: 13478
       inviteTokenSecret:
         name: towonel-agent-secret
         key: TOWONEL_INVITE_TOKEN
