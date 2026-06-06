@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: towonel-agent
+  name: &app towonel-agent
 spec:
   chartRef:
     kind: OCIRepository
@@ -21,13 +21,13 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     controllers:
-      towonel-agent:
+      *app :
         type: deployment
         replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          *app :
             image:
               repository: codeberg.org/towonel/towonel-agent
               tag: "0.1.18"
@@ -88,7 +88,12 @@ spec:
                 cpu: 500m
                 memory: 64Mi
     service:
-      app:
+      *app :
         ports:
           http:
             port: 9090
+    serviceMonitor:
+      *app :
+        endpoints:
+          - port: http
+            interval: 1m
