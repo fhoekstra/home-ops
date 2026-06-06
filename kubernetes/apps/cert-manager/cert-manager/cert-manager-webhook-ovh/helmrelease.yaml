@@ -26,7 +26,7 @@ spec:
   values:
     groupName: acme.bjw-s.dev
     issuers:
-      - name: letsencrypt-production-ovh
+      - name: letsencrypt-production
         create: true
         kind: ClusterIssuer
         acmeServerUrl: https://acme-v02.api.letsencrypt.org/directory

@@ -28,7 +28,7 @@ metadata:
 spec:
   secretName: "${CLUSTER_DOMAIN/./-}-production-tls"
   issuerRef:
-    name: letsencrypt-production-ovh
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "${CLUSTER_DOMAIN}"
   dnsNames:
