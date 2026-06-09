@@ -30,7 +30,7 @@ spec:
           *app :
             image:
               repository: codeberg.org/towonel/towonel-agent
-              tag: "0.1.27"
+              tag: "0.1.28"
             env:
               RUST_LOG: info
               TOWONEL_AGENT_SERVICES: '[{"hostname": "*.kubes.cloud", "origin": "envoy-external.network.svc.cluster.local:443"}, {"hostname": "kubes.cloud", "origin": "envoy-external.network.svc.cluster.local:443"}]'
