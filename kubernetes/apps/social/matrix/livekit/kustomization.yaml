@@ -6,9 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./udproute.yaml
-secretGenerator:
-  - name: livekit-config
-    files:
-      - config/livekit.yaml
-    options:
-      disableNameSuffixHash: true
+  - ./secret.yaml
