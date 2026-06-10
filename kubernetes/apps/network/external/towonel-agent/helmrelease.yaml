@@ -21,8 +21,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: towonel-agent
   interval: 30m
   values:
     replicaCount: 2
