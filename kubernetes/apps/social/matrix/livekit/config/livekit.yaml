@@ -8,8 +8,6 @@ rtc:
   ips:
     includes:
       - "10.69.0.0/16"
-  stun_servers:
-    - turn.${CLUSTER_DOMAIN}:13478
   turn_servers:
     - host: turn.${CLUSTER_DOMAIN}
       port: 15349
