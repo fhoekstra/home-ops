@@ -31,8 +31,7 @@ spec:
               tag: 0.5.0
             env:
               LIVEKIT_JWT_BIND: ":8081"
-              LIVEKIT_URL: ws://livekit.social.svc.cluster.local:7881
-              # LIVEKIT_URL: wss://livekit.${CLUSTER_DOMAIN}
+              LIVEKIT_URL: wss://livekit.${CLUSTER_DOMAIN}
               LIVEKIT_FULL_ACCESS_HOMESERVERS: ${CLUSTER_DOMAIN}
             envFrom:
               - secretRef:
