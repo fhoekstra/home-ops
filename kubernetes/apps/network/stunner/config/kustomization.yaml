@@ -7,3 +7,4 @@ resources:
   - ./secret.yaml
   - ./gateway.yaml
   - ./gatewayclass.yaml
+  - ./dnsendpoint.yaml

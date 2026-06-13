@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: turn-stunner
+spec:
+  endpoints:
+    - dnsName: turn.${CLUSTER_DOMAIN}
+      recordType: A
+      recordTTL: 300
+      targets:
+        - "54.36.18.175"
