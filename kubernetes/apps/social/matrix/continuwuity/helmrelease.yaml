@@ -80,6 +80,8 @@ spec:
 
               # Voice and video
               CONTINUWUITY_MATRIX_RTC__FOCI: '[{ type = "livekit", livekit_service_url = "https://livekit.kubes.cloud" }]'
+              CONTINUWUITY_TURN_URIS: '[ "turn:turn.kubes.cloud?transport=udp", "turn:turn.kubes.cloud?transport=tcp", "turns:turn.kubes.cloud?transport=udp", "turns:turn.kubes.cloud?transport=tcp"]'
+              CONTINUWUITY_TURN_TTL: 86400
 
               # Misc
               CONTINUWUITY_NEW_USER_DISPLAYNAME_SUFFIX: ""
