@@ -8,3 +8,4 @@ resources:
   - ./gateway.yaml
   - ./gatewayclass.yaml
   - ./dnsendpoint.yaml
+  - ./service.yaml
