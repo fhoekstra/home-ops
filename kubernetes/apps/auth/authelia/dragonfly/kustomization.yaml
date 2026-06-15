@@ -6,5 +6,4 @@ resources:
   - ./cluster.yaml
   - ./secret.sops.yaml
   - ./netpol-obs.yaml
-  - ./netpol-redis-same-ns.yaml
   - ./podmonitor.yaml

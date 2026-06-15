@@ -7,7 +7,7 @@ metadata:
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.38.1
   replicas: 3
-  networkPolicyEnabled: false
+  networkPolicyEnabled: true # Allows own namespace on 6379 (redis port) and operator namespace and controlplane namespaces on 9999 (mgmt and metrics port)
   authentication:
     passwordFromSecret:
       name: dragonfly-auth-secret
