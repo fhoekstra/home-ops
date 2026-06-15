@@ -21,13 +21,13 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: true
     controllers:
-      dragonfly-operator:
+      *app :
         replicas: 1
         serviceAccount:
           identifier: *app
         strategy: RollingUpdate
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/dragonflydb/operator
               tag: v1.6.1
@@ -68,6 +68,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -80,7 +81,7 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: *app
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
@@ -89,7 +90,7 @@ spec:
             port: 8080
         trafficDistribution: PreferSameNode
     serviceMonitor:
-      app:
+      *app :
         serviceName: *app
         endpoints:
           - port: metrics
@@ -98,7 +99,8 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
     serviceAccount:
-      dragonfly-operator: {}
+      *app :
+        enabled: true
   postRenderers:
     - kustomize:
         patches:
