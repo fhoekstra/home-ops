@@ -10,13 +10,6 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: auth
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: database
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/controller: dragonfly-operator
-              app.kubernetes.io/name: dragonfly-operator
       ports:
         - port: 6379
           protocol: TCP
@@ -30,13 +23,6 @@ spec:
               app: dragonfly-auth
               app.kubernetes.io/name: dragonfly
               app.kubernetes.io/part-of: dragonfly
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: database
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/controller: dragonfly-operator
-              app.kubernetes.io/name: dragonfly-operator
       ports:
         - port: 9999
           protocol: TCP
