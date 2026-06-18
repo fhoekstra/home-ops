@@ -6,4 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./udproute.yaml
-  - ./secret.sops.yaml
+  - ./livekit-config.yaml
