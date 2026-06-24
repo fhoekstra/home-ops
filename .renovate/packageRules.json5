@@ -157,6 +157,18 @@
       commitMessageExtra: '( {{currentVersion}} → {{newVersion}} )',
     },
     {
+      matchManagers: [
+        'github-actions',
+      ],
+      matchUpdateTypes: [
+        'digest',
+      ],
+      semanticCommitType: 'fix',
+      semanticCommitScope: 'github-action',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: '( {{currentDigestShort}} → {{newDigestShort}} )',
+    },
+    {
       matchUpdateTypes: [
         'major',
       ],
