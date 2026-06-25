@@ -20,7 +20,7 @@ spec:
           *app :
             image:
               repository: mirror.gcr.io/superseriousbusiness/gotosocial
-              tag: "0.21.2"
+              tag: "0.21.3"
             env:
               TZ: Europe/Amsterdam
               GTS_HOST: &host gts.kubes.cloud
