@@ -40,8 +40,8 @@ spec:
         containers:
           app:
             image:
-              repository: registry.erwanleboucher.dev/continuwuity-sync-fix
-              tag: latest
+              repository: forgejo.ellis.link/continuwuation/continuwuity
+              tag: v26.6.2-maxperf
             env:
               CONTINUWUITY_LOG: "info"
               CONTINUWUITY_ADDRESS: "::"
