@@ -9,6 +9,7 @@ resources:
   - ./reflector/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
+  - ./etcd-defrag/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
