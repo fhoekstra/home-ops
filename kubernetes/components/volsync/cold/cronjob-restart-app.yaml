@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: volsync-cold-snapshot-local
+  name: volsync-cold-snapshot-${APP}-local
 spec:
   schedule: "${VOLSYNC_CRON_LOCAL:='0 * * * *'}"
   failedJobsHistoryLimit: 3
@@ -41,7 +41,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: volsync-cold-snapshot-remote
+  name: volsync-cold-snapshot-${APP}-remote
 spec:
   schedule: "${VOLSYNC_CRON_REMOTE='20 3 * * *'}"
   failedJobsHistoryLimit: 3
