@@ -64,9 +64,11 @@ spec:
                     name: gts-pg-app
                     key: fqdn-uri
             resources:
-              requests:
-                cpu: 500m
               limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 50m
                 memory: 768Mi
             securityContext:
               allowPrivilegeEscalation: false

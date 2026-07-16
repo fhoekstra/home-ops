@@ -96,10 +96,11 @@ spec:
                   name: continuwuity
             resources:
               limits:
+                cpu: 1
                 memory: 2Gi
               requests:
-                cpu: 500m
-                memory: 512Mi
+                cpu: 100m
+                memory: 768Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
