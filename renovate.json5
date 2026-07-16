@@ -4,6 +4,7 @@
     'config:recommended',
     'docker:enableMajor',
     'helpers:pinGitHubActionDigests',
+    "docker:pinDigests",
     "github>fhoekstra/home-ops//.renovate/customManagers.json5",
     "github>fhoekstra/home-ops//.renovate/talosFactory.json5",
     "github>fhoekstra/home-ops//.renovate/grafana.json5",
