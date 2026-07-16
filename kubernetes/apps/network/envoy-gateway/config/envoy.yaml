@@ -77,6 +77,8 @@ kind: ClientTrafficPolicy
 metadata:
   name: envoy
 spec:
+  path:
+    escapedSlashesAction: KeepUnchanged # Required for Matrix when `/` char is in eventID
   headers:
     earlyRequestHeaders:
       set:
