@@ -10,7 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.3.6
+    tag: 0.3.7
+    digest: sha256:2ec5d41cbc0309ef0cfa10945e5b7773298ba25b8a67a28296f888b8adb2b0ba
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-logs-collector
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
