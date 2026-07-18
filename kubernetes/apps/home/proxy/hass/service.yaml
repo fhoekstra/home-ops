@@ -20,4 +20,5 @@ subsets:
   - addresses:
       - ip: "${HOME_ASSISTANT_SERVER_IP_ADDRESS}"
     ports:
-      - port: 8123
+      - name: http
+        port: 8123
