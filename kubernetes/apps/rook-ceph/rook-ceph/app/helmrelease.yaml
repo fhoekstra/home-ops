@@ -10,7 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v1.19.7
+    tag: v1.20.2
+    digest: sha256:987c6cbeb3b0231dfb0a9d401b643ee694d17b309fb33715a8f4b896faf30226
   url: oci://ghcr.io/rook/rook-ceph
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
