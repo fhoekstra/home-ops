@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.3.3
-    digest: sha256:8254cc738f11b61af08d26a890d2119607480b090e672e0359a21cb398322414
+    tag: 0.4.1
+    digest: sha256:a3333bf36964e1d08afc50c9bb111a71193b0f49309012046d863c024d0f5ebc
   url: oci://ghcr.io/home-operations/charts/tuppr
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
