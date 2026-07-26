@@ -115,9 +115,9 @@ spec:
       resources:
         mgr:
           limits:
-            memory: 700Mi
+            memory: 1Gi
           requests:
-            memory: 700Mi
+            memory: 768Mi
             cpu: 100m
         mon:
           limits:
