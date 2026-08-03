@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 10.0.61
-    digest: sha256:af399d16ab444bf6f3d27c3f3732fee5c7ce10746af89d14d9e5fcb24029886d
+    tag: 10.0.62
+    digest: sha256:6318e91a2bd3471589404a21fc1933e37629acb9d299ee607de602eaa310a628
   url: oci://ghcr.io/emberstack/helm-charts/reflector
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
