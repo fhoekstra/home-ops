@@ -11,9 +11,9 @@ prometheus:
 resources: &resources
   requests:
     cpu: 10m
-    memory: 40Mi
+    memory: 64Mi
   limits:
-    memory: 40Mi
+    memory: 80Mi
 webhook:
   resources: *resources
 cainjector:
