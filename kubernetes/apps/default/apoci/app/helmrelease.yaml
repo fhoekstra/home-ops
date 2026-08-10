@@ -90,6 +90,12 @@ spec:
         forceRename: ${APP}
         accessMode: ReadWriteOnce
         size: ${VOLSYNC_CAPACITY}
+      config:
+        type: configMap
+        name: apoci-config
+        globalMounts:
+          - path: /apoci/config/apoci.yaml
+            subPath: apoci.yaml
       tmpfs:
         type: emptyDir
         globalMounts:
