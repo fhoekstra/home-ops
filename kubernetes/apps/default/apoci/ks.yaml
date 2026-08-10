@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app apoci
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  components:
+    - ../../../../components/volsync/hot
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 20Gi
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: flux-system
+  path: ./kubernetes/apps/default/apoci/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  timeout: 5m

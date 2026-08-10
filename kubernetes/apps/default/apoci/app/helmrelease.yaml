@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app apoci
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 1h
+  values:
+    controllers:
+      *app :
+        containers:
+          *app :
+            image:
+              repository: registry.erwanleboucher.dev/eleboucher/apoci
+              tag: 0.0.56@sha256:dc69427322dd5931084c255097d70a1db857cfd4f3fe17a23e0d44921948b1d4
+            env:
+              APOCI_ACCOUNT_DOMAIN: kubes.cloud
+              APOCI_DATA_DIR: /data
+              APOCI_ENDPOINT: https://registry.kubes.cloud
+              APOCI_FEDERATION_AUTO_ACCEPT: mutual
+              APOCI_GC_RETENTION_KEEP_LAST_N: 5
+            envFrom:
+              - secretRef:
+                  name: apoci
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      *app :
+        ports:
+          http:
+            port: &port 5000
+    route:
+      *app :
+        hostnames:
+          - "registry.kubes.cloud"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+      webfinger:
+        hostnames:
+          - "kubes.cloud"
+        rules:
+          - matches:
+              - path:
+                  type: Exact
+                  value: /.well-known/webfinger
+                queryParams:
+                  - name: resource
+                    type: RegularExpression
+                    value: ".*registry@.*"
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  hostname: "registry.kubes.cloud"
+            backendRefs:
+              - identifier: *app
+                port: *port
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+          - name: envoy-external
+            namespace: network
+    persistence:
+      data:
+        forceRename: ${APP}
+        accessMode: ReadWriteOnce
+        size: ${VOLSYNC_CAPACITY}
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
