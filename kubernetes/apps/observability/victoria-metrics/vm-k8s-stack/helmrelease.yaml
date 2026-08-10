@@ -60,7 +60,14 @@ spec:
       enabled: false
 
     victoria-metrics-operator:
-      enabled: false
+      enabled: false # Installed separately for now in vm-operator namespace
+    #   enabled: true
+    #   crds:
+    #     cleanup:
+    #       enabled: false
+    #   operator:
+    #     enable_converter_ownership: true
+    #   serviceMonitor: true
 
     defaultDashboards:
       enabled: true
@@ -143,11 +150,40 @@ spec:
       enabled: true
 
     kubelet:
-      enabled: true
-
+      vmScrape:
+        spec:
+          metricRelabelConfigs:
+            - action: labeldrop
+              regex: (uid)
+            - action: labeldrop
+              regex: (id|name)
+            - action: drop
+              sourceLabels:
+                - "__name__"
+              regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeApiServer:
       enabled: true
-
+      service:
+        selector:
+          component: kube-apiserver # Selects controller node IPs
+        vmScrape:
+          spec:
+            endpoints:
+              - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+                port: https
+                scheme: https
+                tlsConfig:
+                  caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                  serverName: kubernetes
+                metricRelabelConfigs:
+                  - action: drop
+                    sourceLabels:
+                      - "__name__"
+                    regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+                  - action: drop
+                    sourceLabels:
+                      - "__name__"
+                    regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubeControllerManager:
       enabled: true
       service:
@@ -175,7 +211,14 @@ spec:
             - scheme: http
 
     kubeScheduler:
-      enabled: false
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: http-metrics
+              scheme: https
+              tlsConfig:
+                insecureSkipVerify: true
 
     kubeProxy:
       enabled: false
