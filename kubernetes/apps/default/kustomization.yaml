@@ -8,6 +8,7 @@ resources:
   - ./ocis/ks.yaml
   - ./karakeep/ks.yaml
   - ./blog/ks.yaml
+  - ./apoci/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
