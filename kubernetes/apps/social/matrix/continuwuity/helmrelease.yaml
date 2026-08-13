@@ -26,6 +26,15 @@ spec:
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
+      dnsConfig:
+        nameservers:
+          - "127.0.0.1"
+        options:
+          - name: ndots
+            value: "1"
+        searches:
+          - cluster.local
+      dnsPolicy: None
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -37,8 +46,53 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          unbound:
+            restartPolicy: Always
+            image:
+              repository: mirror.gcr.io/madnuttah/unbound
+              tag: 1.25.1-3@sha256:1184c6210e56348ffdc446f31eb3108d6d0844ecfd18cf7081ca4ebe87ae8de8
+            env:
+              DISABLE_SET_PERMS: "true"
+              HEALTHCHECK_PORT: "53"
+              TZ: Europe/Paris
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec: &probeDnsExec
+                    command:
+                      - /usr/local/unbound/sbin/healthcheck.sh
+                  initialDelaySeconds: 15
+                  periodSeconds: 60
+                  timeoutSeconds: 30
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec: *probeDnsExec
+                  initialDelaySeconds: 2
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                add:
+                  - NET_BIND_SERVICE
+                drop:
+                  - ALL
         containers:
-          app:
+          *app :
             image:
               repository: forgejo.ellis.link/continuwuation/continuwuity
               tag: v26.7.3-maxperf@sha256:6a172ad87084d3ae7fd1b84f0fd00b78aa43bb671807dbddb7f33fdfa6b630e2
@@ -166,3 +220,19 @@ spec:
             subPath: data
           - path: /backups
             subPath: backups
+      tmp:
+        type: emptyDir
+      unbound:
+        type: configMap
+        name: unbound-configmap
+        advancedMounts:
+          *app :
+            unbound:
+              - path: /usr/local/unbound/unbound.conf
+                subPath: unbound.conf
+      unbound-iana:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            unbound:
+              - path: /usr/local/unbound/iana.d
