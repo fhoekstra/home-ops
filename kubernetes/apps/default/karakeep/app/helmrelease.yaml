@@ -92,7 +92,7 @@ spec:
           *search :
             image:
               repository: mirror.gcr.io/getmeili/meilisearch
-              tag: v1.52.3@sha256:4b97a53f5a64a5f0228da6d1db2fde016695d287aecb11a83bca368148542f7e
+              tag: v1.53.1@sha256:8d6643d86d71fad6ad3cba92cde7ccfce9e4d6c384bda67598eb553571c32431
             args: ["/bin/meilisearch"]
             env:
               MEILI_NO_ANALYTICS: true
