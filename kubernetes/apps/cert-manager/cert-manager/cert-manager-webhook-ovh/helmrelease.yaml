@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.9.15
-    digest: sha256:cc5bdee12395ad88f88bb194e383ec7fac9b07cde05e35bae34ee88d858e4bbb
+    tag: 0.9.16
+    digest: sha256:eaebc18fc4a6acd07b8bf48e91f588838da90da9b5bd9032ea3db742ab5330eb
   url: oci://ghcr.io/aureq/charts/cert-manager-webhook-ovh
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
