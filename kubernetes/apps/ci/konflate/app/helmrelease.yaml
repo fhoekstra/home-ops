@@ -19,9 +19,7 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${CLUSTER_DOMAIN}
-      extraEnv:
-        - name: KONFLATE_BASE_PATH
-          value: "/platform/konflate"
+      basePath: /platform/konflate
 
     ### Use experimental basepath support image
     image:
@@ -29,22 +27,6 @@ spec:
       pullPolicy: IfNotPresent
       tag: "basepath-1" # ARM64 only for now!!
       digest: "sha256:b6727e03c1af4188eb620cc3319f0feec28d67fab738649d002cc8e07decda09"
-
-    # The upstream 0.5.0 chart does not know about config.basePath, so the custom
-    # image serves the health/readiness endpoints under KONFLATE_BASE_PATH. Keep
-    # the probes aligned with that prefix so Kubernetes sees the pod as Ready.
-    livenessProbe:
-      httpGet:
-        path: /platform/konflate/healthz
-        port: http
-      initialDelaySeconds: 10
-      periodSeconds: 20
-    readinessProbe:
-      httpGet:
-        path: /platform/konflate/readyz
-        port: http
-      initialDelaySeconds: 5
-      periodSeconds: 10
 
     secret:
       existingSecret: konflate-secret
