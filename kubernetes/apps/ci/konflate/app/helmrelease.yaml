@@ -11,12 +11,20 @@ spec:
     name: konflate
 
   values:
+    # Values documentation: https://github.com/home-operations/konflate/tree/main/charts/konflate#readme
+    # Default values file: https://raw.githubusercontent.com/home-operations/konflate/refs/heads/main/charts/konflate/values.yaml
     config:
       repo: github://fhoekstra/home-ops
       logFormat: json
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${CLUSTER_DOMAIN}
+
+    ### Use experimental basepath support image
+    image:
+      repository: ghcr.io/fhoekstra/konflate
+      pullPolicy: IfNotPresent
+      tag: "basepath-1" # ARM64 only for now!!
 
     secret:
       existingSecret: konflate-secret
