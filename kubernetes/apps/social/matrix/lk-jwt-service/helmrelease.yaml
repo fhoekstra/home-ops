@@ -28,7 +28,7 @@ spec:
             image:
               # renovate: datasource=docker depName=ghcr.io/element-hq/lk-jwt-service
               repository: ghcr.io/element-hq/lk-jwt-service
-              tag: 0.5.0
+              tag: 0.6.0@sha256:822f0c03a3bdd924da92afc2e8ec59de5dda17af42d32e71e11f269c3517abf7
             env:
               LIVEKIT_JWT_BIND: ":8081"
               LIVEKIT_URL: wss://livekit.${CLUSTER_DOMAIN}
