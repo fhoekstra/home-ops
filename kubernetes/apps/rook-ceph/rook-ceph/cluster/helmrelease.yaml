@@ -59,6 +59,29 @@ spec:
             namespace: network
 
     cephClusterSpec:
+      #
+
+      ### NEEDED to resolve CVE-2025-30156 ###
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2 # must be greater than the current keyGeneration
+      ### NEEDED to resolve CVE-2025-30156 ###
+
+      ### Required until all legacy keys can be rotated.
+      ### This requires Linux kernel 7 so Talos 1.15
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+
       dashboard:
         enabled: true
         urlPrefix: /
