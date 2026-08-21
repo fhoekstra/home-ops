@@ -25,8 +25,8 @@ spec:
     image:
       repository: ghcr.io/fhoekstra/konflate
       pullPolicy: IfNotPresent
-      tag: "basepath-1" # ARM64 only for now!!
-      digest: "sha256:b6727e03c1af4188eb620cc3319f0feec28d67fab738649d002cc8e07decda09"
+      tag: "basepath-2" # ARM64 only for now!!
+      digest: "sha256:f4eca155c4041fe54fa066d147bdb8e3424885fc70300960a83e84b9bf45323a"
 
     secret:
       existingSecret: konflate-secret
