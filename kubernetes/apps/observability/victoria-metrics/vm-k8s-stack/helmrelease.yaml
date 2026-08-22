@@ -26,8 +26,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: vm-operator
-      namespace: vm-operator
   valuesFrom:
     - kind: ConfigMap
       name: flux-metrics-configmap
@@ -45,11 +43,11 @@ spec:
       enabled: false
 
     victoria-metrics-operator:
-      enabled: false # Installed separately for now in vm-operator namespace
+      enabled: true # Installed separately for now in vm-operator namespace
       crds:
         enabled: true
         cleanup:
-          enabled: false
+          enabled: true
       operator:
         # -- By default, operator converts prometheus-operator objects.
         disable_prometheus_converter: false
