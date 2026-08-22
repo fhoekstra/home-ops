@@ -6,3 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./postgres.yaml
   - ./secret.sops.yaml
+  - ./grafanadashboard.yaml
