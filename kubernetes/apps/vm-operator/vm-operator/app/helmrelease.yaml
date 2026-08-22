@@ -45,7 +45,7 @@ spec:
     crds:
       enabled: true
       cleanup:
-        enabled: true
+        enabled: false
     operator:
       # -- By default, operator converts prometheus-operator objects.
       disable_prometheus_converter: false

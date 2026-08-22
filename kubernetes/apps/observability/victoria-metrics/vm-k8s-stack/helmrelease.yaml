@@ -1,19 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: vm-k8s-stack
-spec:
-  interval: 15m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 0.91.2
-    digest: sha256:9783c9b651fdece12a03ba4c62b84689b6df6c6e7c92d4f4949b3bc4114020a5
-  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -61,13 +46,23 @@ spec:
 
     victoria-metrics-operator:
       enabled: false # Installed separately for now in vm-operator namespace
-    #   enabled: true
-    #   crds:
-    #     cleanup:
-    #       enabled: false
-    #   operator:
-    #     enable_converter_ownership: true
-    #   serviceMonitor: true
+      crds:
+        enabled: true
+        cleanup:
+          enabled: false
+      operator:
+        # -- By default, operator converts prometheus-operator objects.
+        disable_prometheus_converter: false
+        # -- Compare-options and sync-options for prometheus objects converted by operator for properly use with ArgoCD
+        prometheus_converter_add_argocd_ignore_annotations: false
+        # -- Enables ownership reference for converted prometheus-operator objects,
+        # it will remove corresponding victoria-metrics objects in case of deletion prometheus one.
+        enable_converter_ownership: true
+
+      serviceMonitor:
+        enabled: true
+        # -- Creates `VMServiceScrape` if `true` and `ServiceMonitor` otherwise. Make sure [Prometheus Operator CRDs](https://artifacthub.io/packages/helm/prometheus-community/prometheus-operator-crds) are installed if it's set to `false`
+        vm: true
 
     defaultDashboards:
       enabled: true
