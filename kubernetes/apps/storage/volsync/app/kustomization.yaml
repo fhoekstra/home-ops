@@ -6,3 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./mutations
   - ./grafanadashboard.yaml
+  - ./ocirepository.yaml
