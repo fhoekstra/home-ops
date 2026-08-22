@@ -2,71 +2,79 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: [
-        'Auto-merge reflector patch releases',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/helm-charts/reflector/',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      description: ["Auto-merge reflector patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/helm-charts/reflector/"],
+      matchUpdateTypes: ["patch"],
       automerge: true,
-      automergeType: 'branch',
+      automergeType: "branch",
       ignoreTests: true,
     },
     {
-      description: [
-        'Auto-merge reloader patch releases',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/charts/reloader/',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      description: ["Auto-merge reloader patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/charts/reloader/"],
+      matchUpdateTypes: ["patch"],
       automerge: true,
-      automergeType: 'branch',
+      automergeType: "branch",
       ignoreTests: true,
     },
-        {
-      description: [
-        'Auto-merge tuppr patch releases',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        '/home-operations/charts/tuppr/',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+    {
+      description: ["Auto-merge tuppr patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/home-operations/charts/tuppr/"],
+      matchUpdateTypes: ["patch"],
       automerge: true,
-      automergeType: 'branch',
+      automergeType: "branch",
       ignoreTests: true,
     },
 
     {
-      description: [
-        'Auto-merge GitHub Actions for minor and patch',
-      ],
-      matchManagers: [
-        'github-actions',
-      ],
+      description: ["Auto-merge towonel-agent patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/towonel-agent/"],
+      matchUpdateTypes: ["patch"],
       automerge: true,
-      automergeType: 'branch',
+      automergeType: "branch",
       ignoreTests: true,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
     },
-  ]
+
+    {
+      description: ["Auto-merge konflate patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/home-operations/charts/konflate/"],
+      matchUpdateTypes: ["patch"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
+
+    {
+      description: ["Auto-merge socials patch releases"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/gotosocial/", "/continuwuity/", "/phanpy/", "/sable/"],
+      matchUpdateTypes: ["patch"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
+
+    {
+      description: ["Auto-merge GitHub Actions for minor and patch"],
+      matchManagers: ["github-actions"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+      matchUpdateTypes: ["minor", "patch"],
+    },
+    {
+      description: "Auto-merge dev tooling from aqua on patches and minors."
+      matchDepNames: ["aqua:**", "aqua:{/,}**", "aqua:*/*", "aqua:*/**/*"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+      automergeType: "pr",
+      addLabels: ["routine"],
+      commitMessageSuffix: "(routine)",
+    },
+  ],
 }
