@@ -2,7 +2,7 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: ["Auto-merge reflector patch releases"],
+      description: "Auto-merge reflector patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/helm-charts/reflector/"],
       matchUpdateTypes: ["patch"],
@@ -11,7 +11,7 @@
       ignoreTests: true,
     },
     {
-      description: ["Auto-merge reloader patch releases"],
+      description: "Auto-merge reloader patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/charts/reloader/"],
       matchUpdateTypes: ["patch"],
@@ -20,7 +20,7 @@
       ignoreTests: true,
     },
     {
-      description: ["Auto-merge tuppr patch releases"],
+      description: "Auto-merge tuppr patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/home-operations/charts/tuppr/"],
       matchUpdateTypes: ["patch"],
@@ -30,7 +30,7 @@
     },
 
     {
-      description: ["Auto-merge towonel-agent patch releases"],
+      description: "Auto-merge towonel-agent patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/towonel-agent/"],
       matchUpdateTypes: ["patch"],
@@ -40,7 +40,7 @@
     },
 
     {
-      description: ["Auto-merge konflate patch releases"],
+      description: "Auto-merge konflate patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/home-operations/charts/konflate/"],
       matchUpdateTypes: ["patch"],
@@ -50,7 +50,7 @@
     },
 
     {
-      description: ["Auto-merge socials patch releases"],
+      description: "Auto-merge socials patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: ["/gotosocial/", "/continuwuity/", "/phanpy/", "/sable/"],
       matchUpdateTypes: ["patch"],
@@ -60,7 +60,7 @@
     },
 
     {
-      description: ["Auto-merge GitHub Actions for minor and patch"],
+      description: "Auto-merge GitHub Actions for minor and patch",
       matchManagers: ["github-actions"],
       automerge: true,
       automergeType: "branch",
@@ -68,7 +68,7 @@
       matchUpdateTypes: ["minor", "patch"],
     },
     {
-      description: "Auto-merge dev tooling from aqua on patches and minors."
+      description: "Auto-merge dev tooling from aqua on patches and minors.",
       matchDepNames: ["aqua:**", "aqua:{/,}**", "aqua:*/*", "aqua:*/**/*"],
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
