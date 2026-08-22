@@ -19,14 +19,7 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${CLUSTER_DOMAIN}
-      basePath: /platform/konflate
-
-    ### Use experimental basepath support image
-    image:
-      repository: ghcr.io/fhoekstra/konflate
-      pullPolicy: IfNotPresent
-      tag: "basepath-2" # ARM64 only for now!!
-      digest: "sha256:f4eca155c4041fe54fa066d147bdb8e3424885fc70300960a83e84b9bf45323a"
+      basePath: &basePath /platform/konflate
 
     secret:
       existingSecret: konflate-secret
@@ -47,7 +40,7 @@ spec:
       matches:
         - path:
             type: PathPrefix
-            value: /platform/konflate
+            value: *basePath
 
     persistence:
       enabled: true

@@ -6,9 +6,9 @@ metadata:
   name: konflate
 spec:
   interval: 15m
-  url: oci://ghcr.io/fhoekstra/charts/konflate
+  url: oci://ghcr.io/home-operations/charts/konflate
   ref:
-    tag: "0.6.0-alpha1"
+    tag: "0.6.0"
 
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
