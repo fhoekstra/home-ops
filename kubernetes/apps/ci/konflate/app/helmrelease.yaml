@@ -19,7 +19,6 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${CLUSTER_DOMAIN}
-      basePath: &basePath /platform/konflate
 
     secret:
       existingSecret: konflate-secret
@@ -37,10 +36,6 @@ spec:
       parentRefs:
         - name: envoy-external
           namespace: network
-      matches:
-        - path:
-            type: PathPrefix
-            value: *basePath
 
     persistence:
       enabled: true
