@@ -34,6 +34,7 @@ spec:
         registry: quay.io
     server:
       retentionMaxDiskUsagePercent: 80
+      retentionPeriod: "1y" # If this is not set, logs older than 7d will be removed, regardless of disk space usage. See: https://docs.victoriametrics.com/victorialogs/#retention-by-disk-space-usage
       persistentVolume:
         enabled: true
         # existingClaim: *app
