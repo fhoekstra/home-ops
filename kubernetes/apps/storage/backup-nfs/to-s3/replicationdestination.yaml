@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: "nfs-restore-from-s3"
+  labels:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: "nfs-to-volsync-s3"
+    copyMethod: Direct
+    destinationPVC: "nfs-backups"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=2Gi}"
+    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
+    storageClassName: ""
+    accessModes: ["ReadWriteMany"]
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_PUID:=1000}
+      runAsGroup: ${VOLSYNC_PGID:=1000}
+      fsGroup: ${VOLSYNC_PGID:=1000}
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

@@ -6,3 +6,4 @@ resources:
   - ./secret.sops.yaml
   - ./replicationsource.yaml
   - ./pvc.yaml
+  - ./replicationdestination.yaml # Comment this after completing the restore
