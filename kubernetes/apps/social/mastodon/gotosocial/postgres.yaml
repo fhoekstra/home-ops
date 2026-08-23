@@ -52,7 +52,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: gts-backup-local
-        serverName: &currentServer gts
+        serverName: &currentServer gts-1
 
   externalClusters:
     - name: *recoveryServer

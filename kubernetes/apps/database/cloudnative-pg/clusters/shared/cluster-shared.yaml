@@ -44,7 +44,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: cluster-shared-backup-local
-        serverName: cluster-shared-v1
+        serverName: &currentServer cluster-shared-v2
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
