@@ -44,8 +44,8 @@ spec:
     # initdb: {}
     recovery:
       source: &recoveryServer gts
-      recoveryTarget:
-        targetTime: 2026-08-23T02:23:00Z
+      # recoveryTarget:
+      #   targetTime: 2026-08-23T02:23:00Z
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
