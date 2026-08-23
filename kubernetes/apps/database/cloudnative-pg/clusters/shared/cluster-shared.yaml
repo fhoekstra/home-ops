@@ -26,8 +26,9 @@ spec:
     storageClass: local-hostpath
   resources:
     limits:
-      memory: 128Mi
+      memory: 512Mi
     requests:
+      memory: 256Mi
       cpu: 50m
   postgresql:
     parameters:
@@ -36,6 +37,8 @@ spec:
   bootstrap:
     recovery:
       source: cluster-shared-v1
+      # recoveryTarget:
+      #   targetTime: 2026-08-23T02:23:00Z
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
