@@ -8,8 +8,8 @@ spec:
   interval: 15m
   url: oci://ghcr.io/home-operations/charts/konflate
   ref:
-    tag: "0.6.1"
-    digest: sha256:4cf69caf5deaf6e34cf56fd36d9ee542ce26443a5c84990933c999f0e819cfab
+    tag: "0.6.2"
+    digest: sha256:3d4c86add59337ea276d39d84d1f703101c149c1f14f72011aa922893d75319c
 
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
