@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: konflate-repro
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: konflate
+
+  values:
+    # Values documentation: https://github.com/home-operations/konflate/tree/main/charts/konflate#readme
+    # Default values file: https://raw.githubusercontent.com/home-operations/konflate/refs/heads/main/charts/konflate/values.yaml
+    config:
+      repo: github://fhoekstra/repro-konflate
+      logFormat: json
+      statusChecks: true
+      prComments: true
+      publicUrl: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
+
+    secret:
+      existingSecret: konflate-secret
+
+    resources:
+      requests:
+        cpu: 50m
+      limits:
+        cpu: 1
+        memory: 1Gi
+
+    httpRoute:
+      enabled: true
+      hostnames: ["{{ .Release.Name }}.${CLUSTER_DOMAIN}"]
+      parentRefs:
+        - name: envoy-external
+          namespace: network
+
+    persistence:
+      enabled: true
+      size: 2Gi
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
