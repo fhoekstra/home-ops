@@ -12,6 +12,14 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/internal/k8s-gateway-kubes
   prune: true
+  postBuild:
+    substituteFrom: # Make this explicit here, because without substitution, the rendered YAML is invalid (domain required)
+      - kind: ConfigMap
+        name: cluster-settings
+        optional: true
+      - kind: Secret
+        name: cluster-secrets
+        optional: true
   sourceRef:
     kind: GitRepository
     name: flux-system
