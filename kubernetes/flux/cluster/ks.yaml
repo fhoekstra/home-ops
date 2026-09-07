@@ -63,7 +63,7 @@ spec:
             substituteFrom:
               - name: cluster-settings
                 kind: ConfigMap
-                optional: true
+                optional: false
               - name: cluster-secrets
                 kind: Secret
                 optional: true
