@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmalert_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+  name: victoria-logs
+spec:
+  evaluationInterval: 1m
+  datasource:
+    url: http://victoria-logs-server.observability.svc.cluster.local:9428
+  notifiers:
+    - url: http://vmalertmanager-vmetrics-0.vmalertmanager-vmetrics.observability.svc.cluster.local:9093
+  remoteWrite:
+    url: http://vmsingle-vmetrics.observability.svc.cluster.local:8428/api/v1/write
+  remoteRead:
+    url: http://vmsingle-vmetrics.observability.svc.cluster.local:8428
+  ruleSelector:
+    matchLabels:
+      source.observability: victoria-logs
+  ruleNamespaceSelector: {}
+  extraArgs:
+    rule.evalDelay: 5s
+    remoteWrite.disablePathAppend: "true"

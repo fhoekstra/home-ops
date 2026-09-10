@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: cert-manager-vlogs-rules
+  labels:
+    source.observability: victoria-logs
+spec:
+  groups:
+    - name: cert-manager-auth
+      type: vlogs
+      interval: 1m
+      rules:
+        - alert: CertManagerAuthFailure
+          expr: |
+            kubernetes.pod_namespace:"cert-manager"
+            (err*:~"(?i)(status code 40[13]|unauthorized|forbidden|application key|invalid credentials)"
+             OR _msg:~"(?i)(status code 40[13]|unauthorized|forbidden|invalid credentials)")
+            | stats by (kubernetes.pod_name, domain) count() as auth_errors
+            | filter auth_errors:>3
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "cert-manager cannot authenticate for domain {{ $labels.domain }}"
+            description: >-
+              {{ $value }} auth failures/min from {{ index $labels "kubernetes.pod_name" }}.
+              {{ $ms := query (printf "_time:15m kubernetes.pod_name:%q (err*:~\"(?i)(status code 40[13]|unauthorized|forbidden|application key|invalid credentials)\" OR _msg:~\"(?i)(status code 40[13]|unauthorized|forbidden|invalid credentials)\") | stats count() as hits, row_any(_msg) as sample_msg | filter hits:>0" (index $labels "kubernetes.pod_name")) }}
+              {{ if gt (len $ms) 0 }}Sample: {{ label "sample_msg" (index $ms 0) }}{{ end }}
