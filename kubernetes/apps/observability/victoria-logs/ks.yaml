@@ -13,6 +13,8 @@ spec:
   dependsOn:
     - name: envoy-gateway-config
       namespace: flux-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   path: ./kubernetes/apps/observability/victoria-logs/app
   prune: true
   sourceRef:

@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: victoria-logs-server
+spec:
+  hostnames:
+    - vlogs.${CLUSTER_DOMAIN}
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal
+      namespace: network
+  rules:
+    - filters:
+        - requestRedirect:
+            path:
+              replaceFullPath: /select/vmui/
+              type: ReplaceFullPath
+            statusCode: 302
+          type: RequestRedirect
+      matches:
+        - path:
+            type: Exact
+            value: /
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: victoria-logs-server
+          port: 9428
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
