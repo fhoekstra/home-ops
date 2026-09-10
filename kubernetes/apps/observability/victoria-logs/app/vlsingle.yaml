@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vlsingle_v1.json
+apiVersion: operator.victoriametrics.com/v1
+kind: VLSingle
+metadata:
+  name: victoria-logs
+spec:
+  retentionPeriod: 1y
+  storageDataPath: /storage
+  logFormat: json
+  image:
+    repository: quay.io/victoriametrics/victoria-logs
+    tag: v1.52.0
+  extraArgs:
+    envflag.enable: "true"
+    envflag.prefix: "VM_"
+    http.shutdownDelay: 15s
+    retention.maxDiskUsagePercent: "80"
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 30m
+      memory: 512Mi
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ALL]
+    readOnlyRootFilesystem: true
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: server-volume-victoria-logs-server-0
+  serviceSpec:
+    metadata:
+      name: victoria-logs-server
+    spec:
+      clusterIP: None
