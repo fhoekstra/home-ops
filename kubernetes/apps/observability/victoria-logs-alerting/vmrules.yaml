@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/operator.victoriametrics.com/vmrule_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: victoria-logs
+spec:
+  groups:
+    - name: error-logs
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: HighErrorLogRate
+          expr: |
+            (level:~"(?i)(error|fatal|critical)" OR _msg:~"^[EF][0-9]{4} " OR ~"(?i)(panic|exception)")
+            | stats by (kubernetes.pod_namespace, kubernetes.pod_name) count() as error_logs
+            | filter error_logs:>50
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              High error log rate in {{ index $labels "kubernetes.pod_namespace" }}/{{ index $labels "kubernetes.pod_name" }}
+            description: >-
+              {{ $value }} error-like logs in the last 5m

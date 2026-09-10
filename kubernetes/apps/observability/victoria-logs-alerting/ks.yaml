@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-logs-alerting
+  namespace: flux-system
+spec:
+  interval: 1h
+  commonMetadata:
+    labels:
+      source.observability: victoria-logs
+  dependsOn:
+    - name: victoria-logs
+      namespace: flux-system
+    - name: vm-k8s-stack
+      namespace: flux-system
+  path: ./kubernetes/apps/observability/victoria-logs-alerting
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: observability
+  wait: false

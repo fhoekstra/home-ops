@@ -80,6 +80,13 @@ spec:
 
     vmalert:
       enabled: true
+      spec:
+        ruleSelector:
+          matchExpressions:
+            - key: source.observability
+              operator: NotIn
+              values: [victoria-logs]
+        ruleNamespaceSelector: {}
 
     grafana:
       enabled: false
