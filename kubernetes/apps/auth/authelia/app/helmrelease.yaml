@@ -57,7 +57,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/authelia/authelia
-              tag: 4.39.23@sha256:0b6409d5cfa1bc244812fa4094f0272421ac156b864ed4178c60480c3f6d3ee9
+              tag: 4.39.26@sha256:16b804fbf6704b456ffb6e474c8e9d2406f9544ca0fecfeca7b4dcbed647deb4
             resources:
               requests:
                 cpu: 10m
