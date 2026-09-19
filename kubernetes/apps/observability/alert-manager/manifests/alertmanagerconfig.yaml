@@ -48,18 +48,18 @@ spec:
             {{ if gt (len .Alerts.Firing) 0 }}
             🚨 *FIRING ALERTS*
             {{ range .Alerts.Firing }}
-              *Alert:* {{ .Labels.alertname }}
-              *Summary:* {{ .Annotations.summary }}
+              *Alert:* {{ .Labels.alertname | markdownV2Escape }}
+              *Summary:* {{ .Annotations.summary | markdownV2Escape }}
             {{ end }}
             {{ end }}
             {{ if gt (len .Alerts.Resolved) 0 }}
             ✅ *RESOLVED ALERTS*
             {{ range .Alerts.Resolved }}
-              *Alert:* {{ .Labels.alertname }}
-              *Summary:* {{ .Annotations.summary }}
+              *Alert:* {{ .Labels.alertname | markdownV2Escape }}
+              *Summary:* {{ .Annotations.summary | markdownV2Escape }}
             {{ end }}
             {{ end }}
-          parseMode: Markdown
+          parseMode: MarkdownV2
     # Optional: fallback "blackhole" receiver to prevent dropped alerts
     - name: blackhole
   inhibitRules:
