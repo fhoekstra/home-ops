@@ -19,6 +19,7 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://konflate.${CLUSTER_DOMAIN}
+      refreshInterval: 5m
 
     secret:
       existingSecret: konflate-secret
