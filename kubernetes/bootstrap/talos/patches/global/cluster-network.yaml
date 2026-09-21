@@ -1,0 +1,11 @@
+# Shared cluster network settings: disable the built-in Flannel CNI in
+# favor of Cilium (deployed by Flux), and keep the pod and service subnets
+# the cluster was bootstrapped with.
+cluster:
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - 10.69.0.0/16
+    serviceSubnets:
+      - 10.96.0.0/16

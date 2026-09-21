@@ -14,6 +14,7 @@
       managerFilePatterns: ["/talos\\/.*\\.yaml(?:\\.j2)?$/"],
       matchStrings: [
         "factory\\.talos\\.dev\\/[^/]+\\/[^:]+:(?<currentValue>v\\S+)",
+        "talosVersion: (?<currentValue>v\\S+)",
       ],
       datasourceTemplate: "custom.talos-factory",
       versioningTemplate: "semver",

@@ -10,7 +10,10 @@ run = "uv pip install -r requirements.txt"
 
 [tools]
 # Operations tools
-"aqua:budimanjojo/talhelper" = "3.1.17"
+# Pinned to the release that bundles Talos machinery v1.13.x to match the
+# cluster's Talos version; 0.1.0-rc.2+ bundles v1.14 machinery, whose
+# rendered configs are rejected by v1.13 nodes.
+"ubi:mirceanton/talstomize" = "0.1.0-rc.1"
 "aqua:FiloSottile/age" = "1.3.2"
 "aqua:fluxcd/flux2" = "2.9.5"
 "aqua:getsops/sops" = "3.13.3"
