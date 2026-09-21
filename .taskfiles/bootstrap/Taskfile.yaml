@@ -9,22 +9,26 @@ tasks:
 
   talos:
     desc: Bootstrap the Talos cluster
-    dir: '{{.TALHELPER_DIR}}'
+    dir: '{{.TALOS_DIR}}'
     cmds:
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}talhelper gensecret > {{.TALHELPER_DIR}}/talsecret.sops.yaml{{end}}'
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}sops --encrypt --in-place {{.TALHELPER_DIR}}/talsecret.sops.yaml{{end}}'
-      - talhelper genconfig
-      - talhelper gencommand apply --extra-flags="--insecure" | bash
-      - until talhelper gencommand bootstrap | bash; do sleep 10; done
-      - until talhelper gencommand kubeconfig --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
+      - '{{if eq .SECRETS_BUNDLE_EXISTS "false"}}talosctl gen secrets -o talos-secrets.sops.yaml{{end}}'
+      - '{{if eq .SECRETS_BUNDLE_EXISTS "false"}}sops --encrypt --in-place talos-secrets.sops.yaml{{end}}'
+      - talstomize build . -o ./clusterconfig
+      - talstomize apply -f . -- --insecure
+      - until talosctl --nodes {{.BOOTSTRAP_NODE}} bootstrap; do sleep 10; done
+      - until talosctl --nodes {{.NODE_IPS}} kubeconfig {{.ROOT_DIR}} --force; do sleep 10; done
     vars:
-      TALHELPER_SECRET_EXISTS:
-        sh: test -f {{.TALHELPER_DIR}}/talsecret.sops.yaml && echo true || echo false
+      SECRETS_BUNDLE_EXISTS:
+        sh: test -f {{.TALOS_DIR}}/talos-secrets.sops.yaml && echo true || echo false
+      BOOTSTRAP_NODE:
+        sh: yq '.nodes | keys | .[0]' {{.TALOS_DIR}}/talstomize.yaml | xargs -I{} yq '.nodes["{}"].ip' {{.TALOS_DIR}}/talstomize.yaml
+      NODE_IPS:
+        sh: yq '.nodes[].ip' {{.TALOS_DIR}}/talstomize.yaml | paste -sd, -
     preconditions:
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
-      - which talhelper sops
+      - test -f {{.TALOS_DIR}}/talstomize.yaml
+      - which talstomize sops talosctl yq
 
   apps:
     desc: Bootstrap apps into the Talos cluster

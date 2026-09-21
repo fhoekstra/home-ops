@@ -1,0 +1,75 @@
+---
+apiVersion: config.talstomize.dev/v1alpha1
+kind: Talstomize
+
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.36.4
+
+clusterName: kubernetes
+controlPlaneEndpoint: https://192.168.1.30:6443
+secrets: ./talos-secrets.sops.yaml
+
+additionalSubjectAltNames:
+  - "192.168.1.30"
+  - "talos-rock-1"
+  - "talos-rock-2"
+  - "talos-rock-3"
+  - "127.0.0.1"
+
+# Shared Image Factory schematic for every node: Rock 5B+ overlay (SBC
+# support) plus GPU/display and NIC firmware system extensions. Mirrors
+# schematic-rock-5b-plus.yaml, which resolves to the same schematic ID.
+installer:
+  # renovate: datasource=custom.talos-factory depName=siderolabs/talos
+  talosVersion: v1.13.10
+  schematic:
+    overlay:
+      image: siderolabs/sbc-rockchip
+      name: rock5b-plus
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/panfrost
+          - siderolabs/realtek-firmware
+          - siderolabs/rockchip-rknn
+
+nodes:
+  talos-rock-1:
+    ip: 192.168.1.21
+    kind: controlplane
+    patches:
+      - ./patches/talos-rock-1/disk.yaml
+      - ./patches/talos-rock-1/network.yaml
+      - ./patches/talos-rock-1/csi-local-hostpath.yaml
+  talos-rock-2:
+    ip: 192.168.1.22
+    kind: controlplane
+    patches:
+      - ./patches/talos-rock-2/disk.yaml
+      - ./patches/talos-rock-2/network.yaml
+      - ./patches/talos-rock-2/csi-local-hostpath.yaml
+  talos-rock-3:
+    ip: 192.168.1.23
+    kind: controlplane
+    patches:
+      - ./patches/talos-rock-3/disk.yaml
+      - ./patches/talos-rock-3/network.yaml
+      - ./patches/talos-rock-3/csi-local-hostpath.yaml
+
+# Applied to every node, regardless of role.
+patches:
+  - ./patches/global/machine-files.yaml
+  - ./patches/global/machine-kubelet.yaml
+  - ./patches/global/machine-network.yaml
+  - ./patches/global/machine-sysctls.yaml
+  - ./patches/global/machine-system-upgrade.yaml
+  - ./patches/global/machine-time.yaml
+  # - ./patches/global/machine-disable-dashboard.yaml
+  - ./patches/global/cluster-network.yaml
+
+# Applied to every controlplane node, before that node's own patches.
+controlplanePatches:
+  - ./patches/controlplane/admission-controller-patch.yaml
+  - ./patches/controlplane/cluster.yaml
+
+workerPatches: []
