@@ -47,6 +47,15 @@ releases:
     needs:
       - cert-manager/cert-manager
 
+  - name: vm-k8s-stack
+    namespace: observability
+    chart: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
+    version: 0.93.0
+    values:
+      - ./vm-k8s-stack-operator-only.values.yaml
+    needs:
+      - cert-manager/cert-manager
+
   - name: envoy-gateway
     namespace: network
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
