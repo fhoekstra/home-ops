@@ -6,4 +6,4 @@ resources:
   - ./vlsingle.yaml
   - ./pvc.yaml
   - ./route.yaml
-  - ./grafanadashboards.yaml
+  - ./grafanadashboard.yaml
