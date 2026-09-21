@@ -40,21 +40,18 @@ nodes:
     patches:
       - ./patches/talos-rock-1/disk.yaml
       - ./patches/talos-rock-1/network.yaml
-      - ./patches/talos-rock-1/csi-local-hostpath.yaml
   talos-rock-2:
     ip: 192.168.1.22
     kind: controlplane
     patches:
       - ./patches/talos-rock-2/disk.yaml
       - ./patches/talos-rock-2/network.yaml
-      - ./patches/talos-rock-2/csi-local-hostpath.yaml
   talos-rock-3:
     ip: 192.168.1.23
     kind: controlplane
     patches:
       - ./patches/talos-rock-3/disk.yaml
       - ./patches/talos-rock-3/network.yaml
-      - ./patches/talos-rock-3/csi-local-hostpath.yaml
 
 # Applied to every node, regardless of role.
 patches:
@@ -64,6 +61,7 @@ patches:
   - ./patches/global/machine-sysctls.yaml
   - ./patches/global/machine-system-upgrade.yaml
   - ./patches/global/machine-time.yaml
+  - ./patches/global/csi-local-hostpath-volume.yaml
   # - ./patches/global/machine-disable-dashboard.yaml
   - ./patches/global/cluster-network.yaml
 
