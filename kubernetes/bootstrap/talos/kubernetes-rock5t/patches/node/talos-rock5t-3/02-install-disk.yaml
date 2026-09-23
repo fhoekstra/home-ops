@@ -1,0 +1,4 @@
+machine:
+  install:
+    # TODO: verify the boot media device on the Rock 5T Plus (talosctl disks --insecure -n <IP>)
+    disk: /dev/mmcblk1

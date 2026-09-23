@@ -1,0 +1,32 @@
+---
+# renovate: datasource=custom.talos-factory depName=siderolabs/talos
+talosVersion: v1.13.10
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.36.4
+
+clusterName: kubernetes-rock5t
+# TODO: adjust to the real VIP / API endpoint of this cluster
+clusterEndpoint: https://192.168.1.40:6443
+
+# Rock 5T Plus board overlay + ZFS and NFS server extensions,
+# see schematic-rock-5t-plus.yaml. The schematic ID is computed
+# locally by topf from the file (registered with the factory as
+# ad1e013b446245bed31c54c06f99c77d48a05b0f4ddce9759af25f9445f0ac6b).
+schematicId: "@schematic-rock-5t-plus.yaml"
+
+patchesDir: patches
+secretsPath: secrets.sops.yaml
+
+nodes:
+  - host: talos-rock5t-1
+    # TODO: adjust IP
+    ip: 192.168.1.41
+    role: control-plane
+  - host: talos-rock5t-2
+    # TODO: adjust IP
+    ip: 192.168.1.42
+    role: control-plane
+  - host: talos-rock5t-3
+    # TODO: adjust IP
+    ip: 192.168.1.43
+    role: control-plane

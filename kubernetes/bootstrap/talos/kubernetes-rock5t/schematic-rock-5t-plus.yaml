@@ -1,0 +1,11 @@
+overlay:
+  image: siderolabs/sbc-rockchip
+  name: rock5t-plus
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/panfrost
+      - siderolabs/realtek-firmware
+      - siderolabs/rockchip-rknn
+      - siderolabs/zfs
+      - siderolabs/nfsd

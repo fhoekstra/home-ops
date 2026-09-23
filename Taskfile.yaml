@@ -8,8 +8,12 @@ shopt: [globstar]
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
   PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
-  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos"
-  TALOSCONFIG: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig"
+  # Which Talos cluster to operate on; override with CLUSTER=<name>, e.g.
+  # `task talos:apply CLUSTER=kubernetes-rock5t`. One directory per cluster
+  # under kubernetes/bootstrap/talos/, named after its clusterName.
+  CLUSTER: '{{.CLUSTER | default "kubernetes"}}'
+  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/{{.CLUSTER}}"
+  TALOSCONFIG: "{{.TALOS_DIR}}/clusterconfig/talosconfig"
 
 env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"

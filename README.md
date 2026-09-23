@@ -17,9 +17,9 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
 
 | Role | Model | CPU | RAM | SSD |
 | ------------- | ------------- | -------------- | -------------- |-------|
-| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
-| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
-| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/kubernetes/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/kubernetes/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
+| K8s controlplane, k8s workloads | `kube` (Rock 5B+) | RK3588 (4x A76 + 4x A55) | 24GB LPDDR5 | 32GB microSD for read-only root and boot, PLP SSDs for [Talos](./kubernetes/bootstrap/talos/kubernetes/topf.yaml) and [Ceph](./kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml#L97) |
 | Cluster-external NFS (backups) | Raspberry Pi 4B |  | 4GB | 1TB SATA-via-USB3 Samsung QLC 870 Evo |
 
 # Infra
