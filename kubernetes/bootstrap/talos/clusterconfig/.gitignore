@@ -1,8 +1,10 @@
+# Rendered by talstomize (task talos:generate-config)
+talos-rock-1.yaml
+talos-rock-2.yaml
+talos-rock-3.yaml
+talosconfig
+# Legacy generated files from previous clusters
 kubernetes-thinkpad-x230.yaml
 kubernetes-latitude-5470.yaml
 kubernetes-latitude-5490-azerty.yaml
-talosconfig
 kubernetes-ideapad-s340-14iwl.yaml
-kubernetes-talos-rock-1.yaml
-kubernetes-talos-rock-2.yaml
-kubernetes-talos-rock-3.yaml

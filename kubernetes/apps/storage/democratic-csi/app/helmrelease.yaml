@@ -68,7 +68,9 @@ spec:
       config:
         driver: local-hostpath
         local-hostpath:
-          shareBasePath: &storagePath /var/lib/csi-local-hostpath
+          # Lives on a Talos UserVolumeConfig directory, mounted at
+          # /var/mnt/csi-local-hostpath (see talos bootstrap patches).
+          shareBasePath: &storagePath /var/mnt/csi-local-hostpath
           controllerBasePath: *storagePath
           dirPermissionsMode: "0770"
           dirPermissionsUser: 0

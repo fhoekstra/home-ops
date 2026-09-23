@@ -1,0 +1,11 @@
+# Dedicated user volume directory for the democratic-csi local-hostpath
+# driver. `volumeType: directory` lives on the EPHEMERAL partition and is
+# mounted at /var/mnt/csi-local-hostpath.
+#
+# Replaces the old kubelet extraMounts hack (/var/lib/csi-local-hostpath
+# with rshared propagation), which Talos v1.14+ no longer supports.
+# https://github.com/siderolabs/talos/issues/14365#issuecomment-5662126897
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: csi-local-hostpath
+volumeType: directory

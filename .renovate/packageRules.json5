@@ -2,6 +2,12 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      description: "Hold talstomize updates until the cluster runs Talos v1.14: releases from 0.1.0-rc.2 on bundle v1.14 machinery, whose rendered configs are rejected by v1.13 nodes",
+      matchManagers: ["mise"],
+      matchPackageNames: ["/talstomize/"],
+      enabled: false,
+    },
+    {
       matchDatasources: [
         'docker',
       ],

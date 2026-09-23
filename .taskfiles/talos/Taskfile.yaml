@@ -4,59 +4,61 @@ version: "3"
 
 tasks:
   generate-config:
-    desc: Generate Talos configuration
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper genconfig
+    desc: Render per-node Talos machine configs into clusterconfig/
+    dir: "{{.TALOS_DIR}}"
+    cmd: talstomize build . -o ./clusterconfig
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
+      - test -f {{.TALOS_DIR}}/talstomize.yaml
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which talhelper
+      - which talstomize sops
 
   apply-node:
-    desc: Apply Talos config to a node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode={{.MODE}}' | bash
+    desc: Apply Talos config to a node [NAME=required, MODE=auto|no-reboot|reboot|staged]
+    dir: "{{.TALOS_DIR}}"
+    cmd: talstomize apply -f . --node {{.NAME}} -- --mode={{.MODE}}
     vars:
       MODE: '{{.MODE | default "auto"}}'
     requires:
-      vars: [IP]
+      vars: [NAME]
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - which talstomize talosctl
 
   apply-node-from-maintenance:
-    desc: Apply Talos config to a node from maintenance mode [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode=reboot' --extra-flags --insecure | bash
+    desc: Apply Talos config to a node from maintenance mode [NAME=required]
+    dir: "{{.TALOS_DIR}}"
+    cmd: talstomize apply -f . --node {{.NAME}} -- --insecure --mode=reboot
+    vars:
+      IP:
+        sh: yq '.nodes["{{.NAME}}"].ip' {{.TALOS_DIR}}/talstomize.yaml
     requires:
-      vars: [IP]
+      vars: [NAME]
     preconditions:
       - talosctl get machinestatus --nodes {{.IP}} --insecure
-      - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - which talstomize talosctl yq
 
   fetch-raw-disk-image-for-sbc:
-    desc: Fetch the metal-arm64.raw disk image for the schematic that is set in the talconfig file from the Talos Image Factory API.
+    desc: Fetch the metal-arm64.raw disk image for the schematic configured in talstomize.yaml from the Talos Image Factory API
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - rm --force metal-arm64.raw metal-arm64.raw.xz
       - curl -L https://factory.talos.dev/image/{{ .SCHEMATIC_ID }}/{{ .TALOS_VERSION }}/metal-arm64.raw.xz --output metal-arm64.raw.xz
       - xz -d metal-arm64.raw.xz
     vars:
       SCHEMATIC_ID:
-        sh: yq '.nodes[0].talosImageURL | split("/")[-1]' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.installer.schematic' {{.TALOS_DIR}}/talstomize.yaml | curl -s -X POST --data-binary @- https://factory.talos.dev/schematics | yq '.id'
       TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.installer.talosVersion' {{.TALOS_DIR}}/talstomize.yaml
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
-      - which curl
+      - test -f {{.TALOS_DIR}}/talstomize.yaml
+      - which curl yq
 
   fetch-schematic-id:
-    desc: Fetch the schematic ID for {{.TALHELPER_DIR}}/{{.SCHEMATIC_FILE}} from the Talos Image Factory API
-    dir: "{{.TALHELPER_DIR}}"
+    desc: Fetch the schematic ID for {{.TALOS_DIR}}/{{.SCHEMATIC_FILE}} from the Talos Image Factory API
+    dir: "{{.TALOS_DIR}}"
     cmd: curl -X POST --data-binary @{{ .SCHEMATIC_FILE }} https://factory.talos.dev/schematics
     vars:
       SCHEMATIC_FILE: '{{.SCHEMATIC_FILE | default "schematic-rock-5b-plus.yaml"}}'
@@ -65,38 +67,42 @@ tasks:
       - which curl
 
   upgrade-node:
-    desc: Upgrade Talos on a single node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand upgrade --node {{.IP}} --extra-flags "--image='{{.TALOS_IMAGE}}:{{.TALOS_VERSION}}' --timeout=10m" | bash
+    desc: Upgrade Talos on a single node [NAME=required]
+    dir: "{{.TALOS_DIR}}"
+    deps: [generate-config]
+    cmd: talosctl --nodes {{.IP}} upgrade --image='{{.TALOS_IMAGE}}' --timeout=10m
     vars:
+      IP:
+        sh: yq '.nodes["{{.NAME}}"].ip' {{.TALOS_DIR}}/talstomize.yaml
       TALOS_IMAGE:
-        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .talosImageURL' {{.TALHELPER_DIR}}/talconfig.yaml
-      TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.machine.install.image' {{.TALOS_DIR}}/clusterconfig/{{.NAME}}.yaml
     requires:
-      vars: [IP]
+      vars: [NAME]
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which kubectl talhelper talosctl yq
+      - which talosctl yq
 
   upgrade-k8s:
     desc: Upgrade Kubernetes
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand upgrade-k8s --extra-flags "--to '{{.KUBERNETES_VERSION}}'" | bash
+    dir: "{{.TALOS_DIR}}"
+    cmd: talosctl upgrade-k8s --to '{{.KUBERNETES_VERSION}}'
     vars:
       KUBERNETES_VERSION:
-        sh: yq '.kubernetesVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/talstomize.yaml
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - which talosctl yq
 
   reset:
     desc: Resets nodes back to maintenance mode
-    dir: "{{.TALHELPER_DIR}}"
+    dir: "{{.TALOS_DIR}}"
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
-    cmd: talhelper gencommand reset --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
+    cmd: talosctl --nodes {{.NODE_IPS}} reset --reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false
+    vars:
+      NODE_IPS:
+        sh: yq '.nodes[].ip' {{.TALOS_DIR}}/talstomize.yaml | paste -sd, -
     preconditions:
-      - which talhelper
+      - test -f {{.TALOS_DIR}}/talstomize.yaml
+      - which talosctl yq
