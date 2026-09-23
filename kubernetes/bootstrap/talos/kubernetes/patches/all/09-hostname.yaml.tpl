@@ -1,4 +1,4 @@
 apiVersion: v1alpha1
 kind: HostnameConfig
 auto: "off"
-hostname: talos-rock-3
+hostname: {{ .Node.Host }}

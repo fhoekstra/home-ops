@@ -1,0 +1,4 @@
+machine:
+  install:
+    # The Rock 5B+ has no onboard MMC, so all nodes boot from a microSD card
+    disk: /dev/mmcblk1

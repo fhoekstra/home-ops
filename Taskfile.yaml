@@ -13,7 +13,7 @@ vars:
   # under kubernetes/bootstrap/talos/, named after its clusterName.
   CLUSTER: '{{.CLUSTER | default "kubernetes"}}'
   TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/{{.CLUSTER}}"
-  TALOSCONFIG: "{{.TALOS_DIR}}/clusterconfig/talosconfig"
+  TALOSCONFIG: "{{.TALOS_DIR}}/talosconfig"
 
 env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"

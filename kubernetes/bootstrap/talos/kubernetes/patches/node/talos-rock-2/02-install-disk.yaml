@@ -1,4 +1,0 @@
-machine:
-  install:
-    # This is the microSD card, as there is no onboard MMC on my Rock 5B+
-    disk: /dev/mmcblk1

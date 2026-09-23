@@ -77,14 +77,3 @@ tasks:
     preconditions:
       - test -f {{.TALOS_DIR}}/topf.yaml
       - which curl topf
-
-  fetch-schematic-id:
-    desc: Fetch the schematic ID for the cluster's schematic file from the Talos Image Factory API [SCHEMATIC_FILE=optional]
-    dir: "{{.TALOS_DIR}}"
-    cmd: curl -X POST --data-binary @{{ .SCHEMATIC_FILE }} https://factory.talos.dev/schematics
-    vars:
-      SCHEMATIC_FILE:
-        sh: ls schematic-*.yaml | head -1
-    preconditions:
-      - test -f {{.SCHEMATIC_FILE}}
-      - which curl

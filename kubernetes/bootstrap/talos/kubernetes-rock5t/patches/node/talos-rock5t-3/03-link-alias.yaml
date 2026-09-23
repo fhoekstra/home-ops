@@ -1,6 +1,0 @@
-apiVersion: v1alpha1
-kind: LinkAliasConfig
-name: ethSel0
-selector:
-  # TODO: real MAC, discover with: talosctl get link --insecure -n <IP> [LINK_NAME -o yaml]
-  match: glob("00:e0:4c:AA:AA:03", mac(link.hardware_addr))

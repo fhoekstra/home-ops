@@ -1,6 +1,6 @@
 # kubernetes-rock5t
 
-Second Talos cluster on Radxa Rock 5T Plus boards, managed with topf.
+Second, single-node Talos cluster on a Radxa Rock 5T Plus, managed with topf.
 
 This directory is self-contained: `topf.yaml`, its own `secrets.sops.yaml`,
 schematic and patch tree. topf manages one cluster per invocation, so each
@@ -12,20 +12,21 @@ task, e.g.:
 
 ## Before first apply (TODOs)
 
-- [ ] `topf.yaml`: real cluster endpoint + node IPs
-- [ ] `patches/node/talos-rock5t-*/03-link-alias.yaml`: real NIC MACs
-      (`talosctl get link --insecure -n <IP> -o yaml`)
-- [ ] `patches/node/talos-rock5t-*/02-install-disk.yaml`: verify the boot
-      media device (`talosctl disks --insecure -n <IP>`)
+- [ ] `topf.yaml`, `patches/control-plane/04-install-disk.yaml` and
+      `patches/node/talos-rock5t-1/01-link.yaml`: real endpoint/VIP, node IP,
+      NIC MAC (`talosctl get link --insecure -n <IP> -o yaml`) and boot media
+      device (`talosctl disks --insecure -n <IP>`)
 - [ ] Decide on data disks: add `VolumeConfig` patches (see
-      `../kubernetes/patches/node/talos-rock-1/03-volume-ephemeral.yaml`
-      for the EPHEMERAL pattern) and/or RawVolumeConfigs
-- [ ] Boot the nodes into Talos maintenance mode, then:
+      `../kubernetes/patches/node/talos-rock-1/01-volume-ephemeral.yaml` for
+      the EPHEMERAL pattern) and/or `RawVolumeConfig`s
+- [ ] Storage workloads: the ZFS and NFS server extensions are baked into the
+      schematic; add kubelet mounts / CSI config once the workloads are chosen
+- [ ] Boot the node into Talos maintenance mode, then:
 
-      topf apply --auto-bootstrap          # or: task bootstrap:talos CLUSTER=kubernetes-rock5t
+      task bootstrap:talos CLUSTER=kubernetes-rock5t
 
-The schematic (`schematic-rock-5t-plus.yaml`, ZFS + NFS server + rockchip
-extensions) is already registered with the Talos image factory as
+The schematic (`schematic-rock-5t-plus.yaml`) is already registered with the
+Talos image factory as
 `ad1e013b446245bed31c54c06f99c77d48a05b0f4ddce9759af25f9445f0ac6b`, so no
 `--submit-to-factory` run is needed.
 
