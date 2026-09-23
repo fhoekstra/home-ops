@@ -1,0 +1,17 @@
+# Install Talos to the microSD card (there is no onboard MMC on the Rock
+# 5B+), and put /var on the PLP SSD.
+machine:
+  install:
+    disk: /dev/mmcblk1
+---
+# EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding
+# to "/var". This means all the writeable directories are under this
+# partition: etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: "disk.model.startsWith('SSDSC2KG480G8R')" # Intel DC S4610, 480 GB
+  minSize: 250GiB
+  grow: true

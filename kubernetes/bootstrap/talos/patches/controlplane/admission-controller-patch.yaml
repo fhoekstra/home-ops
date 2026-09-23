@@ -1,0 +1,6 @@
+# Remove the default PodSecurity admission plugin configuration so the API
+# server runs with the Kubernetes built-in admission defaults.
+cluster:
+  apiServer:
+    admissionControl:
+      $patch: delete
