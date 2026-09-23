@@ -1,0 +1,9 @@
+# Disable built-in Flannel to use Cilium
+cluster:
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - 10.69.0.0/16
+    serviceSubnets:
+      - 10.96.0.0/16
