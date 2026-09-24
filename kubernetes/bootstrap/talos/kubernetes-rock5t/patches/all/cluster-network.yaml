@@ -1,0 +1,10 @@
+# Different pod/service ranges from the kubernetes cluster (10.69/10.96)
+# so the two clusters could be peered or shared later without overlap.
+cluster:
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - 10.70.0.0/16
+    serviceSubnets:
+      - 10.97.0.0/16

@@ -56,16 +56,6 @@ tasks:
       - test -f {{.TALOS_DIR}}/talstomize.yaml
       - which curl yq
 
-  fetch-schematic-id:
-    desc: Fetch the schematic ID for {{.TALOS_DIR}}/{{.SCHEMATIC_FILE}} from the Talos Image Factory API
-    dir: "{{.TALOS_DIR}}"
-    cmd: curl -X POST --data-binary @{{ .SCHEMATIC_FILE }} https://factory.talos.dev/schematics
-    vars:
-      SCHEMATIC_FILE: '{{.SCHEMATIC_FILE | default "schematic-rock-5b-plus.yaml"}}'
-    preconditions:
-      - test -f schematic-rock-5b-plus.yaml
-      - which curl
-
   upgrade-node:
     desc: Upgrade Talos on a single node [NAME=required]
     dir: "{{.TALOS_DIR}}"

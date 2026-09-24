@@ -17,8 +17,7 @@ additionalSubjectAltNames:
   - "127.0.0.1"
 
 # Shared Image Factory schematic for every node: Rock 5B+ overlay (SBC
-# support) plus GPU/display and NIC firmware system extensions. Mirrors
-# schematic-rock-5b-plus.yaml, which resolves to the same schematic ID.
+# support) plus GPU/display and NIC firmware system extensions.
 installer:
   # renovate: datasource=custom.talos-factory depName=siderolabs/talos
   talosVersion: v1.13.10
@@ -40,36 +39,37 @@ nodes:
     patches:
       - ./patches/talos-rock-1/disk.yaml
       - ./patches/talos-rock-1/network.yaml
-      - ./patches/talos-rock-1/csi-local-hostpath.yaml
   talos-rock-2:
     ip: 192.168.1.22
     kind: controlplane
     patches:
       - ./patches/talos-rock-2/disk.yaml
       - ./patches/talos-rock-2/network.yaml
-      - ./patches/talos-rock-2/csi-local-hostpath.yaml
   talos-rock-3:
     ip: 192.168.1.23
     kind: controlplane
     patches:
       - ./patches/talos-rock-3/disk.yaml
       - ./patches/talos-rock-3/network.yaml
-      - ./patches/talos-rock-3/csi-local-hostpath.yaml
 
-# Applied to every node, regardless of role.
+# Applied to every node, in the order listed (later patches override
+# earlier ones): first the patches shared by every cluster (see ../patches),
+# then this cluster's own.
 patches:
-  - ./patches/global/machine-files.yaml
-  - ./patches/global/machine-kubelet.yaml
-  - ./patches/global/machine-network.yaml
-  - ./patches/global/machine-sysctls.yaml
-  - ./patches/global/machine-system-upgrade.yaml
-  - ./patches/global/machine-time.yaml
-  # - ./patches/global/machine-disable-dashboard.yaml
-  - ./patches/global/cluster-network.yaml
+  # Shared with every cluster
+  - ../patches/all/machine-files.yaml
+  - ../patches/all/machine-kubelet.yaml
+  - ../patches/all/machine-network.yaml
+  - ../patches/all/machine-sysctls.yaml
+  - ../patches/all/machine-system-upgrade.yaml
+  - ../patches/all/machine-time.yaml
+  # This cluster only
+  - ./patches/all/cluster-network.yaml
+  - ./patches/all/kubelet-extra-mounts.yaml
 
 # Applied to every controlplane node, before that node's own patches.
 controlplanePatches:
-  - ./patches/controlplane/admission-controller-patch.yaml
-  - ./patches/controlplane/cluster.yaml
+  - ../patches/controlplane/admission-controller.yaml
+  - ../patches/controlplane/cluster.yaml
 
 workerPatches: []

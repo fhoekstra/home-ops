@@ -2,7 +2,8 @@
 _.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = "{{config_root}}/kubeconfig"
 SOPS_AGE_KEY_FILE = "{{config_root}}/age-pq.key"
-TALOSCONFIG = "{{config_root}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig"
+# Defaults to the main cluster; task commands pick a cluster with CLUSTER=<name>
+TALOSCONFIG = "{{config_root}}/kubernetes/bootstrap/talos/kubernetes/clusterconfig/talosconfig"
 
 [tasks.deps]
 description = "Install dependencies"
