@@ -3,100 +3,87 @@
 version: "3"
 
 tasks:
-  generate-config:
-    desc: Generate Talos configuration
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper genconfig
+  render:
+    desc: Render the Talos machine configurations to output/ (output contains secrets, never commit)
+    dir: "{{.TALOS_DIR}}"
+    cmd: topf render
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
+      - test -f {{.TALOS_DIR}}/topf.yaml
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which talhelper
+      - which topf sops
 
-  apply-node:
-    desc: Apply Talos config to a node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode={{.MODE}}' | bash
+  nodes:
+    desc: List the cluster nodes and their state
+    dir: "{{.TALOS_DIR}}"
+    cmd: topf nodes
+    preconditions:
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which topf
+
+  apply:
+    desc: Apply the Talos config to all nodes [NODE=<host> for a single node, MODE=auto|reboot|no-reboot|staged|try]
+    dir: "{{.TALOS_DIR}}"
+    cmd: topf apply {{.NODE_ARGS}} {{.MODE_ARGS}}
     vars:
-      MODE: '{{.MODE | default "auto"}}'
-    requires:
-      vars: [IP]
+      NODE_ARGS: '{{if .NODE}}--nodes-filter {{.NODE}}{{end}}'
+      MODE_ARGS: '{{if .MODE}}--mode={{.MODE}}{{end}}'
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
-      - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which topf
 
-  apply-node-from-maintenance:
-    desc: Apply Talos config to a node from maintenance mode [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode=reboot' --extra-flags --insecure | bash
-    requires:
-      vars: [IP]
+  upgrade:
+    desc: Upgrade Talos on all nodes (or one node with NODE=<host>)
+    dir: "{{.TALOS_DIR}}"
+    cmd: topf upgrade {{.NODE_ARGS}}
+    vars:
+      NODE_ARGS: '{{if .NODE}}--nodes-filter {{.NODE}}{{end}}'
     preconditions:
-      - talosctl get machinestatus --nodes {{.IP}} --insecure
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which topf
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes
+    dir: "{{.TALOS_DIR}}"
+    cmd: talosctl upgrade-k8s --to '{{.KUBERNETES_VERSION}}'
+    vars:
+      KUBERNETES_VERSION:
+        sh: yq '.kubernetesVersion' {{.TALOS_DIR}}/topf.yaml
+    preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - which talosctl yq
+
+  reset:
+    desc: Resets nodes back to maintenance mode
+    dir: "{{.TALOS_DIR}}"
+    prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
+    cmd: topf reset --full=false --graceful=false
+    preconditions:
+      - which topf
 
   fetch-raw-disk-image-for-sbc:
-    desc: Fetch the metal-arm64.raw disk image for the schematic that is set in the talconfig file from the Talos Image Factory API.
+    desc: Fetch the metal-arm64.raw disk image for the schematic that is referenced in topf.yaml from the Talos Image Factory API.
+    dir: "{{.TALOS_DIR}}"
     cmds:
       - rm --force metal-arm64.raw metal-arm64.raw.xz
       - curl -L https://factory.talos.dev/image/{{ .SCHEMATIC_ID }}/{{ .TALOS_VERSION }}/metal-arm64.raw.xz --output metal-arm64.raw.xz
       - xz -d metal-arm64.raw.xz
     vars:
       SCHEMATIC_ID:
-        sh: yq '.nodes[0].talosImageURL | split("/")[-1]' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: topf schematic-ids | head -1
       TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.talosVersion' {{.TALOS_DIR}}/topf.yaml
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
-      - which curl
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which curl topf
 
   fetch-schematic-id:
-    desc: Fetch the schematic ID for {{.TALHELPER_DIR}}/{{.SCHEMATIC_FILE}} from the Talos Image Factory API
-    dir: "{{.TALHELPER_DIR}}"
+    desc: Fetch the schematic ID for {{.TALOS_DIR}}/{{.SCHEMATIC_FILE}} from the Talos Image Factory API
+    dir: "{{.TALOS_DIR}}"
     cmd: curl -X POST --data-binary @{{ .SCHEMATIC_FILE }} https://factory.talos.dev/schematics
     vars:
       SCHEMATIC_FILE: '{{.SCHEMATIC_FILE | default "schematic-rock-5b-plus.yaml"}}'
     preconditions:
       - test -f schematic-rock-5b-plus.yaml
       - which curl
-
-  upgrade-node:
-    desc: Upgrade Talos on a single node [IP=required]
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand upgrade --node {{.IP}} --extra-flags "--image='{{.TALOS_IMAGE}}:{{.TALOS_VERSION}}' --timeout=10m" | bash
-    vars:
-      TALOS_IMAGE:
-        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .talosImageURL' {{.TALHELPER_DIR}}/talconfig.yaml
-      TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
-    requires:
-      vars: [IP]
-    preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
-      - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which kubectl talhelper talosctl yq
-
-  upgrade-k8s:
-    desc: Upgrade Kubernetes
-    dir: "{{.TALHELPER_DIR}}"
-    cmd: talhelper gencommand upgrade-k8s --extra-flags "--to '{{.KUBERNETES_VERSION}}'" | bash
-    vars:
-      KUBERNETES_VERSION:
-        sh: yq '.kubernetesVersion' {{.TALHELPER_DIR}}/talconfig.yaml
-    preconditions:
-      - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
-
-  reset:
-    desc: Resets nodes back to maintenance mode
-    dir: "{{.TALHELPER_DIR}}"
-    prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
-    cmd: talhelper gencommand reset --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
-    preconditions:
-      - which talhelper

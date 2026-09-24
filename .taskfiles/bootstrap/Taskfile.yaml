@@ -9,22 +9,20 @@ tasks:
 
   talos:
     desc: Bootstrap the Talos cluster
-    dir: '{{.TALHELPER_DIR}}'
+    dir: '{{.TALOS_DIR}}'
     cmds:
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}talhelper gensecret > {{.TALHELPER_DIR}}/talsecret.sops.yaml{{end}}'
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}sops --encrypt --in-place {{.TALHELPER_DIR}}/talsecret.sops.yaml{{end}}'
-      - talhelper genconfig
-      - talhelper gencommand apply --extra-flags="--insecure" | bash
-      - until talhelper gencommand bootstrap | bash; do sleep 10; done
-      - until talhelper gencommand kubeconfig --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
+      - '{{if eq .SECRETS_EXISTS "false"}}topf secrets --confirm=false{{end}}'
+      - topf apply --auto-bootstrap --confirm=false
+      - until topf kubeconfig > {{.ROOT_DIR}}/kubeconfig; do sleep 10; done
+      - topf talosconfig > {{.TALOSCONFIG}}
     vars:
-      TALHELPER_SECRET_EXISTS:
-        sh: test -f {{.TALHELPER_DIR}}/talsecret.sops.yaml && echo true || echo false
+      SECRETS_EXISTS:
+        sh: test -f {{.TALOS_DIR}}/secrets.sops.yaml && echo true || echo false
     preconditions:
       - test -f {{.ROOT_DIR}}/.sops.yaml
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
-      - which talhelper sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which topf sops
 
   apps:
     desc: Bootstrap apps into the Talos cluster

@@ -26,6 +26,7 @@ wiki
 # Bootstrap
 /config.yaml
 metal-arm64.raw
+kubernetes/bootstrap/talos/output/
 
 # Custom Talos overlay
 _out

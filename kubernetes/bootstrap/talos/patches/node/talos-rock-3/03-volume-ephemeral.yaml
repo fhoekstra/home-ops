@@ -1,0 +1,11 @@
+# EPHEMERAL is a "magic" name in Talos: it is a system volume, corresponding to "/var"
+# This means all the writeable directories are under this partition:
+# etcd, containerd images, logs, emptyDir, hostpath PVs, etc.
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: disk.model.startsWith('SAMSUNG MZ7LH480') # PM883, 480GB
+  minSize: 250GiB
+  grow: true
