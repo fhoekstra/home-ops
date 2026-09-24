@@ -2,17 +2,19 @@
 
 Second, single-node Talos cluster on a Radxa Rock 5T Plus, managed with topf.
 
-This directory is self-contained: `topf.yaml`, its own `secrets.sops.yaml`,
-schematic and patch tree. topf manages one cluster per invocation, so each
-cluster gets its own directory and is selected with `CLUSTER=<name>` on every
-task, e.g.:
+This directory is self-contained: `topf.yaml`, its own `secrets.sops.yaml` and
+schematic, plus patches specific to this cluster. The common baseline lives in
+[`../shared/patches`](../shared/patches) and is wired in via `00-shared`
+symlinks (see [../README.md](../README.md)). topf manages one cluster per
+invocation, so each cluster gets its own directory and is selected with
+`CLUSTER=<name>` on every task, e.g.:
 
     task talos:render CLUSTER=kubernetes-rock5t
     task bootstrap:talos CLUSTER=kubernetes-rock5t
 
 ## Before first apply (TODOs)
 
-- [ ] `topf.yaml`, `patches/control-plane/04-install-disk.yaml` and
+- [ ] `topf.yaml`, `patches/control-plane/11-install-disk.yaml` and
       `patches/node/talos-rock5t-1/01-link.yaml`: real endpoint/VIP, node IP,
       NIC MAC (`talosctl get link --insecure -n <IP> -o yaml`) and boot media
       device (`talosctl disks --insecure -n <IP>`)

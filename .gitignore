@@ -1,6 +1,7 @@
 # Trash
 .DS_Store
 Thumbs.db
+.tmp
 # k8s
 kubeconfig
 talosconfig

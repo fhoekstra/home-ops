@@ -16,6 +16,9 @@ Each directory is optional and therefore might not be created by default.
 
 Within each directory, patches are applied in lexicographical order, so files are prefixed with a number to make the merge order explicit.
 
+- `00-shared`: symlink to [`../../shared/patches`](../../../shared/patches), the baseline shared by every cluster (see [../README.md](../README.md)). topf walks symlinked directories, and `00-` sorts before the cluster-specific files, so the shared baseline is applied first.
+- Numbering rule: files in the shared tree are numbered `01`–`NN`, cluster-specific patches start at `10`.
+
 ## Unused
 
 - `unused/`: patches that are currently disabled. topf only scans `all/`, `control-plane/`, `worker/` and `node/`, so files here are ignored. Move a patch into one of the directories above to enable it.
