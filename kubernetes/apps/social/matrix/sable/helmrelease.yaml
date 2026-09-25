@@ -31,7 +31,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/sableclient/sable
-              tag: 1.22.6@sha256:8f988d9e7a8ef5ed6b332677220110479e7f04e0b449a3ac820a251b39ade357
+              tag: 1.22.8@sha256:758ede2cbdc595bcc684e3f6deafce3bbbc8d750e005c76bb500af3ab79b1655
               pullPolicy: IfNotPresent
 
             securityContext:
