@@ -4,9 +4,6 @@ kind: HelmRelease
 metadata:
   name: victoria-logs-collector
 spec:
-  dependsOn:
-    - name: victoria-logs
-      namespace: observability
   chartRef:
     kind: OCIRepository
     name: victoria-logs-collector
