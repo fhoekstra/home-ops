@@ -3,6 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
+    external-dns.kubernetes.io/hostname: "turn.kubes.cloud"
+    external-dns.kubernetes.io/target: "54.36.18.175"
     external-dns.alpha.kubernetes.io/hostname: "turn.kubes.cloud"
     external-dns.alpha.kubernetes.io/target: "54.36.18.175"
     stunner.l7mp.io/enable-mixed-protocol-lb: "true"
