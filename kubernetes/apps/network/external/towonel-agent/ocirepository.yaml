@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.7.1
-    digest: sha256:0b14bbcd6badbc832d11529d032b61c32a1e530911489e1d7f94e3964aeda8d4
-  url: oci://codeberg.org/towonel/charts/towonel-agent
+    tag: 1.11.0
+    digest: sha256:d88087db3d00ff9c43ce755ebddc76815ed93ee306cdaa888df662c5e41eabdb
+  url: oci://registry.erwanleboucher.dev/eleboucher/charts/towonel-agent
