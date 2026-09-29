@@ -50,7 +50,7 @@ releases:
   - name: vm-k8s-stack
     namespace: observability
     chart: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
-    version: 0.93.0
+    version: 0.95.0
     values:
       - ./vm-k8s-stack-operator-only.values.yaml
     needs:
