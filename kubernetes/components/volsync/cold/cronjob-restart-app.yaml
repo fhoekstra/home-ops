@@ -22,7 +22,7 @@ spec:
                 defaultMode: 0755
           containers:
             - name: cold-snapshot-restart-controller-${APP}
-              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1-1
+              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.5
               env:
                 - name: NAMESPACE
                   valueFrom:
@@ -60,7 +60,7 @@ spec:
                 defaultMode: 0755
           containers:
             - name: cold-snapshot-restart-controller-${APP}
-              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.1-1
+              image: ghcr.io/fhoekstra/kubectl-shell:v1.36.5
               env:
                 - name: NAMESPACE
                   valueFrom:
