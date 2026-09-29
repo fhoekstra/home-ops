@@ -5,6 +5,7 @@ kind: HTTPRoute
 metadata:
   name: hass-proxy
   annotations:
+    external-dns.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
     external-dns.alpha.kubernetes.io/target: "internal.${CLUSTER_DOMAIN}"
 spec:
   hostnames: ["hass.${CLUSTER_DOMAIN}"]
