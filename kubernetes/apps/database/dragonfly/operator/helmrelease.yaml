@@ -17,24 +17,15 @@ spec:
     remediation:
       retries: 3
   values:
-    # CRDs stay managed by the Kustomization (crd.yaml remote resource)
-    # to avoid the Kustomization pruning them on first apply of this chart
+    # upstream values.yaml: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/charts/dragonfly-operator/values.yaml
     crds:
-      install: false
-    # Keep RBAC surface identical to the previous manual rbac.yaml
-    createAggregateRoles: false
-    rbacProxy:
-      enabled: false
+      install: true
+      keep: true
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 65534
       runAsGroup: 65534
     manager:
-      image:
-        repository: ghcr.io/dragonflydb/operator
-        tag: v1.7.0@sha256:3bfe011c73a0f642cc49808c34e2199ff378b08f2201e8bd134115706b39b9b1
-      extraArgs:
-        - --metrics-bind-address=:8080
       resources:
         requests:
           cpu: 10m
@@ -54,8 +45,6 @@ spec:
               app.kubernetes.io/name: *app
     serviceMonitor:
       enabled: true
-      interval: 1m
-      timeout: 10s
   postRenderers:
     - kustomize:
         patches:
@@ -66,13 +55,3 @@ spec:
                 name: dragonfly-operator-controller-manager-metrics
               spec:
                 fallbackScrapeProtocol: PrometheusText1.0.0
-          - patch: |-
-              - op: remove
-                path: /spec/ports/0
-              - op: add
-                path: /spec/trafficDistribution
-                value: PreferSameNode
-            target:
-              kind: Service
-              name: dragonfly-operator-controller-svc
-              namespace: database
