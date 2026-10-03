@@ -6,15 +6,12 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.kubernetes.io/target: &hostname internal.${CLUSTER_DOMAIN}
-    external-dns.alpha.kubernetes.io/target: &hostname internal.${CLUSTER_DOMAIN}
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
       external-dns.kubernetes.io/hostname: *hostname
       external-dns.kubernetes.io/ttl: "1m"
-      external-dns.alpha.kubernetes.io/hostname: *hostname
-      external-dns.alpha.kubernetes.io/ttl: "1m"
       lbipam.cilium.io/ips: ${ENVOY_INTERNAL_LB_IP}
   listeners:
     - name: http

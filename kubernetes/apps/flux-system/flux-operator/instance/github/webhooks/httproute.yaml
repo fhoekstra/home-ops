@@ -6,7 +6,6 @@ metadata:
   name: flux-webhook
   annotations:
     external-dns.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-    external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
 spec:
   hostnames: ["flux-webhook.${CLUSTER_DOMAIN}"]
   parentRefs:

@@ -151,8 +151,6 @@ spec:
       #   annotations:
       #     external-dns.kubernetes.io/hostname: sftp.${}
       #     # external-dns.kubernetes.io/target: "${SECRET_GATEWAY}"
-      #     external-dns.alpha.kubernetes.io/hostname: sftp.${}
-      #     # external-dns.alpha.kubernetes.io/target: "${SECRET_GATEWAY}"
       #   ports:
       #     sftp:
       #       port: 22
@@ -164,7 +162,6 @@ spec:
         className: external
         annotations:
           external-dns.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/auth-method: "GET"
           nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
           nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
@@ -180,7 +177,6 @@ spec:
         className: external
         annotations:
           external-dns.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
-          external-dns.alpha.kubernetes.io/target: "external.${CLUSTER_DOMAIN}"
           nginx.ingress.kubernetes.io/auth-method: "GET"
           nginx.ingress.kubernetes.io/auth-url: "http://authelia.auth.svc.cluster.local/api/authz/auth-request"
           nginx.ingress.kubernetes.io/auth-signin: "https://auth.${CLUSTER_DOMAIN}?rm=$request_method"
