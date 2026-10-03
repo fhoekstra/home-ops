@@ -8,9 +8,6 @@ spec:
   retentionPeriod: 1y
   storageDataPath: /storage
   logFormat: json
-  image:
-    repository: quay.io/victoriametrics/victoria-logs
-    tag: v1.52.0
   extraArgs:
     envflag.enable: "true"
     envflag.prefix: "VM_"
