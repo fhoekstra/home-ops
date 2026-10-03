@@ -10,7 +10,7 @@ spec:
   logFormat: json
   image:
     repository: quay.io/victoriametrics/victoria-logs
-    tag: v1.52.0
+    tag: v1.53.0@sha256:251121fa882af99b95ba0c230a4a2f412ea602d2698c64a96c58dc9842bb755d
   extraArgs:
     envflag.enable: "true"
     envflag.prefix: "VM_"
