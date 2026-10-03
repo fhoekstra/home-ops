@@ -5,6 +5,4 @@ kind: Kustomization
 resources:
   - ./controlplaneio.yaml
   - ./csi-driver-nfs.yaml
-  - ./external-dns.yaml
-  - ./ingress-nginx.yaml
   - ./metrics-server.yaml
