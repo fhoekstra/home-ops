@@ -44,7 +44,7 @@ spec:
                     secretKeyRef:
                       name: grafana-admin-password-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
-              image: mirror.gcr.io/grafana/grafana:12.4.12@sha256:83be3e511ede559bee80e2215bb1987cb1246075461cb961beb515b0341e7aea
+              image: mirror.gcr.io/grafana/grafana:13.2.3@sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
