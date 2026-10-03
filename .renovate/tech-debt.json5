@@ -1,0 +1,17 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: "Stick to Grafana 12 as that is the operator default for now",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["grafana/grafana"],
+      allowedVersions: "<13",
+    },
+    {
+      description: "Stick to rook-ceph 19.x since Ceph 20.x is built for Linux 7.x and Talos is still on 6.x",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook/rook-ceph/"],
+      allowedVersions: "<1.20",
+    },
+  ],
+}
