@@ -6,7 +6,6 @@ metadata:
   name: blog-redirect
   annotations:
     external-dns.kubernetes.io/target: "external.kubes.cloud"
-    external-dns.alpha.kubernetes.io/target: "external.kubes.cloud"
 spec:
   hostnames:
     - "why.kubes.cloud"

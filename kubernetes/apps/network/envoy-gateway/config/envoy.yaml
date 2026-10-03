@@ -110,7 +110,6 @@ metadata:
   name: https-redirect
   annotations:
     external-dns.kubernetes.io/controller: none
-    external-dns.alpha.kubernetes.io/controller: none
 spec:
   parentRefs:
     - name: envoy-internal
