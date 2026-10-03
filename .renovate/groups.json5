@@ -35,7 +35,7 @@
     {
       description: "Kubernetes Group",
       groupName: "kubernetes",
-      matchPackageNames: ["/siderolabs/kubelet/", "/kubernetes/kubectl/"],
+      matchPackageNames: ["/siderolabs/kubelet/", "/kubernetes/kubectl/", "kubectl"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
