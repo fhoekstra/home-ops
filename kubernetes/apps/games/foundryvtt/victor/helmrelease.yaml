@@ -162,6 +162,8 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+          - name: envoy-internal
+            namespace: network
         rules:
           - backendRefs:
               - identifier: *app
@@ -171,6 +173,8 @@ spec:
         hostnames: ["foundry-victor-files.${CLUSTER_DOMAIN}"]
         parentRefs:
           - name: envoy-external
+            namespace: network
+          - name: envoy-internal
             namespace: network
         rules:
           - backendRefs:
