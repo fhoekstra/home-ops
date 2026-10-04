@@ -31,8 +31,3 @@ spec:
     - name: data
       persistentVolumeClaim:
         claimName: server-volume-victoria-logs-server-0
-  serviceSpec:
-    metadata:
-      name: victoria-logs-server
-    spec:
-      clusterIP: None

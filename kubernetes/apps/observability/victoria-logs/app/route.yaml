@@ -27,7 +27,7 @@ spec:
     - backendRefs:
         - group: ""
           kind: Service
-          name: victoria-logs-server
+          name: vlsingle-victoria-logs
           port: 9428
           weight: 1
       matches:

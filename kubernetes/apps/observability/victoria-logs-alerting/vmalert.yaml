@@ -7,7 +7,7 @@ metadata:
 spec:
   evaluationInterval: 1m
   datasource:
-    url: http://victoria-logs-server.observability.svc.cluster.local:9428
+    url: http://vlsingle-victoria-logs.observability.svc.cluster.local:9428
   notifiers:
     - url: http://vmalertmanager-vmetrics.observability.svc.cluster.local:9093
   remoteWrite:
