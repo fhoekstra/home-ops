@@ -11,6 +11,7 @@
     "github>fhoekstra/home-ops//.renovate/talosFactory.json5",
     "github>fhoekstra/home-ops//.renovate/grafana.json5",
     "github>fhoekstra/home-ops//.renovate/groups.json5",
+    "github>fhoekstra/home-ops//.renovate/tech-debt.json5",
     ":automergeBranch",
     ":dependencyDashboard",
     ":disableRateLimiting",
