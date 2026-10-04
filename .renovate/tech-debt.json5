@@ -4,7 +4,7 @@
     {
       description: "Stick to Grafana 12 as that is the operator default for now",
       matchDatasources: ["docker"],
-      matchPackageNames: ["grafana/grafana"],
+      matchPackageNames: ["/grafana/grafana/"],
       allowedVersions: "<13",
     },
     {
