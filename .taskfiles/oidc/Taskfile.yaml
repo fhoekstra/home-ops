@@ -1,0 +1,129 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  AUTHELIA_IMAGE: "authelia/authelia:latest"
+  OIDC_DIR: "{{.ROOT_DIR}}/kubernetes/apps/auth/authelia/app/oidc"
+
+tasks:
+  create-client:
+    desc: Generate a new Authelia OIDC client, storing the id/digest SOPS-encrypted and printing the secret [APP=required]
+    silent: true
+    env:
+      APP: "{{.APP}}"
+    cmds:
+      - |
+        set -euo pipefail
+
+        if ! printf '%s' "${APP}" | grep -qE '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'; then
+          echo "Error: APP must be lowercase alphanumeric (dashes allowed), got: ${APP}" >&2
+          exit 1
+        fi
+
+        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+
+        if test -e "${FILE}"; then
+          echo "Error: ${FILE} already exists" >&2
+          exit 1
+        fi
+
+        echo "Generating OIDC client credentials for app: ${APP}"
+
+        HASH="$(docker run --rm {{.AUTHELIA_IMAGE}} authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986)"
+        SECRET="$(printf '%s\n' "${HASH}" | sed -n 's/^Random Password: //p')"
+        DIGEST="$(printf '%s\n' "${HASH}" | sed -n 's/^Digest: //p')"
+
+        ID="$(docker run --rm {{.AUTHELIA_IMAGE}} authelia crypto rand --length 72 --charset rfc3986 | sed -n 's/^Random Value: //p')"
+
+        if test -z "${ID}" || test -z "${SECRET}" || test -z "${DIGEST}"; then
+          echo "Error: could not parse authelia output" >&2
+          exit 1
+        fi
+        export ID SECRET DIGEST
+
+        {
+          printf '# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/secret-v1.json\n'
+          yq -n '.apiVersion = "v1" | .kind = "Secret" | .metadata.name = ("authelia-oidc-" + strenv(APP) + "-client") | .stringData."client-id" = strenv(ID) | .stringData."client-secret-digest" = strenv(DIGEST)'
+        } > "${FILE}"
+
+        if ! yq -e '.stringData."client-id" == strenv(ID) and .stringData."client-secret-digest" == strenv(DIGEST)' "${FILE}" >/dev/null; then
+          echo "Error: generated file does not match the generated credentials" >&2
+          exit 1
+        fi
+
+        sops --encrypt --in-place "${FILE}"
+
+        echo "Created ${FILE}"
+        echo "Remember to add the following to {{.OIDC_DIR}}/kustomization.yaml resources:"
+        echo "  - ./client-${APP}.sops.yaml"
+        echo ""
+        echo "Retrieve the client id with: sops -d ${FILE}"
+        echo "The client secret is not stored in the repository, copy it into the ${APP} application secret:"
+        echo "client-secret: ${SECRET}"
+    requires:
+      vars: [APP]
+    preconditions: &client_preconditions
+      - sh: which docker
+        msg: "docker not found"
+      - sh: which sops
+        msg: "sops not found"
+      - sh: which yq
+        msg: "yq not found"
+      - sh: test -f {{.ROOT_DIR}}/.sops.yaml
+        msg: ".sops.yaml not found at {{.ROOT_DIR}}/.sops.yaml"
+      - sh: test -f {{.SOPS_AGE_KEY_FILE}}
+        msg: "AGE key file not found at {{.SOPS_AGE_KEY_FILE}}. Generate with: age-keygen -pq -o {{.SOPS_AGE_KEY_FILE}}"
+
+  rotate-client:
+    desc: Rotate the client secret of an existing Authelia OIDC client (client id is kept) [APP=required]
+    silent: true
+    env:
+      APP: "{{.APP}}"
+    cmds:
+      - |
+        set -euo pipefail
+
+        if ! printf '%s' "${APP}" | grep -qE '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'; then
+          echo "Error: APP must be lowercase alphanumeric (dashes allowed), got: ${APP}" >&2
+          exit 1
+        fi
+
+        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+
+        if ! test -f "${FILE}"; then
+          echo "Error: ${FILE} does not exist. Create it with: task oidc:create-client APP=${APP}" >&2
+          exit 1
+        fi
+
+        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest"' >/dev/null; then
+          echo "Error: ${FILE} does not contain stringData.client-secret-digest" >&2
+          exit 1
+        fi
+
+        echo "Rotating OIDC client secret for app: ${APP}"
+
+        HASH="$(docker run --rm {{.AUTHELIA_IMAGE}} authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986)"
+        SECRET="$(printf '%s\n' "${HASH}" | sed -n 's/^Random Password: //p')"
+        DIGEST="$(printf '%s\n' "${HASH}" | sed -n 's/^Digest: //p')"
+
+        if test -z "${SECRET}" || test -z "${DIGEST}"; then
+          echo "Error: could not parse authelia output" >&2
+          exit 1
+        fi
+        export SECRET DIGEST
+
+        SET_ARG="$(printf '["stringData"]["client-secret-digest"] "%s"' "${DIGEST}")"
+        sops --set "${SET_ARG}" "${FILE}"
+
+        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest" == strenv(DIGEST)' >/dev/null; then
+          echo "Error: rotated digest does not match the generated digest" >&2
+          exit 1
+        fi
+
+        echo "Rotated ${FILE} (client id unchanged)"
+        echo "Update the ${APP} application secret with the new client secret once Flux has reconciled:"
+        echo "client-secret: ${SECRET}"
+    requires:
+      vars: [APP]
+    preconditions: *client_preconditions

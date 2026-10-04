@@ -21,6 +21,7 @@ includes:
   talos: .taskfiles/talos
   kubernetes: .taskfiles/kubernetes
   sops: .taskfiles/sops
+  oidc: .taskfiles/oidc
 
 tasks:
   default: task --list
