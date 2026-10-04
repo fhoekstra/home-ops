@@ -168,7 +168,26 @@ spec:
         enabled: true
         type: configMap
         name: authelia-config
-        globalMounts:
-          - path: /config/configuration.yaml
-            subPath: configuration.yaml
-            readOnly: true
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/configuration.yaml
+                subPath: configuration.yaml
+                readOnly: true
+
+      oidc-cert-jwk-rsa:
+        enabled: true
+        type: secret
+        name: authelia-jwk-rsa
+        advancedMounts:
+          *app :
+            *app :
+              - path: /secrets/jwk-rsa
+      oidc-cert-jwk-ecdsa:
+        enabled: true
+        type: secret
+        name: authelia-jwk-ecdsa
+        advancedMounts:
+          *app :
+            *app :
+              - path: /secrets/jwk-ecdsa

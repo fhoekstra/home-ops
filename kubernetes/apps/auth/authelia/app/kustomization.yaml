@@ -6,6 +6,7 @@ resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
   - ./referencegrant.yaml
+  - ./oidc-jwk-certs.yaml
 configMapGenerator:
   - name: authelia-config
     files:
