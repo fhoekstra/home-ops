@@ -24,7 +24,7 @@ session:
   same_site: lax
   inactivity: 2h
   expiration: 1d
-  remember_me: 2M
+  remember_me: 6M
   cookies:
     - name: fhoekstra_session
       domain: ${CLUSTER_DOMAIN}
@@ -96,7 +96,8 @@ identity_providers:
         certificate_chain: |
           {{ fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
     clients:
-      - client_id: gotosocial
+      - client_id: |
+          {{ fileContent "/secrets/clients/gotosocial/client-id" | nindent 10 }}
         client_name: GoToSocial (Mastodon-compatible Fediverse server)
-        client_secret: '{{ fileContent "/oidc/clients/jellyfin.secret" }}'
-        authorization_policy: one_factor
+        client_secret: |
+          {{ fileContent "/secrets/clients/gotosocial/client-secret-digest" | nindent 10 }}

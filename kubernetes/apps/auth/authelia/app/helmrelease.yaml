@@ -191,3 +191,10 @@ spec:
           *app :
             *app :
               - path: /secrets/jwk-ecdsa
+      oidc-client-gotosocial:
+        type: secret
+        name: authelia-oidc-gotosocial-client
+        advancedMounts:
+          *app :
+            *app :
+              - path: /secrets/clients/gotosocial

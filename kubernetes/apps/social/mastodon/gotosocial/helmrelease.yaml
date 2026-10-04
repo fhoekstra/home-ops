@@ -66,12 +66,12 @@ spec:
               GTS_OIDC_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
-                    name: kanidm-gotosocial-oidc
+                    name: gotosocial-oidc
                     key: client-id
               GTS_OIDC_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: kanidm-gotosocial-oidc
+                    name: gotosocial-oidc
                     key: client-secret
 
               GTS_DB_TYPE: postgres
