@@ -56,6 +56,21 @@ spec:
               #     secretKeyRef:
               #       name: kanidm-gotosocial-oidc
               #       key: client-secret
+              # SMTP
+              GTS_SMTP_HOST: "smtp://smtp-relay.brevo.com"
+              GTS_SMTP_PORT: "587"
+              GTS_SMTP_FROM: "auth@${DOMAIN_NAME_COUNTRY}"
+              GTS_SMTP_FROM_DISPLAY_NAME: "GoToSocial ${CLUSTER_DOMAIN}"
+              GTS_SMTP_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-smtp
+                    key: username
+              GTS_SMTP_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-smtp
+                    key: password
 
               GTS_DB_TYPE: postgres
               GTS_DB_POSTGRES_CONNECTION_STRING:
