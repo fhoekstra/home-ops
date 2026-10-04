@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: etcd-defrag
+  name: &app etcd-defrag
 spec:
   chartRef:
     kind: OCIRepository
@@ -28,7 +28,7 @@ spec:
           effect: NoSchedule
 
     controllers:
-      etcd-defrag:
+      *app :
         type: cronjob
         cronjob:
           # Run weekly on Sunday at 3 AM
@@ -37,7 +37,7 @@ spec:
           failedJobsHistory: 1
           successfulJobsHistory: 1
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/ahrtr/etcd-defrag
               tag: v0.45.0@sha256:cf59babfac18a523e70aa5735b2f29015f13715935fb66b28d9b69cadc4b069a
@@ -73,13 +73,13 @@ spec:
       certs:
         type: hostPath
         hostPath: /system/secrets/etcd
-        globalMounts:
-          - path: /certs
-            readOnly: true
+        advancedMounts:
+          *app :
+            *app :
+              - path: /certs
+                readOnly: true
       tmpfs:
         type: emptyDir
-        advancedMounts:
-          etcd-defrag:
-            app:
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
