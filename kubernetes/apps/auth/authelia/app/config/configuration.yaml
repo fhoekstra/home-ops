@@ -95,9 +95,17 @@ identity_providers:
           {{ fileContent "/secrets/jwk-ecdsa/tls.key" | nindent 10 }}
         certificate_chain: |
           {{ fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
+
     clients:
       - client_id: |
           {{ fileContent "/secrets/clients/gotosocial/client-id" | nindent 10 }}
         client_name: GoToSocial (Mastodon-compatible Fediverse server)
         client_secret: |
           {{ fileContent "/secrets/clients/gotosocial/client-secret-digest" | nindent 10 }}
+        redirect_uris: ["https://gts.kubes.cloud/auth/callback"]
+        scopes: [openid, profile, groups, email]
+        claims_policy: gotosocial
+
+    claims_policies:
+      gotosocial:
+        id_token: ["preferred_username"]

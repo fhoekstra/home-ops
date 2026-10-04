@@ -58,8 +58,7 @@ spec:
 
               GTS_OIDC_ENABLED: "true"
               GTS_OIDC_IDP_NAME: "Freek's Authelia"
-              #### This is mostly wrong, copy-pasted from Erwan
-              GTS_OIDC_ISSUER: "https://auth.${CLUSTER_DOMAIN}/oauth2/openid/gotosocial"
+              GTS_OIDC_ISSUER: "https://auth.${CLUSTER_DOMAIN}"
               GTS_OIDC_SCOPES: "openid,email,profile,groups"
               GTS_OIDC_LINK_EXISTING: "true"
               GTS_OIDC_ADMIN_GROUPS: "app_admin"
