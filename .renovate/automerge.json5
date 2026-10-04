@@ -47,8 +47,8 @@
       description: "Auto-merge other OCI patch releases",
       matchDatasources: ["docker"],
       matchPackageNames: [
-        "grafana/grafana",
-        "/getmeili/meilisearch",
+        "/grafana/grafana/",
+        "/getmeili/meilisearch/",
         "/cloudnative-pg/charts/plugin-barman-cloud/",
       ],
       matchUpdateTypes: ["patch"],
