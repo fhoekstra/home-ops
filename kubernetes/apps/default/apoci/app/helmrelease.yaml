@@ -16,8 +16,8 @@ spec:
         containers:
           *app :
             image:
-              repository: registry.erwanleboucher.dev/eleboucher/apoci
-              tag: 0.0.56@sha256:dc69427322dd5931084c255097d70a1db857cfd4f3fe17a23e0d44921948b1d4
+              repository: git.ow-ops.eu/ow-ops/apoci
+              tag: 0.0.57@sha256:99af34a259d0ee4c217919471e4a3b95e6874465dee97499292a956e20bbffcf
             env:
               APOCI_ACCOUNT_DOMAIN: kubes.cloud
               APOCI_DATA_DIR: /data
