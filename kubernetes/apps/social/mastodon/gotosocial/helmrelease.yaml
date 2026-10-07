@@ -40,22 +40,6 @@ spec:
               GTS_ACCOUNTS_REGISTRATION_OPEN: "false"
               GTS_ACCOUNTS_REASON_REQUIRED: "true"
 
-              GTS_OIDC_ENABLED: "false"
-              # GTS_OIDC_IDP_NAME: "Kanidm"
-              # GTS_OIDC_ISSUER: "https://idm.erwanleboucher.dev/oauth2/openid/gotosocial"
-              # GTS_OIDC_SCOPES: "openid,email,profile,groups"
-              # GTS_OIDC_LINK_EXISTING: "true"
-              # GTS_OIDC_ADMIN_GROUPS: "admins@idm.erwanleboucher.dev"
-              # GTS_OIDC_CLIENT_ID:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: kanidm-gotosocial-oidc
-              #       key: client-id
-              # GTS_OIDC_CLIENT_SECRET:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: kanidm-gotosocial-oidc
-              #       key: client-secret
               # SMTP
               GTS_SMTP_HOST: "smtp://smtp-relay.brevo.com"
               GTS_SMTP_PORT: "587"
@@ -71,6 +55,23 @@ spec:
                   secretKeyRef:
                     name: gotosocial-smtp
                     key: password
+
+              GTS_OIDC_ENABLED: "true"
+              GTS_OIDC_IDP_NAME: "Freek's Authelia"
+              GTS_OIDC_ISSUER: "https://auth.${CLUSTER_DOMAIN}"
+              GTS_OIDC_SCOPES: "openid,email,profile,groups"
+              GTS_OIDC_LINK_EXISTING: "true"
+              GTS_OIDC_ADMIN_GROUPS: "app_admin"
+              GTS_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-oidc
+                    key: client-id
+              GTS_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-oidc
+                    key: client-secret
 
               GTS_DB_TYPE: postgres
               GTS_DB_POSTGRES_CONNECTION_STRING:
