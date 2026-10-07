@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./jwk-certs.yaml
+  # Combined OIDC client credentials. Individual clients are SOPS-encrypted
+  # patch files in ./clients, merged into the Secret by the patches below.
+  - ./secret-clients.yaml
+  # The declarative OIDC client registry and the ResourceSet rendering it
+  # into Authelia config fragments + per-app credential Secrets.
+  - ./rsip.yaml
+  - ./resourceset.yaml
+patches:
+  - path: ./clients/client-gotosocial.sops.yaml

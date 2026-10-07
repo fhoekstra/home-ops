@@ -95,16 +95,28 @@ identity_providers:
         certificate_chain: |
           {{- fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
 
+    # OIDC clients are assembled at startup from the fragment files rendered
+    # by the authelia-oidc-clients ResourceSet (mounted at /config/oidc/clients),
+    # with credentials read from the authelia-oidc-clients-credentials Secret
+    # (mounted at /secrets/oidc). See the README.md in the sibling oidc
+    # directory for the onboarding flow.
     clients:
+      {{- range $file := glob "/config/oidc/clients/*.yaml" }}
+      {{- $frag := fileContent $file | fromYaml }}
+      {{- with $frag.client }}
       - client_id: |-
-          {{- fileContent "/secrets/clients/gotosocial/client-id" | nindent 10 }}
-        client_name: GoToSocial (Mastodon-compatible Fediverse server)
+          {{- fileContent (printf "/secrets/oidc/clients.%s.client-id" $frag.app) | nindent 10 }}
         client_secret: |-
-          {{- fileContent "/secrets/clients/gotosocial/client-secret-digest" | nindent 10 }}
-        redirect_uris: ["https://gts.kubes.cloud/auth/callback"]
-        scopes: [openid, profile, groups, email]
-        claims_policy: gotosocial
+          {{- fileContent (printf "/secrets/oidc/clients.%s.client-secret-digest" $frag.app) | nindent 10 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
 
     claims_policies:
-      gotosocial:
-        id_token: ["preferred_username", "email", "email_verified", "groups"]
+      {{- range $file := glob "/config/oidc/clients/*.yaml" }}
+      {{- with (fileContent $file | fromYaml) }}
+      {{- with .claims_policies }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- end }}
+      {{- end }}

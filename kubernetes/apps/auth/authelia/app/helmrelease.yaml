@@ -192,10 +192,22 @@ spec:
             *app :
               - path: /secrets/jwk-ecdsa
 
-      oidc-client-gotosocial:
+      # Combined OIDC client credentials for all registered clients
+      # (assembled from the SOPS patches in ../oidc/clients)
+      oidc-clients:
         type: secret
-        name: authelia-oidc-gotosocial-client
+        name: authelia-oidc-clients-credentials
         advancedMounts:
           *app :
             *app :
-              - path: /secrets/clients/gotosocial
+              - path: /secrets/oidc
+
+      # Per-client config fragments rendered by the authelia-oidc-clients
+      # ResourceSet, assembled into identity_providers.oidc at startup
+      oidc-clients-config:
+        type: configMap
+        name: authelia-oidc-clients-config
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/oidc/clients

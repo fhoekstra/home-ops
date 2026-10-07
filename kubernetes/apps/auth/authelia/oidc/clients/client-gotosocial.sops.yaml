@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/secret-v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authelia-oidc-clients-credentials
+stringData:
+  clients.gotosocial.client-id: ENC[AES256_GCM,data:qe87ll2aRlXHCQkV/lZ2k2c/KPKkVS17Fj0ombZFgVz3uqzMNBmSijYqoOIWZI7h3n4FKzZe9vG0/wUlUYHQ6b7YdkUhRv37,iv:r4HF4Z38G1djt3sUQXSUO/aGImiTODjNsI9BdDRrbBk=,tag:T/afymQ7jh7Fl9zgcxcuGQ==,type:str]
+  clients.gotosocial.client-secret: ENC[AES256_GCM,data:UICgxr1MJqiQNgnbeJ0vdMbmQW52+H1jf0c3PLVdh8XPoOCDy2zQTavTKPwD1iT+unPuXW2obLtz+9dxjyOnL5+JqN3ODfs9,iv:/aivziiaTCxbRGPY8uk/HTtaRAyrMGfx2APyHOmY2hc=,tag:U4Opz9MdxXc98Wk7VhQ7+A==,type:str]
+  clients.gotosocial.client-secret-digest: ENC[AES256_GCM,data:D0q3M684GwkDq/9ndfQPVjgvuovvTXTc3mS1bdBNkwQ2k6c50d2O2/kv8ZES+Lpc61bvTfnEECENJZXtNg6OB9mq1ntwt5HXChL9p+KCrDw7sDDmSPY1BDIW2/3G9MwX2t+qQqzbv54jMbK7hn6vY3V23GVmzFaU7Gr8EW6O1zOpQ+M=,iv:69+lYXUlsZHWdHCOHAsNt9REbpZw3yR/kO1X7pX3fco=,tag:3bNNLlAtSuqSncOucEFhlw==,type:str]
+sops:
+  age:
+    - enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IG1sa2VtNzY4eDI1NTE5IFI5eG5MZzRO
+        WkpLaENQb0JvREdWVzlqUk5WTVJnTzdXNmFOeTVYbzhGMkgvQ0loQ0toTFl5V3hF
+        YUdkNUgrbFZPVldVNTZjVk5tRkY3akwrLzBRNlROSnhoRGJNUllFMm52S0ZuTlhk
+        MlJrUmZaVytTNisxbzlud1hjSVNCTUQ3TE9GbU5wejg5YnhPaTFvRlpCQ2xiMit4
+        RkxtaGRpSWU0a01iRm1xZExaMlhJenRCeksyV3huVXRhejd0U2hCRCsvUXhJUk1Y
+        MlNlQUxveGxaMkJ3TmVlS0ZUMFAyYkUrbE43dkFzQkpLRzQyTnJENDJpdllpYzhr
+        c2w5eUw4TVNGNWRZRXc4WjZ0ZGUxVitjRERGbGZaWjRHWkcwT3lnSmh2alVILzVo
+        TXc1UFMxdUFVQkNicWNpMHZKVDBuWGFaMzE5eWpJTmxLMDhoRmVKVld4aDFvOXh6
+        cldET3BVcm5NeGlPM0Y1a21DbG9FOHRlMkg0RmQ0L1BuVnVrSTJxT29WS3MxK0xW
+        SXdLTkltSkc3MGw1aXlWUjVSTU9nU0U4Q2FScXBKT3NTOWc0Vmx3S3kvY2VWVk5G
+        WUVEV2FJbldoMkd4dEd3dnlnT09uWEpYVnF0ZWx5anNLdXdqWGF3TTBtdHFqYXVP
+        WEZHYVJzTTg4c2x5dG50Rms1SFpHeFpNTXJHUFI3SFpBV3hxTTdaT2lmT0pyMWtF
+        YW9YRVExQ1FDSlhLZXFEd0FYSE9HWlRBOVB3Y2ZUSlhQdmtVYWNTaHJVT1lHblNk
+        aGdtT3R6YXRYaGdPSS9mMEdXOUpPZXoyUUdQcTVRZm5lZlNnVk1ZU28zRGRkT1Er
+        VGtjcDYrZHcyQVgxdG1aa1U2SWJ2SDhENE1La0E1UmpuaWFsNnZpQkI2TlU0b2V5
+        a0V2Ym5KOExvRXA3UnZGbkxiL1ovaSsxOUVWNHpGUSttblZ2ZWZiQnd1aWtlUFd0
+        dy8zUytNaFpFZTR3ZVM5SFdjWHJjb0RRNzRka0dYY3hTY1pGZWpBSW5UcDkzWW12
+        OUpjVy94engyUzZ6aVEwcGFvOE01VktldGYvbnJ1ajhtRG5PbVR4WXFyVDBoSkhL
+        Tm54Y0hBSG8wVkh5RTFMdEhqbXh4OTIrSTV2bHpUSVlOMi9yUWZwNU1hVmxON2dR
+        QUdJc1d3clRoU09Nbi8yeUtUM2RPQzBnc0FGYmJnVXZkZXFvZm1hQ2hJeXEyZmZV
+        TUc5QjVjNTc3a0VmRFBDeDNaWmV3R0NZT3VOSTVjQXRjRW93S0VHZmpNMUs1Y2RN
+        SXRyTzVKVy92WWhxSGRXS2tRT1hnMTVleHBqbyt2bkc4SjZ6dGIrUHVHZ1FRT0t1
+        d1VqMTNJM0FjbXhXYlBuTFNlLzZWYU1kQmVIREphaWtIM2FJWGN5V0ZIVmtJWk9Q
+        dmVKZGdRSm1QcFQwbGE1cDBmeU1oTVlaWkpmMHBPdE9mcVYyR3lmU2Y0S0NMYzJE
+        cHF5SHdnRUlkd05nbjB3b2EzNHhaK1V3L0lyY2k2RmpPRE1ZMExMY0FYcy9sWUkz
+        a2Y5ZjFZMGRMVkpOOUNGU1V2c1prUUh6NldreWczMlBIdldaRGhWRndaVUU1eit6
+        WDEwWEQ2OW9SL2ZNYTA2bDIzcmR4ZStkQk5lOEc4WDRXNFRkSHhpWGVGWW5xRFEz
+        ZkpWMDBDV25JV0xjZzRzaURjSW5EeDhVOTB2Ym9YUjBEUDRnWVlhWVkxUHRjZjdq
+        NklZeEN5NnExRFdYUTlEbFpVUjRwWThobGFKcDhLWDA5Zm5HdDJSVnUvVmZJekdV
+        YndIOWlWV0RUc2RPMDdaZk5vZ0VUQURpUDlWL1REajlIL0ZyVnhIWXJvcHN0MkJU
+        VWlPY0dNZHhlQ0FTckM0ZVliaS9WMW1DVGR6U0F4cWxWdndGbnZ3WGNBQzZuQ1lR
+        dWxXYjIwVlhnU2JFbEZHRWhEM1dyNjhtcFdnTU1URkd3Z21Dbk9hc05EbVlXUQpR
+        ZXNMYVkxUE1FYS9QaEJzZ05vTk90R2pmbWR6RllCV1RvMlVnZEV5MHpBCi0tLSBp
+        UGRxNzlYWE5PR2l6Yi9OZGdET0g0TlQrYzBqVHBwOWhWNGJCV1YxK0hvCh1Fj04h
+        Zjx7Qymtk/1FhPq3tchpNpp+AvF5Hg0zsB+NaxnOawv/fLnlbewIwGfn0Uv1i9Ar
+        8VMUMeD2omc8WBU=
+        -----END AGE ENCRYPTED FILE-----
+      recipient: age1pq14eqp74d8cl2de9drsvq99z28hjxxn0hnd3h256s5xjmrtg47j7ee2fg9taqyxfuewu7f6f2p9w7zfls9khc0w7jrfsylaufegu3ukw8ptyqujnmrxjkjyx9hsuzr3vfpyqw29sdj66lh69mdm8fge2q6z0rux3yyw4tama9ljdvv8rdpsmewxj9srz72rf23pk337mdfhe83kjq9tveyvauw3246flyp0qkhzfup42ptqtz9kxyuxc06e40k5y39nw8xwc7w8n2m2ptt865wsjcp3quytejr2ujg4kp9tn34ntq8x3uuqkc0h2dsrvnm9khfvdwdgsaw0y7t5ncs8x6styv7e8fz5pamydajmv2te60hz8385w8syvcttumtmkv56lkteel4z0ptgsyynkav90ez88v3e2dqc4pkkf4xharysxe5nkp9dpvf02j98pryw2d7ajazct39r4zf5gpda35z5edmfjcm7vkq4xv4f8qcj32689ne793rj64qxvcnvnczqkj8g0pwctpj30hvt4g3vadqzr9z54sn04te29439gasxjsj8gggtwuf6mvj3rfkvg33568f9fa3m75purcnr4r83dp2qlcgnzck4qumksyzzjlgdldlc8m2ez7m6v720qjejy9e90r2vdnezgpanjt9hcqy4gf4y74frq5h6pxuv77gnlmpgfsv30t6qqynlwdhv3uk75rtcfmzxxujpx9yvxnvrqycndeq8r7gja2csfjn4f2t2u9exfsqjmwzc70npq2dcsj9l4cfhyd60sde0uqp6em5zuxrmseadnr6sw5jty978jweqvumye9v36mkr5q5fcmqqq5d39azufcxrrmmdv3jsj00tv9pqfvspaz5gyphpmzf9nrcjfc4y3qa04eq9k6nvp8kv2yxtrn5e8x0cg55j73tcy89ntmtv57zufyfcqsgpqrhp8ugvdytq9hew4zj05swm4yugzgvn0rgva3s29z9y5n4grfq3rs60e3q93kuwlx5gdu9stp4v43xslxq0prsql8lsq4fxwzk7g6gg4at83xtqnrq3hq2nqc53yr9z2fm39wunjulcc7yl44q289myjq2guxpvgs0x6vqnfmcnf2zz6332e4e238en2sgy4p60ukpjtwsgf8reg279f6wpyn568lg48fnxsq9xdz45cugn5e492pqfwl3gwmve2lkevyc87vmy7jpfpchs7m5jrx5fprs62nh4mqq8xcucy909dftqzuedcqz6ght2tnwd0ghv7gxy536u562cxfu3u5hvz43gjkj75z6vnthnu669sefkenuyjnp3fgg9fujn8yrhcggjafg02697fzh2md2ghle8uptsjz85qmml3mwpfm22quexczmdpvzu6v3lx45jhms6ur8pcvgts8h5stfg5atjpvh07fhw5uts5c0m3np4nxguskvhlrn0u3l2gqmmqqxtdqtfsv2xmjyft8y0rxwsuyply4ff07vj3x82vuqzhw4jgtgwsewzef6vrgm9ndwgap86wg2k9sdmx2quggsgdz9htkrye53waxgvy5kkreznp0wx8m6kp2wgs63wjj2k6n2pd78v3r3z5vu424ppenq4dcnw9uz54v7s5ck46ze9p4zcfexsysuwky62ztrl2q8y3e3yjrf5h3jhvtw2ckdgvns8wqfcacur3zt08qs29wes26twv42ajltvtcajhyqd94sppvjr2vk6raefh9ur8rrzgg6h5ph92zhd3enshuhsjc6xftsq0qv28ucgls2ksax38u8xur0n33nw729vhuh50p3wtuvck0t0gqal43d3juwj3u5spl9wglfnrldvfl4y80j4wedqnky8dtj2pr3q059cgajld3eg7u9nunnar0lsr0cn2cwxffjvv8wnq4mann69s3auk9m
+  encrypted_regex: ^(data|stringData)$
+  lastmodified: "2026-10-07T13:46:36Z"
+  mac: ENC[AES256_GCM,data:J3j65SlVx3FrfpQwftw7S+9meV4FR+75j0SbExX9JIa9j29AB7mpV+mxu/I87H1xcz3csnuyKFMN+yMxQRGdZQVF5X4sX8gcPg91v6+M/MirEm1X0mbxyvW6n2/0zxrTmeXGcWlWRiHdkZRSk8SB5r/k0h4ugEjWuaWGZ4SGHS0=,iv:0tfEqUmo8TK8dD+2eajdD3sk/ozaussL47ycByQYAtA=,tag:UXxNOzIIy/Jcbp2p8609qA==,type:str]
+  mac_only_encrypted: true
+  version: 3.13.3

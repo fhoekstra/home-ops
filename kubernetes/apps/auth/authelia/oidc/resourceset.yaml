@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/fluxcd.controlplane.io/resourceset_v1.json
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSet
+metadata:
+  name: authelia-oidc-clients
+  annotations:
+    fluxcd.controlplane.io/reconcileEvery: "30m"
+    fluxcd.controlplane.io/reconcileTimeout: "5m"
+spec:
+  dependsOn:
+    - # The combined OIDC client credentials Secret, assembled from the
+      # SOPS-encrypted patch files in ./clients
+      apiVersion: v1
+      kind: Secret
+      name: authelia-oidc-clients-credentials
+      namespace: auth
+    - # The declarative registry of OIDC clients
+      apiVersion: fluxcd.controlplane.io/v1
+      kind: ResourceSetInputProvider
+      name: authelia-oidc-clients-inputs
+      ready: true
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: authelia
+      app.kubernetes.io/component: oidc
+  inputsFrom:
+    - kind: ResourceSetInputProvider
+      name: authelia-oidc-clients-inputs
+  # Generates, for each client in the inputs provider:
+  #   1. A fragment file in the authelia-oidc-clients-config ConfigMap
+  #      (mounted into Authelia at /config/oidc/clients, assembled into
+  #      identity_providers.oidc by the template in app/config/configuration.yaml)
+  #   2. A copy of the combined credentials Secret in the application's
+  #      namespace, so the app can reference its own client_id/secret without
+  #      cross-namespace secretKeyRefs.
+  resourcesTemplate: |
+    ---
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: authelia-oidc-clients-config
+      namespace: auth
+    data:
+      <<- range $c := inputs.clients >>
+      clients.<< $c.app >>.yaml: |
+        app: << $c.app >>
+        client:
+          <<- $c.client | toYaml | trim | nindent 6 >>
+        <<- with $cp := get $c "claims_policies" >>
+        claims_policies:
+          <<- $cp | toYaml | trim | nindent 6 >>
+        <<- end >>
+      <<- end >>
+    ---
+    <<- range $c := inputs.clients >>
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: authelia-oidc-<< $c.app >>-client
+      namespace: << $c.namespace >>
+      annotations:
+        fluxcd.controlplane.io/copyFrom: auth/authelia-oidc-clients-credentials
+    type: Opaque
+    <<- end >>

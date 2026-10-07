@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/fluxcd.controlplane.io/resourcesetinputprovider_v1.json
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSetInputProvider
+metadata:
+  name: authelia-oidc-clients-inputs
+  annotations:
+    fluxcd.controlplane.io/reconcileEvery: "30m"
+spec:
+  # The registry of Authelia OIDC clients. Each entry generates:
+  #   - a client entry in the Authelia configuration (via the fragment file
+  #     rendered by the authelia-oidc-clients ResourceSet)
+  #   - a copy of the client credentials in the application's namespace
+  #
+  # The client_id / client_secret are not declared here; they live in the
+  # SOPS-encrypted patch files in ./clients, generated with:
+  #   task oidc:create-client APP=<app>
+  #
+  # `client` accepts any Authelia OIDC client field
+  # (https://www.authelia.com/configuration/identity-providers/openid-connect/clients/),
+  # except client_id and client_secret, which are injected at startup from
+  # the authelia-oidc-clients-credentials Secret.
+  type: Static
+  defaultValues:
+    clients:
+      - app: gotosocial
+        namespace: social
+        client:
+          client_name: GoToSocial (Mastodon-compatible Fediverse server)
+          redirect_uris:
+            - https://gts.kubes.cloud/auth/callback
+          scopes:
+            - openid
+            - profile
+            - groups
+            - email
+          claims_policy: gotosocial
+        claims_policies:
+          gotosocial:
+            id_token:
+              - preferred_username
+              - email
+              - email_verified
+              - groups

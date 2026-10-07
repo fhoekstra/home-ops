@@ -3,11 +3,36 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app authelia-oidc
+  namespace: flux-system
+spec:
+  targetNamespace: auth
+  dependsOn:
+    - name: flux-operator
+      namespace: flux-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/auth/authelia/oidc
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app authelia
   namespace: flux-system
 spec:
   targetNamespace: auth
   dependsOn:
+    - name: authelia-oidc
+      namespace: flux-system
     - name: cloudnative-pg-clusters
       namespace: flux-system
     - name: dragonfly-auth
