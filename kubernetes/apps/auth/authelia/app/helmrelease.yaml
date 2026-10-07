@@ -85,7 +85,9 @@ spec:
               - secretRef:
                   name: dragonfly-auth-secret
             env:
-              X_AUTHELIA_CONFIG: /config/configuration.yaml
+              # configuration.yaml is the static config; clients.yaml is
+              # rendered by the authelia-oidc-clients ResourceSet (see ../oidc)
+              X_AUTHELIA_CONFIG: "/config/configuration.yaml,/config/oidc/clients.yaml"
               X_AUTHELIA_CONFIG_FILTERS: template
               AUTHELIA_SERVER_ADDRESS: tcp://:80
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
@@ -202,12 +204,12 @@ spec:
             *app :
               - path: /secrets/oidc
 
-      # Per-client config fragments rendered by the authelia-oidc-clients
-      # ResourceSet, assembled into identity_providers.oidc at startup
+      # Per-client OIDC config section rendered by the authelia-oidc-clients
+      # ResourceSet, loaded as a second Authelia configuration file
       oidc-clients-config:
         type: configMap
         name: authelia-oidc-clients-config
         advancedMounts:
           *app :
             *app :
-              - path: /config/oidc/clients
+              - path: /config/oidc

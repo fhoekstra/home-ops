@@ -95,28 +95,8 @@ identity_providers:
         certificate_chain: |
           {{- fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
 
-    # OIDC clients are assembled at startup from the fragment files rendered
-    # by the authelia-oidc-clients ResourceSet (mounted at /config/oidc/clients),
-    # with credentials read from the authelia-oidc-clients-credentials Secret
-    # (mounted at /secrets/oidc). See the README.md in the sibling oidc
-    # directory for the onboarding flow.
-    clients:
-      {{- range $file := glob "/config/oidc/clients/*.yaml" }}
-      {{- $frag := fileContent $file | fromYaml }}
-      {{- with $frag.client }}
-      - client_id: |-
-          {{- fileContent (printf "/secrets/oidc/clients.%s.client-id" $frag.app) | nindent 10 }}
-        client_secret: |-
-          {{- fileContent (printf "/secrets/oidc/clients.%s.client-secret-digest" $frag.app) | nindent 10 }}
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- end }}
-
-    claims_policies:
-      {{- range $file := glob "/config/oidc/clients/*.yaml" }}
-      {{- with (fileContent $file | fromYaml) }}
-      {{- with .claims_policies }}
-      {{- toYaml . | nindent 6 }}
-      {{- end }}
-      {{- end }}
-      {{- end }}
+    # OIDC clients and claims policies are NOT configured here. They are
+    # maintained declaratively in the sibling oidc/ directory (ResourceSet +
+    # ResourceSetInputProvider) and rendered into /config/oidc/clients.yaml,
+    # which Authelia loads as a second configuration file at startup
+    # (see X_AUTHELIA_CONFIG in the HelmRelease and the README in oidc/).

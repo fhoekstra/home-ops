@@ -4,11 +4,12 @@ version: "3"
 
 vars:
   AUTHELIA_IMAGE: "authelia/authelia:latest"
-  OIDC_DIR: "{{.ROOT_DIR}}/kubernetes/apps/auth/authelia/app/oidc"
+  OIDC_DIR: "{{.ROOT_DIR}}/kubernetes/apps/auth/authelia/oidc"
+  RSIP_FILE: "{{.OIDC_DIR}}/rsip.yaml"
 
 tasks:
   create-client:
-    desc: Generate a new Authelia OIDC client, storing the id/digest SOPS-encrypted and printing the secret [APP=required]
+    desc: Generate a new Authelia OIDC client, storing its credentials SOPS-encrypted and registering the patch [APP=required]
     silent: true
     env:
       APP: "{{.APP}}"
@@ -21,7 +22,9 @@ tasks:
           exit 1
         fi
 
-        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+        FILE="{{.OIDC_DIR}}/clients/client-${APP}.sops.yaml"
+        KUSTOMIZATION="{{.OIDC_DIR}}/kustomization.yaml"
+        PATCH_PATH="./clients/client-${APP}.sops.yaml"
 
         if test -e "${FILE}"; then
           echo "Error: ${FILE} already exists" >&2
@@ -44,23 +47,48 @@ tasks:
 
         {
           printf '# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/secret-v1.json\n'
-          yq -n '.apiVersion = "v1" | .kind = "Secret" | .metadata.name = ("authelia-oidc-" + strenv(APP) + "-client") | .stringData."client-id" = strenv(ID) | .stringData."client-secret-digest" = strenv(DIGEST)'
+          yq -n '.apiVersion = "v1" | .kind = "Secret" | .metadata.name = "authelia-oidc-clients-credentials" | .stringData["clients." + strenv(APP) + ".client-id"] = strenv(ID) | .stringData["clients." + strenv(APP) + ".client-secret"] = strenv(SECRET) | .stringData["clients." + strenv(APP) + ".client-secret-digest"] = strenv(DIGEST)'
         } > "${FILE}"
 
-        if ! yq -e '.stringData."client-id" == strenv(ID) and .stringData."client-secret-digest" == strenv(DIGEST)' "${FILE}" >/dev/null; then
+        if ! yq -e '.stringData["clients." + strenv(APP) + ".client-id"] == strenv(ID) and .stringData["clients." + strenv(APP) + ".client-secret"] == strenv(SECRET) and .stringData["clients." + strenv(APP) + ".client-secret-digest"] == strenv(DIGEST)' "${FILE}" >/dev/null; then
           echo "Error: generated file does not match the generated credentials" >&2
           exit 1
         fi
 
         sops --encrypt --in-place "${FILE}"
 
-        echo "Created ${FILE}"
-        echo "Remember to add the following to {{.OIDC_DIR}}/kustomization.yaml resources:"
-        echo "  - ./client-${APP}.sops.yaml"
+        if yq '.patches.[].path' "${KUSTOMIZATION}" | grep -qF "${PATCH_PATH}"; then
+          echo "Error: ${KUSTOMIZATION} already references ${PATCH_PATH}" >&2
+          exit 1
+        fi
+        yq -i '.patches += {"path": "'"${PATCH_PATH}"'"}' "${KUSTOMIZATION}"
+
+        if ! yq '.patches.[].path' "${KUSTOMIZATION}" | grep -qF "${PATCH_PATH}"; then
+          echo "Error: failed to register ${PATCH_PATH} in ${KUSTOMIZATION}" >&2
+          exit 1
+        fi
+
+        echo "Created ${FILE} and registered it in ${KUSTOMIZATION}"
         echo ""
-        echo "Retrieve the client id with: sops -d ${FILE}"
-        echo "The client secret is not stored in the repository, copy it into the ${APP} application secret:"
-        echo "client-secret: ${SECRET}"
+        echo "Next, add the client to the registry in {{.RSIP_FILE}} (spec.defaultValues.clients):"
+        cat <<EOF
+        - app: ${APP}
+          namespace: <namespace of the ${APP} application>
+          client:
+            client_name: <human readable name>
+            redirect_uris:
+              - https://<${APP} callback url>
+            scopes:
+              - openid
+              - profile
+              - groups
+              - email
+        EOF
+        echo ""
+        echo "Optional per-client fields: claims_policy / claims_policies / authorization_policy /"
+        echo "any other Authelia OIDC client option (see the Authelia client documentation)."
+        echo "Authelia picks everything up on the next reconciliation; the client credentials are"
+        echo "synced to the application namespace automatically by the ResourceSet."
     requires:
       vars: [APP]
     preconditions: &client_preconditions
@@ -89,15 +117,15 @@ tasks:
           exit 1
         fi
 
-        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+        FILE="{{.OIDC_DIR}}/clients/client-${APP}.sops.yaml"
 
         if ! test -f "${FILE}"; then
           echo "Error: ${FILE} does not exist. Create it with: task oidc:create-client APP=${APP}" >&2
           exit 1
         fi
 
-        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest"' >/dev/null; then
-          echo "Error: ${FILE} does not contain stringData.client-secret-digest" >&2
+        if ! sops -d "${FILE}" | yq -e '.stringData["clients.'${APP}'.client-secret-digest"]' >/dev/null; then
+          echo "Error: ${FILE} does not contain clients.${APP}.client-secret-digest" >&2
           exit 1
         fi
 
@@ -113,17 +141,16 @@ tasks:
         fi
         export SECRET DIGEST
 
-        SET_ARG="$(printf '["stringData"]["client-secret-digest"] "%s"' "${DIGEST}")"
-        sops --set "${SET_ARG}" "${FILE}"
+        sops --set '["stringData"]["clients.'"${APP}"'.client-secret"] "'"${SECRET}"'"' "${FILE}"
+        sops --set '["stringData"]["clients.'"${APP}"'.client-secret-digest"] "'"${DIGEST}"'"' "${FILE}"
 
-        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest" == strenv(DIGEST)' >/dev/null; then
-          echo "Error: rotated digest does not match the generated digest" >&2
+        if ! sops -d "${FILE}" | yq -e '.stringData["clients.'${APP}'.client-secret-digest"] == strenv(DIGEST) and .stringData["clients.'${APP}'.client-secret"] == strenv(SECRET)' >/dev/null; then
+          echo "Error: rotated credentials do not match the generated credentials" >&2
           exit 1
         fi
 
         echo "Rotated ${FILE} (client id unchanged)"
-        echo "Update the ${APP} application secret with the new client secret once Flux has reconciled:"
-        echo "client-secret: ${SECRET}"
+        echo "Once Flux has reconciled, Authelia and the ${APP} application Secret are updated automatically."
     requires:
       vars: [APP]
     preconditions: *client_preconditions

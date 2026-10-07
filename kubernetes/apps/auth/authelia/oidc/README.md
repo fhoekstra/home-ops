@@ -19,30 +19,39 @@ does not require touching Authelia's HelmRelease or configuration at all.
 │  oidc/resourceset.yaml ◄── inputsFrom ────────────┘
 │   (renders, per client)
 │     ├─► ConfigMap authelia-oidc-clients-config (auth)
-│     │     clients.<app>.yaml fragment (non-secret client options)
-│     │     mounted into the Authelia pod at /config/oidc/clients
+│     │     clients.yaml = the complete identity_providers.oidc
+│     │     section for all registered clients, with Authelia
+│     │     {{ secret "/secrets/oidc/..." }} calls for the credentials
+│     │     mounted into the Authelia pod at /config/oidc/clients.yaml
 │     │
 │     └─► Secret authelia-oidc-<app>-client (<app namespace>)
 │           copyFrom: auth/authelia-oidc-clients-credentials
 │           (client_id/secret available to the application)
 │
-│  app/config/configuration.yaml (startup template)
-│     identity_providers.oidc.clients:
-│       glob("/config/oidc/clients/*.yaml") → fileContent | fromYaml
-│       credentials via fileContent("/secrets/oidc/clients.<app>...")
+│  Authelia startup:
+│     X_AUTHELIA_CONFIG=/config/configuration.yaml,/config/oidc/clients.yaml
+│     - configuration.yaml: static config, incl. the jwks section
+│     - clients.yaml: rendered fragment; the {{ secret }} calls inject
+│       client_id / client_secret-digest from the credentials Secret
+│     - both files are merged (each key lives in exactly one file)
 ```
 
 - `oidc/rsip.yaml` is the single declarative registry of OIDC clients
   (`ResourceSetInputProvider`, type `Static`).
 - `oidc/resourceset.yaml` consumes that registry via `inputsFrom` and renders,
   for every client:
-  1. a fragment file into the `authelia-oidc-clients-config` ConfigMap, and
+  1. one entry in the assembled `identity_providers.oidc` section (with the
+     Authelia `{{ secret }}` calls for its credentials), and
   2. a copy of the combined credentials Secret into the application's own
      namespace (via the `fluxcd.controlplane.io/copyFrom` annotation), so
      applications never need cross-namespace secretKeyRefs.
-- `app/config/configuration.yaml` globs the mounted fragment files at startup
-  and assembles `identity_providers.oidc.clients` / `claims_policies`, injecting
-  `client_id` / `client_secret` from the combined credentials Secret.
+- The ResourceSet template engine uses `<< >>` delimiters, so the Authelia
+  `{{ }}` template syntax passes through into the rendered fragment unharmed.
+- `app/config/configuration.yaml` contains no OIDC client logic; the rendered
+  fragment is loaded as a second configuration file. Authelia deep-merges
+  configuration files, and each key (`jwks` in the static file, `clients` /
+  `claims_policies` in the fragment) lives in exactly one file, which
+  satisfies Authelia's warning about splitting list sections across files.
 - The per-client credentials themselves are SOPS-encrypted patch files in
   `oidc/clients/`, merged into the `authelia-oidc-clients-credentials` Secret by
   kustomize (requires Flux ≥ 2.5, which decrypts SOPS patch files pre-build).
@@ -76,11 +85,10 @@ does not require touching Authelia's HelmRelease or configuration at all.
    ```
 
    `client` accepts every Authelia OIDC client option **except**
-   `client_id` / `client_secret`, which are injected at startup from the
-   credentials Secret. Optional `claims_policies` (and any other
-   `identity_providers.oidc` subsection that should be assembled per client,
-   e.g. `authorization_policies`) can be extended the same way in
-   `app/config/configuration.yaml`.
+   `client_id` / `client_secret`, which the ResourceSet renders as
+   `{{ secret }}` calls. Optional `claims_policies` (and other
+   `identity_providers.oidc` subsections, e.g. `authorization_policies`)
+   can be added per client the same way.
 
 3. Point the application at the synced Secret `authelia-oidc-<app>-client`
    in its own namespace, e.g.:
@@ -129,15 +137,14 @@ synced Secret via `reloader.stakater.com/auto`).
 
 - A client registered in `rsip.yaml` **without** credentials: Authelia fails to
   start with a clear error
-  (`error calling fileContent: open /secrets/oidc/clients.<app>.client-id: no
-  such file or directory`). Credentials without a registry entry are inert.
+  (`error calling secret: open /secrets/oidc/clients.<app>.client-id: no such
+  file or directory`). Credentials without a registry entry are inert.
 - The ResourceSet reconciles only after `authelia-oidc-clients-credentials`
   exists and `authelia-oidc-clients-inputs` is ready (`spec.dependsOn`), and the
   `authelia` Kustomization depends on `authelia-oidc` (`wait: true`), so the
   HelmRelease never deploys before the fragment ConfigMap exists.
-- Fragment files are rendered by the ResourceSet; a malformed fragment is
-  skipped silently by the `fromYaml`-based assembly. Malformed registry
-  entries fail the ResourceSet build (`Ready` condition) instead.
+- A malformed registry entry fails the ResourceSet build (`Ready` condition)
+  instead of reaching Authelia.
 
 ## Trade-offs
 
@@ -149,6 +156,11 @@ synced Secret via `reloader.stakater.com/auto`).
 - The `copyFrom`-synced application Secrets contain all clients' credentials
   (keys are namespaced with `clients.<app>.`). For stricter isolation, per-app
   source Secrets with per-app `copyFrom` targets would be needed instead.
+- The rendered fragment contains Authelia `{{ secret }}` calls, so it is two
+  artifacts in one: the assembled configuration section and the credential
+  injection points. `kubectl get cm authelia-oidc-clients-config -o yaml` shows
+  what Authelia will load; `authelia config template` (inside the container)
+  renders it for debugging.
 
 ## Requirements
 
