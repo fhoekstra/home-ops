@@ -79,29 +79,28 @@ access_control:
 
 identity_providers:
   oidc:
-    enabled: true
     jwks:
       - key_id: default
         algorithm: RS256
         use: sig
         key: |-
-          {{ fileContent "/secrets/jwk-rsa/tls.key" | nindent 10 }}
+          {{- fileContent "/secrets/jwk-rsa/tls.key" | quote }}
         certificate_chain: |
-          {{ fileContent "/secrets/jwk-rsa/tls.crt" | nindent 10 }}
+          {{- fileContent "/secrets/jwk-rsa/tls.crt" | nindent 10 }}
       - key_id: ecdsa256
         algorithm: ES256
         use: sig
         key: |-
-          {{ fileContent "/secrets/jwk-ecdsa/tls.key" | nindent 10 }}
+          {{- fileContent "/secrets/jwk-ecdsa/tls.key" | nindent 10 }}
         certificate_chain: |
-          {{ fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
+          {{- fileContent "/secrets/jwk-ecdsa/tls.crt" | nindent 10 }}
 
     clients:
       - client_id: |
-          {{ fileContent "/secrets/clients/gotosocial/client-id" | nindent 10 }}
+          {{- fileContent "/secrets/clients/gotosocial/client-id" | nindent 10 }}
         client_name: GoToSocial (Mastodon-compatible Fediverse server)
         client_secret: |
-          {{ fileContent "/secrets/clients/gotosocial/client-secret-digest" | nindent 10 }}
+          {{- fileContent "/secrets/clients/gotosocial/client-secret-digest" | nindent 10 }}
         redirect_uris: ["https://gts.kubes.cloud/auth/callback"]
         scopes: [openid, profile, groups, email]
         claims_policy: gotosocial
