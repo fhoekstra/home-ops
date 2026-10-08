@@ -3,12 +3,20 @@ identity_providers:
     clients:
       - client_id: |-
           {{- fileContent "/secrets/clients/gotosocial.client-id" | nindent 10 }}
-        client_name: GoToSocial (Mastodon-compatible Fediverse server)
+        client_name: GoToSocial at kubes.cloud (Mastodon-compatible Fediverse server)
         client_secret: |-
           {{- fileContent "/secrets/clients/gotosocial.client-secret-digest" | nindent 10 }}
         redirect_uris: ["https://gts.kubes.cloud/auth/callback"]
         scopes: [openid, profile, groups, email]
         claims_policy: gotosocial
+
+      - client_id: |-
+          {{- fileContent "/secrets/clients/continuwuity.client-id" | nindent 10 }}
+        client_name: continuwuity at kubes.cloud (Matrix server)
+        client_secret: |-
+          {{- fileContent "/secrets/clients/continuwuity.client-secret-digest" | nindent 10 }}
+        redirect_uris: ["https://m.kubes.cloud/_continuwuity/oidc/complete"]
+        scopes: [openid]
 
     claims_policies:
       gotosocial:
