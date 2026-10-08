@@ -4,4 +4,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./jwk-certs.yaml
-  - ./client-gotosocial.sops.yaml
+  - ./clients-secrets-base.yaml
+
+configMapGenerator:
+  - name: authelia-clients-config
+    files:
+      - configuration.yaml=./config/client-config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+
+patches:
+  - path: ./clients/gotosocial.sops.yaml
