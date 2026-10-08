@@ -5,10 +5,12 @@ version: "3"
 vars:
   AUTHELIA_IMAGE: "authelia/authelia:latest"
   OIDC_DIR: "{{.ROOT_DIR}}/kubernetes/apps/auth/authelia/app/oidc"
+  CLIENTS_DIR: "{{.OIDC_DIR}}/clients"
+  KUSTOMIZATION: "{{.OIDC_DIR}}/kustomization.yaml"
 
 tasks:
   create-client:
-    desc: Generate a new Authelia OIDC client, storing the id/digest SOPS-encrypted and printing the secret [APP=required]
+    desc: Generate a new Authelia OIDC client, store the id/digest SOPS-encrypted in the shared clients secret, and register it as a kustomize patch [APP=required]
     silent: true
     env:
       APP: "{{.APP}}"
@@ -21,11 +23,18 @@ tasks:
           exit 1
         fi
 
-        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+        FILE="{{.CLIENTS_DIR}}/${APP}.sops.yaml"
 
         if test -e "${FILE}"; then
           echo "Error: ${FILE} already exists" >&2
           exit 1
+        fi
+
+        # The patch entry is appended textually, so 'patches:' must be the last section
+        REGISTER=1
+        if [ "$(grep '^[a-zA-Z]' "{{.KUSTOMIZATION}}" | tail -n1)" != 'patches:' ]; then
+          echo "Warning: 'patches:' is not the last section of {{.KUSTOMIZATION}}, the patch must be registered manually" >&2
+          REGISTER=0
         fi
 
         echo "Generating OIDC client credentials for app: ${APP}"
@@ -44,19 +53,35 @@ tasks:
 
         {
           printf '# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/secret-v1.json\n'
-          yq -n '.apiVersion = "v1" | .kind = "Secret" | .metadata.name = ("authelia-oidc-" + strenv(APP) + "-client") | .stringData."client-id" = strenv(ID) | .stringData."client-secret-digest" = strenv(DIGEST)'
+          yq -n '.apiVersion = "v1" | .kind = "Secret" | .metadata.name = "authelia-oidc-clients" | .stringData[strenv(APP) + ".client-id"] = strenv(ID) | .stringData[strenv(APP) + ".client-secret-digest"] = strenv(DIGEST)'
         } > "${FILE}"
 
-        if ! yq -e '.stringData."client-id" == strenv(ID) and .stringData."client-secret-digest" == strenv(DIGEST)' "${FILE}" >/dev/null; then
+        if ! yq -e '.stringData[strenv(APP) + ".client-id"] == strenv(ID) and .stringData[strenv(APP) + ".client-secret-digest"] == strenv(DIGEST)' "${FILE}" >/dev/null; then
           echo "Error: generated file does not match the generated credentials" >&2
           exit 1
         fi
 
         sops --encrypt --in-place "${FILE}"
 
+        # Register the sops file as a kustomize patch on the shared authelia-oidc-clients secret
+        if [ "${REGISTER}" -eq 1 ]; then
+          PATCH_PATH="./clients/${APP}.sops.yaml"
+          if grep -qF "path: ${PATCH_PATH}" "{{.KUSTOMIZATION}}"; then
+            echo "Patch entry for ${PATCH_PATH} already present in {{.KUSTOMIZATION}}"
+          else
+            # Ensure the file ends with a newline before appending
+            if [ -n "$(tail -c1 "{{.KUSTOMIZATION}}")" ]; then
+              printf '\n' >> "{{.KUSTOMIZATION}}"
+            fi
+            printf '  - path: %s\n' "${PATCH_PATH}" >> "{{.KUSTOMIZATION}}"
+            echo "Registered ${PATCH_PATH} in {{.KUSTOMIZATION}} patches"
+          fi
+        fi
+
         echo "Created ${FILE}"
-        echo "Remember to add the following to {{.OIDC_DIR}}/kustomization.yaml resources:"
-        echo "  - ./client-${APP}.sops.yaml"
+        echo ""
+        echo "Remaining manual step: add a client entry for ${APP} to {{.OIDC_DIR}}/config/client-config.yaml"
+        echo "(copy the gotosocial entry and adjust client_name/redirect_uris/scopes; the keys are ${APP}.client-id and ${APP}.client-secret-digest)"
         echo ""
         echo "Retrieve the client id with: sops -d ${FILE}"
         echo "The client secret is not stored in the repository, copy it into the ${APP} application secret:"
@@ -89,15 +114,15 @@ tasks:
           exit 1
         fi
 
-        FILE="{{.OIDC_DIR}}/client-${APP}.sops.yaml"
+        FILE="{{.CLIENTS_DIR}}/${APP}.sops.yaml"
 
         if ! test -f "${FILE}"; then
           echo "Error: ${FILE} does not exist. Create it with: task oidc:create-client APP=${APP}" >&2
           exit 1
         fi
 
-        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest"' >/dev/null; then
-          echo "Error: ${FILE} does not contain stringData.client-secret-digest" >&2
+        if ! sops -d "${FILE}" | yq -e '.stringData[strenv(APP) + ".client-secret-digest"]' >/dev/null; then
+          echo "Error: ${FILE} does not contain stringData.${APP}.client-secret-digest" >&2
           exit 1
         fi
 
@@ -113,16 +138,17 @@ tasks:
         fi
         export SECRET DIGEST
 
-        SET_ARG="$(printf '["stringData"]["client-secret-digest"] "%s"' "${DIGEST}")"
+        SET_ARG="$(printf '["stringData"]["%s.client-secret-digest"] "%s"' "${APP}" "${DIGEST}")"
         sops --set "${SET_ARG}" "${FILE}"
 
-        if ! sops -d "${FILE}" | yq -e '.stringData."client-secret-digest" == strenv(DIGEST)' >/dev/null; then
+        if ! sops -d "${FILE}" | yq -e '.stringData[strenv(APP) + ".client-secret-digest"] == strenv(DIGEST)' >/dev/null; then
           echo "Error: rotated digest does not match the generated digest" >&2
           exit 1
         fi
 
         echo "Rotated ${FILE} (client id unchanged)"
-        echo "Update the ${APP} application secret with the new client secret once Flux has reconciled:"
+        echo "Reloader will restart Authelia automatically once Flux has reconciled the updated secret."
+        echo "Update the ${APP} application secret with the new client secret:"
         echo "client-secret: ${SECRET}"
     requires:
       vars: [APP]

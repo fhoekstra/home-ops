@@ -85,7 +85,7 @@ spec:
               - secretRef:
                   name: dragonfly-auth-secret
             env:
-              X_AUTHELIA_CONFIG: /config/configuration.yaml
+              X_AUTHELIA_CONFIG: "/config/configuration.yaml,/config/clients-config.yaml"
               X_AUTHELIA_CONFIG_FILTERS: template
               AUTHELIA_SERVER_ADDRESS: tcp://:80
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
@@ -175,6 +175,16 @@ spec:
                 subPath: configuration.yaml
                 readOnly: true
 
+      oidc-clients-config:
+        type: configMap
+        name: authelia-clients-config
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/clients-config.yaml
+                subPath: configuration.yaml
+                readOnly: true
+
       oidc-cert-jwk-rsa:
         enabled: true
         type: secret
@@ -192,10 +202,10 @@ spec:
             *app :
               - path: /secrets/jwk-ecdsa
 
-      oidc-client-gotosocial:
+      oidc-clients-secrets:
         type: secret
-        name: authelia-oidc-gotosocial-client
+        name: authelia-oidc-clients
         advancedMounts:
           *app :
             *app :
-              - path: /secrets/clients/gotosocial
+              - path: /secrets/clients
