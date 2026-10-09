@@ -91,3 +91,12 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+    persistence:
+      config:
+        type: configMap
+        name: sable-config
+        advancedMounts:
+          *app :
+            *app :
+              - path: /app/config.json
+                subPath: config.json
