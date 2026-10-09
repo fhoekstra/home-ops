@@ -80,9 +80,9 @@ spec:
             resources:
               requests:
                 cpu: 50m
-                memory: 100Mi
+                memory: 64Mi
               limits:
-                memory: 100Mi
+                memory: 64Mi
             securityContext:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
@@ -151,10 +151,10 @@ spec:
                   name: continuwuity
             resources:
               limits:
-                memory: 2Gi
+                memory: 1Gi
               requests:
-                cpu: 1
-                memory: 2Gi
+                cpu: 300m
+                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

@@ -22,23 +22,23 @@ spec:
     storageClass: local-hostpath
   resources:
     limits:
-      memory: 1Gi
+      memory: 256Mi
     requests:
       cpu: 50m
-      memory: 384Mi
+      memory: 256Mi
   postgresql:
     parameters:
       dynamic_shared_memory_type: sysv
       max_connections: "50"
-      shared_buffers: "384MB"
-      effective_cache_size: "768MB"
-      maintenance_work_mem: "64MB"
+      shared_buffers: "64MB"
+      effective_cache_size: "192MB"
+      maintenance_work_mem: "32MB"
       checkpoint_completion_target: "0.9"
-      wal_buffers: "16MB"
+      wal_buffers: "4MB"
       default_statistics_target: "100"
       random_page_cost: "1.1"
       effective_io_concurrency: "100"
-      work_mem: "16MB"
+      work_mem: "8MB"
   bootstrap:
     # initdb: {}
     recovery:
