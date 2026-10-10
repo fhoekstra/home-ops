@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 3.7.4
-    digest: sha256:ef9021e3fddb451ed6c3bbddeb0d8cedc6b47030b01292d240db4af78a8afb66
+    tag: 4.0.0
+    digest: sha256:b02209df03b08706179875b6e1887cb6064a589b591a0ce1e809a354811e37a7
   url: oci://codeberg.org/k8s-gateway/charts/k8s-gateway
