@@ -28,7 +28,7 @@ spec:
             image:
               # renovate: datasource=docker depName=livekit/livekit-server
               repository: mirror.gcr.io/livekit/livekit-server
-              tag: v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3
+              tag: v1.13.9@sha256:d0c04791bf63ca8dcea123571827d56ba9504bd57c8d5de60ee03b5408cc3154
             args:
               - --config
               - /etc/livekit.yaml
