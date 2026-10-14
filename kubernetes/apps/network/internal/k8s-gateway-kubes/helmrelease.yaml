@@ -17,15 +17,38 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    domain: "${CLUSTER_DOMAIN}"
-    ttl: 1
+    serviceType: LoadBalancer
+    servers:
+      - zones:
+          - zone: .
+            use_tcp: true
+        port: 53
+        plugins:
+          - name: k8s_gateway
+            parameters: ${CLUSTER_DOMAIN} ${PERSONAL_DOMAIN}
+            configBlock: |-
+              apex dns
+              ttl 1
+              resources Ingress Service HTTPRoute
+              fallthrough in-addr.arpa ip6.arpa
+          - name: errors
+          - name: health
+            configBlock: |-
+              lameduck 10s
+          - name: ready
+          - name: prometheus
+            parameters: 0.0.0.0:9153
+          - name: forward
+            parameters: . /etc/resolv.conf
+          - name: cache
+            parameters: 30
+          - name: loop
+          - name: reload
+          - name: loadbalance
     service:
-      type: LoadBalancer
-      port: 53
       annotations:
         lbipam.cilium.io/ips: "192.168.1.37"
       externalTrafficPolicy: Cluster
-    watchedResources: ["Ingress", "Service", "HTTPRoute"]
     resources:
       limits:
         memory: 32Mi
