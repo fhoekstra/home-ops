@@ -48,15 +48,15 @@ spec:
             {{ if gt (len .Alerts.Firing) 0 }}
             🚨 *FIRING ALERTS*
             {{ range .Alerts.Firing }}
-              *Alert:* {{ .Labels.alertname | markdownV2Escape }}
-              *Summary:* {{ .Annotations.summary | markdownV2Escape }}
+              *Alert:* {{ reReplaceAll( ".", "\.", .Labels.alertname) }}
+              *Summary:* {{ reReplaceAll( ".", "\.", .Annotations.summary }}
             {{ end }}
             {{ end }}
             {{ if gt (len .Alerts.Resolved) 0 }}
             ✅ *RESOLVED ALERTS*
             {{ range .Alerts.Resolved }}
-              *Alert:* {{ .Labels.alertname | markdownV2Escape }}
-              *Summary:* {{ .Annotations.summary | markdownV2Escape }}
+              *Alert:* {{ reReplaceAll( ".", "\.", .Labels.alertname) }}
+              *Summary:* {{ reReplaceAll( ".", "\.", .Annotations.summary }}
             {{ end }}
             {{ end }}
           parseMode: MarkdownV2
