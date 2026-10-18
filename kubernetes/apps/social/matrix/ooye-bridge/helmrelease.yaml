@@ -27,7 +27,7 @@ spec:
         containers:
           *app :
             image:
-              repository: git.shork.ch/docker-images/out-of-your-element
+              repository: ghcr.io/fhoekstra/out-of-your-element
               tag: v3.7
             env:
               OOYE_DATADIR: /data
