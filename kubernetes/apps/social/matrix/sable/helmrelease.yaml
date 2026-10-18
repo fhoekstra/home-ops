@@ -31,7 +31,7 @@ spec:
           *app :
             image:
               repository: git.sable.moe/sableclient/sable-next
-              tag: 2.0.2@sha256:d091747051dec5f8a2b381afb0c31a750d1521eb70b40cda266f664085c5863d
+              tag: 2.0.3@sha256:36b18d1fc98fa9b3fbd89e97704dddcb7008ca980cf1754dc2787e66bf51f005
               pullPolicy: IfNotPresent
 
             securityContext:
