@@ -58,8 +58,8 @@ spec:
         hostnames:
           - ooye.kubes.cloud
         parentRefs:
-          # - name: envoy-external
-          #   namespace: network
+          - name: envoy-external
+            namespace: network
           - name: envoy-internal
             namespace: network
         rules:
