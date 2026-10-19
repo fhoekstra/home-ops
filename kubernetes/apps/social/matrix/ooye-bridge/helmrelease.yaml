@@ -28,7 +28,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/fhoekstra/out-of-your-element
-              tag: v3.7-fix
+              tag: v3.7-fix-2
             env:
               OOYE_DATADIR: /data
             resources:
