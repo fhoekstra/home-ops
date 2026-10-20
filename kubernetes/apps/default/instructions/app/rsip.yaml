@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://schemas.fluxoperator.dev/resourcesetinputprovider.json
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSetInputProvider
+metadata:
+  name: instructions-site
+  annotations:
+    fluxcd.controlplane.io/reconcileEvery: "5m"
+spec:
+  type: OCIArtifactTag
+  url: oci://ghcr.io/fhoekstra/instructions-site
+  filter:
+    includeTag: "latest"
+    limit: 1
