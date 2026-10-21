@@ -17,7 +17,7 @@ spec:
           *app :
             image:
               repository: "ghcr.io/jjgadgets/phanpy"
-              tag: 2025.01.26.24f03f5
+              tag: rolling@sha256:25c0a0298884e5c8484180ccf17dd2177b7f13cf9936818ae2a1d134e6ce00c4
             env:
               PHANPY_WEBSITE: &host "phanpy.kubes.cloud"
               PHANPY_DEFAULT_INSTANCE: "gts.kubes.cloud"
