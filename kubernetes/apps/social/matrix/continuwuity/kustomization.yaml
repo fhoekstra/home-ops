@@ -9,6 +9,13 @@ configMapGenerator:
   - name: unbound-configmap
     files:
       - unbound.conf=./resources/unbound.conf
+  # SECURITY: Interim mitigation for the eMudhra intermediate CA compromise (2026-10-20)
+  # https://emudhra.we-have-a-problem.com/ - the private keys of eight eMudhra intermediate
+  # CAs are recoverable from their public certificates.
+  # Remove this generator entirely once the image ships rustls-webpki >= 0.103.16.
+  - name: ca-certificates-patched
+    files:
+      - ca-certificates.crt=./resources/ca-certificates.crt
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

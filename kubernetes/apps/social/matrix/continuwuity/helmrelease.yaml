@@ -245,3 +245,15 @@ spec:
           *app :
             unbound:
               - path: /usr/local/unbound/iana.d
+      # SECURITY: Interim mitigation for the eMudhra intermediate CA compromise (2026-10-20)
+      # https://emudhra.we-have-a-problem.com/
+      # REMOVE this entry (and the configMapGenerator in kustomization.yaml) once the
+      # pinned image ships rustls-webpki >= 0.103.16.
+      ca-bundle:
+        type: configMap
+        name: ca-certificates-patched
+        advancedMounts:
+          *app :
+            *app :
+              - path: /etc/ssl/certs/ca-certificates.crt
+                subPath: ca-certificates.crt
