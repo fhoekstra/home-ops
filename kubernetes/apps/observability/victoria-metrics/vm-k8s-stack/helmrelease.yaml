@@ -124,6 +124,8 @@ spec:
     vmagent:
       enabled: true
       spec:
+        extraArgs:
+          promscrape.maxScrapeSize: "33554432" # 32 MiB
         resources:
           limits:
             memory: 1Gi
