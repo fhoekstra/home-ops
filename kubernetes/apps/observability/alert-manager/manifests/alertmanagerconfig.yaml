@@ -30,11 +30,8 @@ spec:
       - receiver: telegram
         matchers:
           - name: severity
-            value: critical
-            matchType: =
-          - name: severity
-            value: warning
-            matchType: =
+            value: critical|warning
+            matchType: =~
   receivers:
     - name: telegram
       telegramConfigs:
@@ -48,15 +45,15 @@ spec:
             {{ if gt (len .Alerts.Firing) 0 }}
             🚨 *FIRING ALERTS*
             {{ range .Alerts.Firing }}
-              *Alert:* {{ reReplaceAll( ".", "\.", .Labels.alertname) }}
-              *Summary:* {{ reReplaceAll( ".", "\.", .Annotations.summary }}
+              *Alert:* {{ .Labels.alertname | reReplaceAll "([_*\\[\\]()~`>#+\\-=|{}.!\\\\])" "\\$1" }}
+              *Summary:* {{ .Annotations.summary | reReplaceAll "([_*\\[\\]()~`>#+\\-=|{}.!\\\\])" "\\$1" }}
             {{ end }}
             {{ end }}
             {{ if gt (len .Alerts.Resolved) 0 }}
             ✅ *RESOLVED ALERTS*
             {{ range .Alerts.Resolved }}
-              *Alert:* {{ reReplaceAll( ".", "\.", .Labels.alertname) }}
-              *Summary:* {{ reReplaceAll( ".", "\.", .Annotations.summary }}
+              *Alert:* {{ .Labels.alertname | reReplaceAll "([_*\\[\\]()~`>#+\\-=|{}.!\\\\])" "\\$1" }}
+              *Summary:* {{ .Annotations.summary | reReplaceAll "([_*\\[\\]()~`>#+\\-=|{}.!\\\\])" "\\$1" }}
             {{ end }}
             {{ end }}
           parseMode: MarkdownV2
