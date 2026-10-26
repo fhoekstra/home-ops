@@ -20,9 +20,7 @@ Files ending in `.yaml.tpl` are rendered as Go templates with access to `topf.ya
 which is the field Renovate tracks).
 
 Note: a deprecated v1alpha1 field and its multi-doc replacement are mutually exclusive — Talos rejects a
-config containing both. That is why the kubelet settings currently stay in v1alpha1 form
-(see `all/03-kubelet.yaml.tpl`): the generated `KubeletConfig` document conflicts with
-`machine.kubelet.extraMounts`, which has no multi-doc equivalent.
+config containing both.
 
 ## Patch Directories
 

@@ -1,8 +1,7 @@
-# Stays in the deprecated v1alpha1 form (see all/03-kubelet.yaml for why).
-# Workloads select on these labels (coredns, etcd-defrag), keep them.
-cluster:
-  allowSchedulingOnControlPlanes: true
-machine:
-  nodeLabels:
-    node-role.kubernetes.io/control-plane: ""
-    node.kubernetes.io/exclude-from-external-load-balancers: ""
+# Equivalent of the old cluster.allowSchedulingOnControlPlanes: true:
+# the generated KubeNodeConfig lists the control-plane taint explicitly, delete it.
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete

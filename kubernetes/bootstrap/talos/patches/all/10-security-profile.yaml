@@ -1,7 +1,6 @@
-# Config generation defaults to workloadIsolation: true for Talos 1.14+, which moves
-# containerd, kubelet and all pods into a sandboxed namespace and restarts them on apply.
-# This cluster was upgraded from 1.13 and stays non-isolated for now; enable deliberately
-# (requires moving csi-local-hostpath off the kubelet extraMounts bind mount first).
+# Workload isolation (sandboxd): containerd, kubelet and all pods run in a
+# dedicated PID/mount namespace. This is the Talos 1.14+ generated default;
+# it is set explicitly here so it cannot be lost from the rendered config.
 apiVersion: v1alpha1
 kind: SecurityProfileConfig
-workloadIsolation: false
+workloadIsolation: true
