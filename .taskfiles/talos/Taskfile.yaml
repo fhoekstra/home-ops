@@ -25,6 +25,16 @@ tasks:
       - test -f {{.TALOS_DIR}}/topf.yaml
       - which topf
 
+  diff:
+    desc: Diff the rendered machine configs against the nodes without applying [NODE=<host> for a single node]
+    dir: "{{.TALOS_DIR}}"
+    cmd: topf apply --dry-run {{.NODE_ARGS}}
+    vars:
+      NODE_ARGS: "{{if .NODE}}--nodes-filter {{.NODE}}{{end}}"
+    preconditions:
+      - test -f {{.TALOS_DIR}}/topf.yaml
+      - which topf
+
   apply:
     desc: Apply the Talos config to all nodes [NODE=<host> for a single node, MODE=auto|reboot|no-reboot|staged|try]
     dir: "{{.TALOS_DIR}}"
