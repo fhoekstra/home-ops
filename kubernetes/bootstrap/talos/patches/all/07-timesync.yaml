@@ -1,0 +1,8 @@
+# Presence of this document enables time sync (there is no `disabled` field).
+# Servers are Cloudflare's time service by IP (NTS requires hostnames, so it stays off).
+apiVersion: v1alpha1
+kind: TimeSyncConfig
+ntp:
+  servers:
+    - 162.159.200.1
+    - 162.159.200.123

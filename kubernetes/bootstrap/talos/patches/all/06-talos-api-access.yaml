@@ -1,0 +1,8 @@
+# Allows the system-upgrade namespace to drive Talos upgrades via the Talos API.
+# Presence of this document enables the feature (there is no `enabled` field).
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade

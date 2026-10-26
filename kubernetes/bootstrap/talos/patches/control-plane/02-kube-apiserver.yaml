@@ -1,0 +1,18 @@
+# Note: cluster.apiServer.certSANs is renamed to certExtraSANs; Talos automatically adds
+# the machine's addresses/hostnames, Kubernetes names and the control plane endpoint.
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+certExtraSANs:
+  - 192.168.1.30
+  - talos-rock-1
+  - talos-rock-2
+  - talos-rock-3
+  - 127.0.0.1
+extraArgs:
+  feature-gates: HPAScaleToZero=true
+resources:
+  requests:
+    cpu: "500m"
+    memory: "2Gi"
+  limits:
+    memory: "2Gi"

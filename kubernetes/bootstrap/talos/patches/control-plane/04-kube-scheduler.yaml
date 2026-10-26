@@ -1,0 +1,21 @@
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+# No need to specify kind/apiVersion, they are set automatically.
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            # We use spegel so we don't need image locality
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+extraArgs:
+  bind-address: 0.0.0.0

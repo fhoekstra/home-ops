@@ -1,0 +1,9 @@
+# discard_unpacked_layers=false is required for spegel (peer-to-peer image sharing).
+# Replaces the legacy /etc/cri/conf.d/20-customization.part machine file.
+# Note: "customization" is a reserved name (it maps to the legacy file), pick any other name.
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: spegel
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false

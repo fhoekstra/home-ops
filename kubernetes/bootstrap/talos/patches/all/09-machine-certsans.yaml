@@ -1,3 +1,4 @@
+# machine.certSANs is NOT deprecated in Talos 1.14, it stays in the v1alpha1 document.
 machine:
   certSANs:
     - 192.168.1.30

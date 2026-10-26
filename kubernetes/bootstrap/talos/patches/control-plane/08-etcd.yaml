@@ -1,0 +1,7 @@
+# cluster.etcd is NOT deprecated in Talos 1.14, it stays in the v1alpha1 document.
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+    advertisedSubnets:
+      - 192.168.1.0/24

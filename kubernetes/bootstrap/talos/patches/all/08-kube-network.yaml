@@ -1,0 +1,13 @@
+# Disable built-in Flannel to use Cilium
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+podSubnets:
+  - 10.69.0.0/16
+serviceSubnets:
+  - 10.96.0.0/16
+---
+# Config generation emits a default KubeFlannelCNIConfig document for Talos 1.14+;
+# not patching it is NOT enough to keep Flannel off, it must be deleted explicitly.
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
