@@ -15,9 +15,13 @@ Patches are strategic-merge patches in one of two forms:
   replacement yet (e.g. `machine.certSANs`, `cluster.etcd`) — see the
   [configuration document map](https://docs.siderolabs.com/talos/v1.14/reference/configuration/document-map).
 
+Files ending in `.yaml.tpl` are rendered as Go templates with access to `topf.yaml` values
+(e.g. `all/03-kubelet.yaml.tpl` takes the kubelet image tag from `kubernetesVersion`,
+which is the field Renovate tracks).
+
 Note: a deprecated v1alpha1 field and its multi-doc replacement are mutually exclusive — Talos rejects a
 config containing both. That is why the kubelet settings currently stay in v1alpha1 form
-(see `all/03-kubelet.yaml`): the generated `KubeletConfig` document conflicts with
+(see `all/03-kubelet.yaml.tpl`): the generated `KubeletConfig` document conflicts with
 `machine.kubelet.extraMounts`, which has no multi-doc equivalent.
 
 ## Patch Directories

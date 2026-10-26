@@ -14,6 +14,9 @@ $patch: delete
 ---
 machine:
   kubelet:
+    # The tag comes from kubernetesVersion in topf.yaml, which is what
+    # Renovate tracks (same datasource comment as before the migration).
+    image: ghcr.io/siderolabs/kubelet:{{ .KubernetesVersion }}
     extraConfig:
       maxPods: 250
       serializeImagePulls: false
