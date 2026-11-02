@@ -1,0 +1,63 @@
+---
+initContainers:
+  - name: dind
+    image: docker:29-dind
+    args:
+      - --ipv6
+      - --fixed-cidr-v6=fd00:d1d::/64
+    securityContext:
+      privileged: true
+    restartPolicy: Always
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: /certs
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: "2"
+        memory: 4Gi
+    volumeMounts:
+      - name: docker-storage
+        mountPath: /var/lib/docker
+      - name: docker-certs
+        mountPath: /certs
+    readinessProbe:
+      exec:
+        command:
+          - sh
+          - -c
+          - test -f /certs/client/ca.pem && test -f /certs/client/cert.pem && test -f /certs/client/key.pem
+      initialDelaySeconds: 2
+      periodSeconds: 1
+containers:
+  - env:
+      - name: DEBIAN_FRONTEND
+        value: noninteractive
+      - name: DOCKER_HOST
+        value: tcp://localhost:2376
+      - name: DOCKER_TLS_VERIFY
+        value: "1"
+      - name: DOCKER_CERT_PATH
+        value: /certs/client
+    image: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04@sha256:8b7a25c7b3235c27e97df1cbb8411c1d12d2676e739265b5fbb66bb55f72dbf6
+    imagePullPolicy: IfNotPresent
+    name: main
+    resources:
+      limits:
+        cpu: "1"
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    volumeMounts:
+      - name: docker-certs
+        mountPath: /certs
+        readOnly: true
+volumes:
+  - name: docker-storage
+    emptyDir: {}
+  - name: docker-certs
+    emptyDir: {}
+restartPolicy: Never

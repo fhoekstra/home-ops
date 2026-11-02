@@ -1,0 +1,16 @@
+---
+containers:
+  - env:
+      - name: DEBIAN_FRONTEND
+        value: noninteractive
+    image: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04@sha256:8b7a25c7b3235c27e97df1cbb8411c1d12d2676e739265b5fbb66bb55f72dbf6
+    imagePullPolicy: IfNotPresent
+    name: main
+    resources:
+      limits:
+        cpu: "1"
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+restartPolicy: Never

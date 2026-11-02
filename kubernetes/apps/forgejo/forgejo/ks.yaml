@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://schemas.mortebrume.eu/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo
+spec:
+  components:
+    - ../../../../components/anubis
+    - ../../../../components/kopiur
+    - ../../../../components/oidc
+    - ../../../../components/postgres/cert
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
+  interval: 1h
+  path: ./kubernetes/apps/forgejo/forgejo/app
+  postBuild:
+    substitute:
+      APP: forgejo
+      ANUBIS_TARGET: "http://forgejo-http.forgejo.svc:3000"
+      KOPIUR_CAPACITY: 20Gi
+      NAMESPACE: forgejo
+      OIDC_CALLBACK: /user/oauth2/kanidm/callback
+      OIDC_CLIENT_ID_KEY: key
+      OIDC_CLIENT_SECRET_KEY: secret
+      OIDC_DISPLAY_NAME: Forgejo
+      OIDC_SCOPES: '["openid", "profile", "email", "groups", "ssh_publickeys"]'
+      OIDC_SHORT_USERNAME: "true"
+      SUBDOMAIN: code
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: forgejo
+---
+# yaml-language-server: $schema=https://schemas.mortebrume.eu/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo-runner
+spec:
+  dependsOn:
+    - name: forgejo
+      namespace: forgejo
+  interval: 1h
+  path: ./kubernetes/apps/forgejo/forgejo/runner
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: forgejo
+---
+# yaml-language-server: $schema=https://schemas.mortebrume.eu/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo-runner-sable
+spec:
+  dependsOn:
+    - name: forgejo
+      namespace: forgejo
+  interval: 1h
+  path: ./kubernetes/apps/forgejo/forgejo/runner-sable
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: forgejo
