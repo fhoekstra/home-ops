@@ -1,15 +1,17 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/databaserole_v1.json
 apiVersion: postgresql.cnpg.io/v1
-kind: Database
+kind: DatabaseRole
 metadata:
-  name: &app authelia
+  name: role-lldap
 spec:
-  name: *app
-  owner: *app
   cluster:
     name: cluster-shared
-  extensions: []
+  name: lldap
+  login: true
+  passwordSecret:
+    name: lldap-pg-secret
+  connectionLimit: -1
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/database_v1.json
 apiVersion: postgresql.cnpg.io/v1

@@ -70,7 +70,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/database/cloudnative-pg/clusters
+  path: ./kubernetes/apps/database/cloudnative-pg/cluster-shared
   prune: true
   sourceRef:
     kind: GitRepository

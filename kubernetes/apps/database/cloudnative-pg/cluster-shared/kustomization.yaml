@@ -4,5 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./pg-secret.sops.yaml
+  - ./cluster.yaml
+  - ./backup.yaml
+  - ./podmonitor.yaml
   - https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
-  - ./shared
+  - ./authelia
+  - ./lldap
