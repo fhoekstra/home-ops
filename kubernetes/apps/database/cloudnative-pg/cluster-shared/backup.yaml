@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: cluster-shared-backup-local
+spec:
+  retentionPolicy: 15d
+  instanceSidecarConfiguration:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 20Mi
+        cpu: 100m
+  configuration:
+    wal:
+      compression: bzip2
+      maxParallel: 8
+    destinationPath: s3://cnpg/cluster-shared/
+    endpointURL: http://versity.storage.svc.cluster.local:7070
+    s3Credentials:
+      accessKeyId:
+        name: s3-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: s3-creds
+        key: SECRET_KEY
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: cluster-shared
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: cluster-shared
+  schedule: "0 37 2 ? * *"
+  immediate: true
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
