@@ -39,7 +39,7 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      matchManagers: ["custom.regex", "mise"],
+      matchManagers: ["custom.regex", "mise", "github-release"],
     },
     {
       description: "Rook-Ceph Group",
