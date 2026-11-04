@@ -10,3 +10,4 @@ resources:
   - https://raw.githubusercontent.com/cloudnative-pg/artifacts/refs/heads/main/image-catalogs/catalog-minimal-trixie.yaml
   - ./authelia
   - ./lldap
+  - ./forgejo
