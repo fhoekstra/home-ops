@@ -9,8 +9,8 @@ spec:
   replicas: 3
   authentication:
     passwordFromSecret:
-      name: dragonfly-forgejo-secret
-      key: AUTHELIA_SESSION_REDIS_PASSWORD
+      name: forgejo-dragonfly-secret
+      key: password
   env:
     - name: MAX_MEMORY
       valueFrom:

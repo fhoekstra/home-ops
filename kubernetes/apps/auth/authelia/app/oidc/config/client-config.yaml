@@ -18,6 +18,14 @@ identity_providers:
         redirect_uris: ["https://m.kubes.cloud/_continuwuity/oidc/complete"]
         scopes: [openid]
 
+      - client_id: |-
+          {{- fileContent "/secrets/clients/forgejo.client-id" | nindent 10 }}
+        client_name: Forgejo at git.kubes.cloud (Git forge)
+        client_secret: |-
+          {{- fileContent "/secrets/clients/forgejo.client-secret-digest" | nindent 10 }}
+        redirect_uris: ["https://git.kubes.cloud/_forgejo/oidc/complete"]
+        scopes: ["openid", "profile", "email", "groups"]
+
     claims_policies:
       gotosocial:
         id_token: ["preferred_username", "email", "email_verified", "groups"]
