@@ -33,7 +33,7 @@ This repo uses [Talos Linux](https://www.talos.dev/) and [Flux](https://fluxcd.i
   - Rook-ceph for cluster internal storage
   - volsync for backup to and automatic restore from NFS and/or OVHCloud object storage
   - versitygw for access to NFS via S3-compatible interface (for database backups)
-  - dragonfly-operator for Redis-compatible caching
+  - valkey for Redis-compatible caching (Authelia session store)
 - Observability:
   - VictoriaMetrics
   - VictoriaLogs
