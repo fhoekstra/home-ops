@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.0/job-batch-v1.json
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: valkey-migrate
+spec:
+  # One-shot bulk import of the Dragonfly keyspace into Valkey using
+  # RedisShake (scan_reader mode), applied by Flux as soon as the valkey-auth
+  # Kustomization is healthy. Re-run after a failure or to pick up keys
+  # written since the last run:
+  #   kubectl --namespace auth delete job valkey-migrate
+  #   flux reconcile kustomization valkey-migrate --namespace flux-system
+  # Safe to re-run (rewrite mode) as long as Valkey is not yet serving live
+  # traffic. Removed together with Dragonfly in migration step 2.
+  # See MIGRATION.md in the parent directory.
+  backoffLimit: 4
+  activeDeadlineSeconds: 3600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: valkey-migrate
+    spec:
+      restartPolicy: OnFailure
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: redis-shake
+          image: ghcr.io/tair-opensource/redisshake:4.7.0@sha256:ce1770f7af3b4dba6d87625c7d1d1078fd6c9dc0cbd136c1e87f87a8d8b31382
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -eu
+              mkdir -p /tmp/shake
+              exec /app/redis-shake /config/shake.toml
+          env:
+            - name: SHAKE_SRC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dragonfly-auth-secret
+                  key: AUTHELIA_SESSION_REDIS_PASSWORD
+            - name: SHAKE_DST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: valkey-auth-secret
+                  key: AUTHELIA_SESSION_REDIS_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: scratch
+              mountPath: /tmp
+      volumes:
+        - name: config
+          configMap:
+            name: valkey-migrate
+        - name: scratch
+          emptyDir: {}

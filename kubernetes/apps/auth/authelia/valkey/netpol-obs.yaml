@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.0/networkpolicy-networking-v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: valkey-observability
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: monitoring
+              app.kubernetes.io/instance: vmetrics
+              app.kubernetes.io/name: vmsingle
+      ports:
+        - port: 9121
+          protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: valkey-auth
+  policyTypes:
+    - Ingress
