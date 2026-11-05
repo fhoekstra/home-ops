@@ -14,7 +14,7 @@ spec:
       admin:
         username: ""
       config:
-        APP_NAME: "code ~ brume"
+        APP_NAME: "Git on Kubes Cloud"
         APP_SLOGAN: ""
         cache:
           ENABLED: true
@@ -30,7 +30,7 @@ spec:
           HOST: pooler-rw.database.svc:5432
           USER: forgejo
           NAME: forgejo
-          SSL_MODE: verify-full
+          PASSWORD: #TODO
         indexer:
           ISSUE_INDEXER_TYPE: bleve
           REPO_INDEXER_ENABLED: true
@@ -91,11 +91,11 @@ spec:
       oauth:
         - name: kanidm
           adminGroup: admins@idm.mortebrume.eu
-          autoDiscoverUrl: https://idm.mortebrume.eu/oauth2/openid/forgejo/.well-known/openid-configuration
-          existingSecret: kanidm-forgejo-oidc
+          autoDiscoverUrl: "https://auth.${CLUSTER_DOMAIN}"
+          existingSecret: forgejo-oidc-secret # TODO: key names?
           groupClaimName: groups
           provider: openidConnect
-          scopes: profile email groups ssh_publickeys
+          scopes: profile email groups
     deployment:
       env:
         - name: PGSSLROOTCERT

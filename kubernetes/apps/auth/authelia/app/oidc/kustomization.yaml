@@ -16,3 +16,4 @@ generatorOptions:
 patches:
   - path: ./clients/gotosocial.sops.yaml
   - path: ./clients/continuwuity.sops.yaml
+  - path: ./clients/forgejo.sops.yaml
