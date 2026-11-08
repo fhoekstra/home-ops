@@ -29,7 +29,7 @@ spec:
           init-config:
             image:
               repository: mirror.gcr.io/owncloud/ocis
-              tag: 8.2.2@sha256:08639361baa55e21037442daed4d8aa1a4fc4f2f12d06db92455a14782c29f61
+              tag: 8.2.2@sha256:c44b8f19af4e9b252cfbba910525ef3c206f06bb7fa98de3f94259c90107bb15
             command:
               - /bin/sh
               - -c
@@ -43,7 +43,7 @@ spec:
           *app :
             image:
               repository: mirror.gcr.io/owncloud/ocis
-              tag: 8.2.2@sha256:08639361baa55e21037442daed4d8aa1a4fc4f2f12d06db92455a14782c29f61
+              tag: 8.2.2@sha256:c44b8f19af4e9b252cfbba910525ef3c206f06bb7fa98de3f94259c90107bb15
             env:
               # DEMO_USERS: true
               # IDM_CREATE_DEMO_USERS: true
