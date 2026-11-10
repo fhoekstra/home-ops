@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ticketbooth
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      main:
+        strategy: Recreate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/fhoekstra/ticketbooth
+              tag: "v1@sha256:cda413967bd8c256135a356da9361722040dcff0ad771940523965a796919ca5"
+            env:
+              TZ: Europe/Amsterdam
+              TARGET_URL: https://tickets.events.ccc.de/40c3/
+              TARGET_TIME: "2026-11-11T18:00:00+01:00"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8080
+    persistence:
+      shm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2Gi
+        globalMounts:
+          - path: /dev/shm
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - ticketbooth.${CLUSTER_DOMAIN}
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: 8080

@@ -10,6 +10,7 @@ resources:
   - ./blog/ks.yaml
   - ./apoci/ks.yaml
   - ./instructions/ks.yaml
+  - ./ticketbooth/ks.yaml
 components:
   - ../../flux/components/namespace
 patches:
