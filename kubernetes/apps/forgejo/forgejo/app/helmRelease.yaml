@@ -8,6 +8,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: forgejo
+  dependsOn:
+    - name: "${APP}-valkey"
   interval: 1h
   values:
     gitea:
@@ -19,7 +21,7 @@ spec:
         cache:
           ENABLED: true
           ADAPTER: redis
-          HOST: redis://dragonfly-forgejo.forgejo.svc:6379/2?pool_size=100&idle_timeout=180s
+          HOST: redis://forgejo-valkey.forgejo.svc:6379/1?pool_size=100&idle_timeout=180s
         cron.archive_cleanup:
           ENABLED: true
           RUN_AT_START: true
@@ -43,7 +45,7 @@ spec:
           ENABLE_OPENID_SIGNUP: false
         queue:
           TYPE: redis
-          CONN_STR: redis://dragonfly-forgejo.forgejo.svc:6379/2?pool_size=100&idle_timeout=180s
+          CONN_STR: redis://forgejo-valkey.forgejo.svc:6379/0?pool_size=100&idle_timeout=180s
         repository:
           DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.pulls,repo.actions
           DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
@@ -80,7 +82,7 @@ spec:
           SHOW_REGISTRATION_BUTTON: false
         session:
           PROVIDER: redis
-          PROVIDER_CONFIG: redis://dragonfly.database.svc:6379/2?pool_size=100&idle_timeout=180s
+          PROVIDER_CONFIG: redis://forgejo-valkey.forgejo.svc:6379/2?pool_size=100&idle_timeout=180s
         ui:
           DEFAULT_THEME: "gitdotgay-dark"
         ui.meta:
@@ -96,6 +98,21 @@ spec:
           groupClaimName: groups
           provider: openidConnect
           scopes: profile email groups
+      # The cache/queue/session connection strings above have no separate
+      # password key in app.ini, so environment-to-ini (envs win over
+      # gitea.config) overrides them with the password embedded in the URL.
+      additionalConfigFromEnvs:
+        - name: VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-valkey
+              key: password
+        - name: FORGEJO__cache__HOST
+          value: "redis://:$(VALKEY_PASSWORD)@forgejo-valkey.forgejo.svc:6379/1?pool_size=100&idle_timeout=180s"
+        - name: FORGEJO__queue__CONN_STR
+          value: "redis://:$(VALKEY_PASSWORD)@forgejo-valkey.forgejo.svc:6379/0?pool_size=100&idle_timeout=180s"
+        - name: FORGEJO__session__PROVIDER_CONFIG
+          value: "redis://:$(VALKEY_PASSWORD)@forgejo-valkey.forgejo.svc:6379/2?pool_size=100&idle_timeout=180s"
     deployment:
       env:
         - name: PGSSLROOTCERT

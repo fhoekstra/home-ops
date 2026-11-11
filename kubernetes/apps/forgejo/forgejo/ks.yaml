@@ -9,6 +9,7 @@ spec:
   targetNamespace: forgejo
   components:
     - ../../../../components/volsync/hot
+    - ../../../../components/valkey
   dependsOn:
     - name: rook-ceph-cluster
       namespace: flux-system
