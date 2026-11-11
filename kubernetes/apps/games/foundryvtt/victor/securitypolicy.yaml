@@ -26,9 +26,9 @@ spec:
       backendRefs:
         - group: ""
           kind: Service
-          name: "authelia"
+          name: "authelia-anubis"
           namespace: "auth"
-          port: 8923
+          port: 8080
       path: "/api/authz/ext-authz/"
       headersToBackend:
         - Remote-User
