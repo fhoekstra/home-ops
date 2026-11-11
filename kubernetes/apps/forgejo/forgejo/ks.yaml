@@ -8,10 +8,10 @@ metadata:
 spec:
   targetNamespace: forgejo
   components:
-    - ../../../components/volsync/hot
+    - ../../../../components/volsync/hot
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: rook-ceph
+      namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/forgejo/forgejo/app
   postBuild:
