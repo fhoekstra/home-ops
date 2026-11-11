@@ -19,7 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      ANUBIS_TARGET: http://authelia.auth.svc:80
+      ANUBIS_TARGET: http://authelia.auth.svc:8080
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
