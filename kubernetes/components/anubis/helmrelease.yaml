@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: "${APP}-anubis"
+spec:
+  interval: 1h
+  timeout: 5m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 5
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    controllers:
+      anubis:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/techarohq/anubis
+              tag: v1.28.2@sha256:5fcbce70ee6168be5b226d19bec90111d0acd0daf13028fa06b044cf3ebbbd5f
+            env:
+              BIND: ":8080"
+              DIFFICULTY: "4"
+              ED25519_PRIVATE_KEY_HEX:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${APP}-anubis-key"
+                    key: ED25519_PRIVATE_KEY_HEX
+              METRICS_BIND: ":9090"
+              OG_EXPIRY_TIME: "24h"
+              OG_PASSTHROUGH: "true"
+              POLICY_FNAME: "/etc/anubis/policy.yaml"
+              SERVE_ROBOTS_TXT: "true"
+              TARGET: "${ANUBIS_TARGET}"
+              TZ: "${TIMEZONE}"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["anubis", "--healthcheck"]
+                  initialDelaySeconds: 1
+                  periodSeconds: 10
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    configMaps:
+      policy:
+        suffix: policy
+        data:
+          policy.yaml: |-
+            bots:
+              # Same policy that Anubis ships as its built-in default.
+              - import: (data)/meta/default-config.yaml
+    service:
+      anubis:
+        controller: anubis
+        ports:
+          http:
+            port: 8080
+            protocol: HTTP
+          metrics:
+            port: 9090
+            protocol: HTTP
+    serviceMonitor:
+      app:
+        serviceName: "${APP}-anubis"
+        endpoints:
+          - port: metrics
+            interval: 30s
+    persistence:
+      policy:
+        type: configMap
+        identifier: policy
+        globalMounts:
+          - path: /etc/anubis
+            readOnly: true

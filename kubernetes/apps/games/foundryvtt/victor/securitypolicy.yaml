@@ -15,7 +15,6 @@ spec:
   extAuth:
     headersToExtAuth:
       - "X-Forwarded-For" # this is here so we can get the real IP
-      - "X-Real-Ip" # Needed to make Anubis happy
       - "accept"
       - "cookie"
       - "authorization"
@@ -28,7 +27,7 @@ spec:
           kind: Service
           name: "authelia"
           namespace: "auth"
-          port: 8923
+          port: 8080
       path: "/api/authz/ext-authz/"
       headersToBackend:
         - Remote-User
