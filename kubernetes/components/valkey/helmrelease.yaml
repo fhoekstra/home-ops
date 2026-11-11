@@ -1,0 +1,194 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: "${VALKEY_NAME:=${APP}-valkey}"
+spec:
+  interval: 1h
+  timeout: 5m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 5
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      valkey:
+        type: statefulset
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        statefulset:
+          # Retain the data PVC even if the StatefulSet is deleted, so an
+          # accidental Helm uninstall cannot destroy the data.
+          persistentVolumeClaimRetentionPolicy:
+            whenDeleted: Retain
+            whenScaled: Retain
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 2Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /data
+        containers:
+          valkey:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 9.1.3@sha256:3add1a336a920ea54770a001ab6feb3da5fceea96a40373a3a2cd469b815f0b7
+            command: ["valkey-server"]
+            # The password comes from the app-provided basic-auth Secret (see
+            # README.md) and is injected as a CLI flag.
+            args: ["/config/valkey.conf", "--requirepass", "$(VALKEY_PASSWORD)"]
+            env:
+              VALKEY_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${VALKEY_SECRET:-${VALKEY_NAME:=${APP}-valkey}}"
+                    key: password
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - valkey-cli --no-auth-warning -a "$VALKEY_PASSWORD" ping | grep -q PONG
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - valkey-cli --no-auth-warning -a "$VALKEY_PASSWORD" ping | grep -q PONG
+                  periodSeconds: 2
+                  timeoutSeconds: 2
+                  failureThreshold: 60
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+          exporter:
+            image:
+              repository: ghcr.io/oliver006/redis_exporter
+              tag: v1.97.0@sha256:f5f903fbe77571d455ede0453b084d6840bc62fc105efac001034421cab83b99
+            env:
+              REDIS_ADDR: redis://localhost:6379
+              REDIS_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "${VALKEY_SECRET:-${VALKEY_NAME:=${APP}-valkey}}"
+                    key: password
+            ports:
+              - name: metrics
+                containerPort: 9121
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: 9121
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 64Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    configMaps:
+      config:
+        suffix: config
+        data:
+          valkey.conf: |-
+            # Valkey configuration managed by the valkey component
+            # (kubernetes/components/valkey).
+            # The requirepass directive is injected at container start from the
+            # app-provided basic-auth Secret, see helmrelease.yaml.
+
+            bind 0.0.0.0
+            port 6379
+            protected-mode yes
+
+            # Persistence: AOF (fsync every second) with periodic RDB snapshots
+            # as a second net.
+            appendonly yes
+            appendfsync everysec
+            appenddirname "appendonlydir"
+
+            save 900 1
+            save 300 100
+            save 60 10000
+            dbfilename dump.rdb
+
+            # Memory. Must stay below the container memory limit (512Mi) to
+            # leave headroom for fork() copy-on-write during AOF rewrites.
+            maxmemory 384mb
+            # Do not silently evict data when the memory limit is reached; fail
+            # writes instead so the problem is noticed.
+            maxmemory-policy noeviction
+
+            # Data location (volumeClaimTemplate, see helmrelease.yaml).
+            dir /data
+    service:
+      valkey:
+        controller: valkey
+        ports:
+          redis:
+            port: 6379
+            protocol: TCP
+          metrics:
+            port: 9121
+            protocol: TCP
+    serviceMonitor:
+      app:
+        serviceName: "${VALKEY_NAME:=${APP}-valkey}"
+        endpoints:
+          - port: metrics
+            interval: 30s
+    persistence:
+      config:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config
+            readOnly: true
