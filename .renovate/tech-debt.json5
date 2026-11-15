@@ -7,11 +7,5 @@
       matchPackageNames: ["/grafana/grafana/"],
       allowedVersions: "<13",
     },
-    {
-      description: "Stick to rook-ceph 19.x since Ceph 20.x is built for Linux 7.x and Talos is still on 6.x",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/rook/rook-ceph/"],
-      allowedVersions: "<1.20",
-    },
   ],
 }

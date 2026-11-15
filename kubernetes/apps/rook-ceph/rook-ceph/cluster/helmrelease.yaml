@@ -54,7 +54,6 @@ spec:
       ### NEEDED to resolve CVE-2025-30156 ###
 
       ### Required until all legacy keys can be rotated.
-      ### This requires Linux kernel 7 so Talos 1.15
       healthCheck:
         muteHealthWarning:
           AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
@@ -96,7 +95,7 @@ spec:
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            enabled: false # not recommended upstream; Rook also force-disables it on Ceph 20.2.2-20.2.4
       network:
         provider: host
         connections:
