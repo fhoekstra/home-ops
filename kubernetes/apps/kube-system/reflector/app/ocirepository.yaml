@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 10.0.77
-    digest: sha256:35f61850496fbb5aacc28f978912b3c47dc057e9ffe53b32e696aaec085954c1
+    tag: 10.0.78
+    digest: sha256:5724d06f5669a69f34eb2e9cae36e3ee192d30365e9de74ef4669eb777a7cf5d
   url: oci://ghcr.io/emberstack/helm-charts/reflector
