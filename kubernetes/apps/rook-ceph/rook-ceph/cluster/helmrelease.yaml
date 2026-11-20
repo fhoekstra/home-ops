@@ -4,8 +4,8 @@ kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
 spec:
-  interval: 1h
-  timeout: 15m
+  interval: 2h
+  timeout: 1h
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
