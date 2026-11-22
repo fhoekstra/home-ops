@@ -66,6 +66,8 @@ spec:
       webfinger:
         hostnames:
           - "kubes.cloud"
+        annotations:
+          external-dns.kubernetes.io/controller: "ignore" # DNS for kubes.cloud. root is managed separately through an A record
         rules:
           - matches:
               - path:
