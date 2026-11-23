@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.9.19
-    digest: sha256:e60d7bc288095e3cfb651f2c8ad4cae62a74f06fcbd5e49a06320247a86b37ea
+    tag: 0.9.20
+    digest: sha256:dff12bc0d9a91fc906d46bf8e45f794d7cfd88604ffa30216998d3edcecddd72
   url: oci://ghcr.io/aureq/charts/cert-manager-webhook-ovh
