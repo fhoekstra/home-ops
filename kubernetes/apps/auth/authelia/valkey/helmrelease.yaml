@@ -51,7 +51,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/valkey-io/valkey
-              tag: 9.1.4@sha256:3ab0eca823ebbf0fe352476ebac330ac9e5f14b592b9a954eab296d341e81b0e
+              tag: 9.2.0@sha256:1c2b25b09f354c66fe994733acdf12fcfd4bdf6f3bd92b88a93a70378d884056
             command: ["valkey-server"]
             # The password is injected as a CLI flag from the shared secret so
             # that Dragonfly and Valkey accept identical credentials during the
